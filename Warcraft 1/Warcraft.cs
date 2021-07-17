@@ -4,12 +4,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Warcraft_1
 {
-    public class Game1 : Game
+    public class Warcraft : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        public Game1()
+        public Warcraft()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
