@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Warcraft_1.Scenes;
 
 namespace Warcraft_1
 {
@@ -8,12 +9,13 @@ namespace Warcraft_1
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
+        AScene scene;
         public Warcraft()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            scene = new Menu();
         }
 
         protected override void Initialize()
@@ -42,9 +44,7 @@ namespace Warcraft_1
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
+            scene.Draw(_graphics, gameTime);
 
             base.Draw(gameTime);
         }
