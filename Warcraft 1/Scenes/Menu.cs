@@ -6,7 +6,7 @@ namespace Warcraft_1.Scenes
 {
     class Menu : AScene
     {
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) { }
+        public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime) { }
 
     }
 }

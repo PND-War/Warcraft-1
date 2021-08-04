@@ -4,9 +4,6 @@ namespace Warcraft_1.Scenes
 {
     abstract class AScene
     {
-        public void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
-        {
-
-        }
+        public abstract void Draw(GraphicsDeviceManager graphics, GameTime gameTime);
     }
 }
