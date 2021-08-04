@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Warcraft_1.Scenes
 {
-    class Playing : AScene
+    class SPlaying : AScene
     {
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime) { }
 

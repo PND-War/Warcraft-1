@@ -9,13 +9,14 @@ namespace Warcraft_1
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        Settings settings;
         AScene scene;
         public Warcraft()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            scene = new Menu();
+            scene = new SMenu();
         }
 
         protected override void Initialize()
@@ -48,5 +49,7 @@ namespace Warcraft_1
 
             base.Draw(gameTime);
         }
+
+
     }
 }
