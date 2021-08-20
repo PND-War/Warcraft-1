@@ -24,17 +24,8 @@ namespace Warcraft_1
         public bool soundsOn = true;
         public bool musicOn = true;
 
-        //1
-        public static Texture2D background;
-        public Texture2D start;
-        public Texture2D load;
-        public Texture2D sett;
-        public Texture2D exit;
-
-        public bool startAimed = false;
-        public bool loadAimed = false;
-        public bool settingsAimed = false;
-        public bool exitAimed = false;
+ 
+        
 
         //2
         public Texture2D sure;

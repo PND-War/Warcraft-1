@@ -8,7 +8,6 @@ namespace Warcraft_1.Scenes
     abstract class AScene
     {
         protected SpriteBatch _spriteBatch;
-
         public List<Texture2D> components = new List<Texture2D>() { };
         public abstract void Load(GraphicsDeviceManager graphics, ContentManager Content);
         public abstract void Update(GameTime gameTime);
