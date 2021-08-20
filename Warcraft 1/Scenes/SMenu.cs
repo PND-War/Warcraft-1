@@ -11,15 +11,15 @@ namespace Warcraft_1.Scenes
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
             _spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
-            //Texture2D cursor = Content.Load<Texture2D>("cursor");
-            //Texture2D background = Content.Load<Texture2D>("background");
+            Texture2D cursor = Content.Load<Texture2D>("cursor");
+            Texture2D background = Content.Load<Texture2D>("background");
 
-            //Texture2D start = Content.Load<Texture2D>("start");
-            //Texture2D load = Content.Load<Texture2D>("load");
-            //Texture2D sett = Content.Load<Texture2D>("settingsbut");
-            //Texture2D exit = Content.Load<Texture2D>("exit");
+            Texture2D start = Content.Load<Texture2D>("start");
+            Texture2D load = Content.Load<Texture2D>("load");
+            Texture2D sett = Content.Load<Texture2D>("settingsbut");
+            Texture2D exit = Content.Load<Texture2D>("exit");
 
-            components.Add(Content.Load<Texture2D>("background"));
+            components.AddRange(new Texture2D[]{cursor, background});
         }
         public override void Update(GameTime gameTime)
         {
@@ -31,7 +31,8 @@ namespace Warcraft_1.Scenes
             SpriteBatch _spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(components[0], new Rectangle(0, 0, 1920, 1080), Color.White);
+            _spriteBatch.Draw(components[1], new Rectangle(0, 0, 1920, 1080), Color.White);
+            _spriteBatch.Draw(components[0], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
             _spriteBatch.End();
 
             //_spriteBatch.Draw(start, new Vector2(831, 392), null, Color.White, 0f, Vector2.Zero, startAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
@@ -39,7 +40,7 @@ namespace Warcraft_1.Scenes
             //_spriteBatch.Draw(sett, new Vector2(831, 518), null, Color.White, 0f, Vector2.Zero, settingsAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
             //_spriteBatch.Draw(exit, new Vector2(831, 626), null, Color.White, 0f, Vector2.Zero, exitAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
 
-            //_spriteBatch.Draw(cursor, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
+            
 
         }
     }

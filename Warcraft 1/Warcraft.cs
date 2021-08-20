@@ -65,22 +65,25 @@ namespace Warcraft_1
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
 
-
-            _graphics.PreferredBackBufferHeight = 1920;
-            _graphics.PreferredBackBufferWidth = 1080;
-            _graphics.IsFullScreen = false;
-
+           
+           
             scene = new SMenu();
-            scene.Load(_graphics, Content);
         }
 
+        
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+           
+            scene.Load(_graphics, Content);
             base.Initialize();
+
+            _graphics.PreferredBackBufferWidth = _graphics.GraphicsDevice.DisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = _graphics.GraphicsDevice.DisplayMode.Height;
+            _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
         }
 
         protected override void LoadContent()
