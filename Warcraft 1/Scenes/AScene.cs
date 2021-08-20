@@ -5,6 +5,14 @@ using System.Collections.Generic;
 
 namespace Warcraft_1.Scenes
 {
+    enum Scenes
+    {
+        mainmenu,
+        startgame,
+        loadgame,
+        settings,
+        quitwindow
+    }
     abstract class AScene
     {
         protected SpriteBatch _spriteBatch;

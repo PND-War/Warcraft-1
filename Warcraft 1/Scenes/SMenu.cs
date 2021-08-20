@@ -16,8 +16,8 @@ namespace Warcraft_1.Scenes
         load,
         sett,
         exit
-
     }
+
     class SMenu : AScene
     {
         public bool tapped = false;
@@ -45,13 +45,16 @@ namespace Warcraft_1.Scenes
 
             components.AddRange(new Texture2D[] { background, cursor, start, load, sett, exit });
 
+            click = Content.Load<SoundEffect>("button");
+            soundInstance = click.CreateInstance();
+            soundInstance.Volume = 0.35f;
+
             bgsong = Content.Load<Song>("backgroundmusic");
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.05f;
 
             MediaPlayer.Play(bgsong);
-            cursor = Content.Load<Texture2D>("cursor");
         }
         public override void Update(GameTime gameTime)
         {
@@ -67,19 +70,19 @@ namespace Warcraft_1.Scenes
                 {
                     if (new Rectangle(831, 392, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
                         soundInstance.Play();
-                        return 2;       //currentState
+                        return (int)Scenes.startgame;       //currentState
                     }
                     if (new Rectangle(831, 455, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
                         soundInstance.Play();
-                        return 3;
+                        return (int)Scenes.loadgame;
                     }
                     if (new Rectangle(831, 518, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
                         soundInstance.Play();
-                        return 4;
+                        return (int)Scenes.settings;
                     }
                     if (new Rectangle(831, 626, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
                         soundInstance.Play();
-                        return 5;
+                        return (int)Scenes.quitwindow;
                     }
                 }
                 tapped = true;
@@ -87,7 +90,6 @@ namespace Warcraft_1.Scenes
 
             return 0;
         }
-
         private void CheckAim()
         {
             if (new Rectangle(831, 392, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) startAimed = true;
