@@ -128,6 +128,8 @@ namespace Warcraft_1
 
             // TODO: Add your update logic here
 
+            scene.Update(gameTime);
+
             base.Update(gameTime);
         }
 
