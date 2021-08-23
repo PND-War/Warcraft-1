@@ -19,6 +19,16 @@ namespace Warcraft_1.Scenes
 
         }
 
+        private int CheckPress()
+        {
+
+            return 0;
+        }
+        private void CheckAim()
+        {
+            
+        }
+
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime) { }
 
     }

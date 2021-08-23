@@ -94,9 +94,9 @@ namespace Warcraft_1.Scenes
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(components[(int)TextureSQuit.back], new Rectangle(0, 0, 1920, 1080), Color.White);
-            _spriteBatch.Draw(components[(int)TextureSQuit.sure], new Vector2(831, 392), null, Color.White, 0f, Vector2.Zero, startAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(components[(int)TextureSQuit.yes], new Vector2(831, 455), null, Color.White, 0f, Vector2.Zero, loadAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(components[(int)TextureSQuit.no], new Vector2(831, 518), null, Color.White, 0f, Vector2.Zero, settingsAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(components[(int)TextureSQuit.sure], new Vector2(831, 392), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(components[(int)TextureSQuit.yes], new Vector2(831, 455), null, Color.White, 0f, Vector2.Zero, yesAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(components[(int)TextureSQuit.no], new Vector2(831, 518), null, Color.White, 0f, Vector2.Zero, noAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSQuit.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
 
             _spriteBatch.End();
