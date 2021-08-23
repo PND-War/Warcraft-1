@@ -21,12 +21,6 @@ namespace Warcraft_1
         public bool tapped = false;
         int currentState = 1;
 
-        public bool soundsOn = true;
-        public bool musicOn = true;
-
- 
-        
-
         //2
         public Texture2D sure;
         public Texture2D yes;
@@ -36,20 +30,7 @@ namespace Warcraft_1
         public bool noAimed = false;
 
         //3
-        public Texture2D settingsicon;
-        public Texture2D ok;
-        public Texture2D back;
-
-        public Texture2D soundturn;
-        public Texture2D musicturn;
-
-        public bool musicswitcher = false;
-        public bool soundswitcher = false;
-
-        public bool okAimed = false;
-        public bool backAimed = false;
-
-        public Texture2D cursor;
+        
 
         AScene scene;
         public Warcraft()
@@ -57,9 +38,6 @@ namespace Warcraft_1
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = false;
-
-           
-           
             scene = new SMenu();
         }
 
@@ -79,25 +57,6 @@ namespace Warcraft_1
 
         protected override void LoadContent()
         {
-            //_spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            ////for each scene
-            //cursor = Content.Load<Texture2D>("cursor");
-            //background = Content.Load<Texture2D>("background");
-            ////for each scene
-
-            ////main menu scene
-            //start = Content.Load<Texture2D>("start");
-            //load = Content.Load<Texture2D>("load");
-            //sett = Content.Load<Texture2D>("settingsbut");
-            //exit = Content.Load<Texture2D>("exit");
-            ////main menu scene
-
-            ////exiting scene
-            //sure = Content.Load<Texture2D>("sure");
-            //yes = Content.Load<Texture2D>("yes");
-            //no = Content.Load<Texture2D>("no");
-            ////exiting scene
 
             ////settings scene
             //settingsicon = Content.Load<Texture2D>("settings");
