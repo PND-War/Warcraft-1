@@ -46,7 +46,7 @@ namespace Warcraft_1.Scenes
 
             click = Content.Load<SoundEffect>("button");
             soundInstance = click.CreateInstance();
-            soundInstance.Volume = 0.35f;
+            soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
         }
         public override Scenes Update(GameTime gameTime)
         {

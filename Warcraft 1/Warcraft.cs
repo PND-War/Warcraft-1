@@ -37,7 +37,6 @@ namespace Warcraft_1
             base.Initialize();
 
             GraphicAdjust();
-            SoundsAdjust();
         }
 
         private void GraphicAdjust()
@@ -47,7 +46,6 @@ namespace Warcraft_1
             _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
         }
-
         private void SoundsAdjust()
         {
             bgsong = Content.Load<Song>("backgroundmusic");
@@ -60,27 +58,7 @@ namespace Warcraft_1
 
         protected override void LoadContent()
         {
-
-            ////settings scene
-            //settingsicon = Content.Load<Texture2D>("settings");
-            //ok = Content.Load<Texture2D>("ok");
-            //back = Content.Load<Texture2D>("back");
-            //soundturn = Content.Load<Texture2D>("yesicon");
-            //musicturn = Content.Load<Texture2D>("yesicon");
-            ////settings scene
-
-            ////other
-            //click = Content.Load<SoundEffect>("button");
-            //soundInstance = click.CreateInstance();
-            //soundInstance.Volume = 0.35f;
-
-            //bgsong = Content.Load<Song>("backgroundmusic");
-
-            //MediaPlayer.IsRepeating = true;
-            //MediaPlayer.Volume = 0.05f;
-
-            //MediaPlayer.Play(bgsong);
-            ////other
+            SoundsAdjust();
         }
 
         protected override void Update(GameTime gameTime)

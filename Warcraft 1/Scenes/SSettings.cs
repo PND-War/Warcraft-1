@@ -10,6 +10,11 @@ using System.Text;
 
 namespace Warcraft_1.Scenes
 {
+    enum SettingStates
+    {
+        SFX,
+        SOUND
+    }
     enum TextureSSettings
     {
         backgr,
@@ -18,7 +23,9 @@ namespace Warcraft_1.Scenes
         ok,
         back,
         soundturn,
-        musicturn
+        musicturn,
+        noicon,
+        yesicon
     }
     class SSettings : AScene
     {
@@ -30,11 +37,17 @@ namespace Warcraft_1.Scenes
 
         public bool tapped = false;
 
+        Texture2D no;
+        Texture2D yes;
+
         public SoundEffect click;
         public SoundEffectInstance soundInstance;
 
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
+            no = Content.Load<Texture2D>("noicon");
+            yes = Content.Load<Texture2D>("yesicon");
+
             Texture2D cursor = Content.Load<Texture2D>("cursor");
             Texture2D background = Content.Load<Texture2D>("background");
 
@@ -42,14 +55,14 @@ namespace Warcraft_1.Scenes
             Texture2D ok = Content.Load<Texture2D>("ok");
             Texture2D back = Content.Load<Texture2D>("back");
 
-            Texture2D soundturn = Content.Load<Texture2D>("yesicon");
-            Texture2D musicturn = Content.Load<Texture2D>("yesicon");
+            Texture2D soundturn = Logic_Classes.Settings.MusicVol ? yes : no;
+            Texture2D musicturn = Logic_Classes.Settings.SFXVol ? yes : no;
 
             components.AddRange(new Texture2D[] { background, cursor, settingsicon, ok, back, soundturn, musicturn });
 
             click = Content.Load<SoundEffect>("button");
             soundInstance = click.CreateInstance();
-            soundInstance.Volume = 0.35f;
+            soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
         }
 
         public override Scenes Update(GameTime gameTime)
@@ -76,12 +89,13 @@ namespace Warcraft_1.Scenes
                     }
                     if (new Rectangle(new Point(1041, 502), new Point(components[(int)TextureSSettings.musicturn].Width, components[(int)TextureSSettings.musicturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                     {
-                        ChangeSett();
+                        ChangeSett(SettingStates.SOUND);
                     }
                     if (new Rectangle(new Point(1041, 530), new Point(components[(int)TextureSSettings.soundturn].Width, components[(int)TextureSSettings.soundturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                     {
-                        ChangeSett();
+                        ChangeSett(SettingStates.SFX);
                     }
+                    tapped = true;
                 }
                 else tapped = false;
             }
@@ -101,13 +115,18 @@ namespace Warcraft_1.Scenes
 
             if (new Rectangle(new Point(1041, 530), new Point(components[(int)TextureSSettings.soundturn].Width, components[(int)TextureSSettings.soundturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) soundswitcher = true;
             else soundswitcher = false;
-
         }
 
-        private void ChangeSett()
+        private void ChangeSett(SettingStates state)
         {
-            MediaPlayer.Volume = musicswitcher ? 0.05f : 0.0f;
-            soundInstance.Volume = soundswitcher ? 0.35f : 0.0f;
+            Logic_Classes.Settings.MusicVol = state == SettingStates.SOUND ? !Logic_Classes.Settings.MusicVol : Logic_Classes.Settings.MusicVol;
+            Logic_Classes.Settings.SFXVol = state == SettingStates.SFX ? !Logic_Classes.Settings.SFXVol : Logic_Classes.Settings.SFXVol;
+
+            components[(int)TextureSSettings.soundturn] = state == SettingStates.SOUND ? components[(int)TextureSSettings.soundturn] == yes ? no : yes : components[(int)TextureSSettings.soundturn];
+            components[(int)TextureSSettings.musicturn] = state == SettingStates.SFX ? components[(int)TextureSSettings.musicturn] == yes ? no : yes : components[(int)TextureSSettings.musicturn];
+
+            MediaPlayer.Volume = Logic_Classes.Settings.MusicVol ? 0.05f : 0.0f;
+            soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
         }
 
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
@@ -123,7 +142,6 @@ namespace Warcraft_1.Scenes
             _spriteBatch.Draw(components[(int)TextureSSettings.soundturn], new Vector2(1041, 502), null, Color.White, 0f, Vector2.Zero, musicswitcher ? 1.027f : 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSSettings.musicturn], new Vector2(1041, 530), null, Color.White, 0f, Vector2.Zero, soundswitcher ? 1.027f : 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSSettings.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
-
 
             _spriteBatch.End();
         }
