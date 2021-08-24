@@ -61,6 +61,7 @@ namespace Warcraft_1.Scenes
 
         private int CheckPress()
         {
+            
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 if (!tapped)
@@ -79,10 +80,10 @@ namespace Warcraft_1.Scenes
 
         private void CheckAim()
         {
-            if (new Rectangle(new Point(863, 520), new Point(components[1].Width, components[1].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) yesAimed = true;
+            if (new Rectangle(new Point(863, 520), new Point(components[(int)TextureSQuit.no].Width, components[(int)TextureSQuit.no].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) yesAimed = true;
             else yesAimed = false;
 
-            if (new Rectangle(new Point(962, 520), new Point(components[2].Width, components[2].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) noAimed = true;
+            if (new Rectangle(new Point(962, 520), new Point(components[(int)TextureSQuit.yes].Width, components[(int)TextureSQuit.yes].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) noAimed = true;
             else noAimed = false;
         }
 
@@ -93,9 +94,9 @@ namespace Warcraft_1.Scenes
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(components[(int)TextureSQuit.back], new Rectangle(0, 0, 1920, 1080), Color.White);
-            _spriteBatch.Draw(components[(int)TextureSQuit.sure], new Vector2(831, 392), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(components[(int)TextureSQuit.yes], new Vector2(831, 455), null, Color.White, 0f, Vector2.Zero, yesAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(components[(int)TextureSQuit.no], new Vector2(831, 518), null, Color.White, 0f, Vector2.Zero, noAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(components[(int)TextureSQuit.sure], new Vector2(831, 459), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(components[(int)TextureSQuit.yes], new Vector2(863, 520), null, Color.White, 0f, Vector2.Zero, yesAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(components[(int)TextureSQuit.no], new Vector2(962, 520), null, Color.White, 0f, Vector2.Zero, noAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSQuit.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
 
             _spriteBatch.End();

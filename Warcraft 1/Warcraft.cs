@@ -29,7 +29,7 @@ namespace Warcraft_1
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = false;
-            scene = new SMenu();
+            scene = new SQuit();
         }
         
         protected override void Initialize()
