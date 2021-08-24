@@ -21,18 +21,9 @@ namespace Warcraft_1
         public bool tapped = false;
         int currentState = 1;
 
-        //2
-        public Texture2D sure;
-        public Texture2D yes;
-        public Texture2D no;
-
-        public bool yesAimed = false;
-        public bool noAimed = false;
-
-        //3
-        
-
         AScene scene;
+
+
         public Warcraft()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -40,7 +31,6 @@ namespace Warcraft_1
             IsMouseVisible = false;
             scene = new SMenu();
         }
-
         
         protected override void Initialize()
         {
