@@ -65,16 +65,15 @@ namespace Warcraft_1.Scenes
             {
                 if (!tapped)
                 {
-                    if (new Rectangle(new Point(962, 520), new Point(components[(int)TextureSQuit.no].Width, components[(int)TextureSQuit.no].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
+                    if (new Rectangle(new Point(962, 520), new Point(components[(int)TextureSQuit.no].Width, components[(int)TextureSQuit.no].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    {
                         soundInstance.Play();
                         return (int)Scenes.mainmenu;
                     }
                     if (new Rectangle(new Point(863, 520), new Point(components[(int)TextureSQuit.yes].Width, components[(int)TextureSQuit.yes].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) { Environment.Exit(0); }
                 }
-                tapped = true;
+                else tapped = false;
             }
-            else tapped = false;
-
             return 0;
         }
 
