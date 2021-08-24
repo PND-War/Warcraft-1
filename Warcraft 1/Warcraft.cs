@@ -12,7 +12,6 @@ namespace Warcraft_1
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Logic_Classes.Settings settings;
 
         public SoundEffect click;
         public Song bgsong;

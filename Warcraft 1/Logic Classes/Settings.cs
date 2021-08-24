@@ -1,13 +1,8 @@
 ﻿namespace Warcraft_1.Logic_Classes
 {
-    public class Settings
+    public static class Settings
     {
-        public bool MusicVol { get; set; }
-        public bool SFXVol { get; set; }
-        Settings()
-        {
-            MusicVol = true;
-            SFXVol = true;
-        }
+        public static bool MusicVol { get; set; } = true;
+        public static bool SFXVol { get; set; } = true;
     }
 }
