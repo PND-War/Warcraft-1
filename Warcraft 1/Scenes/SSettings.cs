@@ -20,7 +20,7 @@ namespace Warcraft_1.Scenes
         soundturn,
         musicturn
     }
-    class Settings : AScene
+    class SSettings : AScene
     {
         public bool musicswitcher = false;
         public bool soundswitcher = false;
@@ -28,8 +28,9 @@ namespace Warcraft_1.Scenes
         public bool okAimed = false;
         public bool backAimed = false;
 
+        public bool tapped = false;
+
         public SoundEffect click;
-        public Song bgsong;
         public SoundEffectInstance soundInstance;
 
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
@@ -49,53 +50,62 @@ namespace Warcraft_1.Scenes
             click = Content.Load<SoundEffect>("button");
             soundInstance = click.CreateInstance();
             soundInstance.Volume = 0.35f;
-
-            bgsong = Content.Load<Song>("backgroundmusic");
-
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.05f;
-
-            MediaPlayer.Play(bgsong);
         }
 
-        public override void Update(GameTime gameTime)
+        public override Scenes Update(GameTime gameTime)
         {
-            CheckPress();
             CheckAim();
+            return CheckPress();
         }
 
-        private int CheckPress()
+        private Scenes CheckPress()
         {
-            if (new Rectangle(new Point(863, 581), new Point(components[(int)TextureSSettings.ok].Width, components[(int)TextureSSettings.ok].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-                soundInstance.Play();
-                return 1;
+                if (!tapped)
+                {
+                    if (new Rectangle(new Point(863, 581), new Point(components[(int)TextureSSettings.ok].Width, components[(int)TextureSSettings.ok].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    {
+                        soundInstance.Play();
+                        return Scenes.mainmenu;
+                    }
+                    if (new Rectangle(new Point(962, 581), new Point(components[(int)TextureSSettings.back].Width, components[(int)TextureSSettings.back].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    {
+                        soundInstance.Play();
+                        return Scenes.mainmenu;
+                    }
+                    if (new Rectangle(new Point(1041, 502), new Point(components[(int)TextureSSettings.musicturn].Width, components[(int)TextureSSettings.musicturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    {
+                        ChangeSett();
+                    }
+                    if (new Rectangle(new Point(1041, 530), new Point(components[(int)TextureSSettings.soundturn].Width, components[(int)TextureSSettings.soundturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    {
+                        ChangeSett();
+                    }
+                }
+                else tapped = false;
             }
-            if (new Rectangle(new Point(962, 581), new Point(components[(int)TextureSSettings.back].Width, components[(int)TextureSSettings.back].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-            {
-                soundInstance.Play();
-                return 1;
-            }
-            if (new Rectangle(new Point(1041, 502), new Point(components[(int)TextureSSettings.musicturn].Width, components[(int)TextureSSettings.musicturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-            {
-                ChangeSett();
-            }
-            if (new Rectangle(new Point(1041, 530), new Point(components[(int)TextureSSettings.soundturn].Width, components[(int)TextureSSettings.soundturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-            {
-                ChangeSett();
-            }
-            return 0;
+            return Scenes.nullscene;
+
         }
         private void CheckAim()
         {
+            if (new Rectangle(new Point(863, 581), new Point(components[(int)TextureSSettings.ok].Width, components[(int)TextureSSettings.ok].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) okAimed = true;
+            else okAimed = false;
+
+            if (new Rectangle(new Point(962, 581), new Point(components[(int)TextureSSettings.back].Width, components[(int)TextureSSettings.back].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) backAimed = true;
+            else backAimed = false;
+
+            if (new Rectangle(new Point(1041, 502), new Point(components[(int)TextureSSettings.musicturn].Width, components[(int)TextureSSettings.musicturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) musicswitcher = true;
+            else musicswitcher = false;
+
+            if (new Rectangle(new Point(1041, 530), new Point(components[(int)TextureSSettings.soundturn].Width, components[(int)TextureSSettings.soundturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) soundswitcher = true;
+            else soundswitcher = false;
 
         }
 
         private void ChangeSett()
         {
-            //musicswitcher = true ? Content.Load<Texture2D>("yesicon") : Content.Load<Texture2D>("noicon");
-            //soundswitcher = true ? Content.Load<Texture2D>("yesicon") : Content.Load<Texture2D>("noicon");
-
             MediaPlayer.Volume = musicswitcher ? 0.05f : 0.0f;
             soundInstance.Volume = soundswitcher ? 0.35f : 0.0f;
         }
@@ -105,7 +115,7 @@ namespace Warcraft_1.Scenes
             SpriteBatch _spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             _spriteBatch.Begin();
-            
+
             _spriteBatch.Draw(components[(int)TextureSSettings.backgr], new Rectangle(0, 0, 1920, 1080), Color.White);
             _spriteBatch.Draw(components[(int)TextureSSettings.setticon], new Vector2(831, 434), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSSettings.ok], new Vector2(863, 581), null, Color.White, 0f, Vector2.Zero, okAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);

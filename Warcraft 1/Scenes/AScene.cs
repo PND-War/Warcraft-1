@@ -7,6 +7,7 @@ namespace Warcraft_1.Scenes
 {
     enum Scenes
     {
+        nullscene,
         mainmenu,
         startgame,
         loadgame,
@@ -18,7 +19,7 @@ namespace Warcraft_1.Scenes
         protected SpriteBatch _spriteBatch;
         public List<Texture2D> components = new List<Texture2D>() { };
         public abstract void Load(GraphicsDeviceManager graphics, ContentManager Content);
-        public abstract void Update(GameTime gameTime);
+        public abstract Scenes Update(GameTime gameTime);
         public abstract void Draw(GraphicsDeviceManager graphics, GameTime gameTime);
     }
 }

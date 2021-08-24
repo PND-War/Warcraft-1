@@ -23,7 +23,6 @@ namespace Warcraft_1.Scenes
         public bool tapped = false;
 
         public SoundEffect click;
-        public Song bgsong;
         public SoundEffectInstance soundInstance;
 
         public bool startAimed = false;
@@ -48,21 +47,14 @@ namespace Warcraft_1.Scenes
             click = Content.Load<SoundEffect>("button");
             soundInstance = click.CreateInstance();
             soundInstance.Volume = 0.35f;
-
-            bgsong = Content.Load<Song>("backgroundmusic");
-
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.05f;
-
-            MediaPlayer.Play(bgsong);
         }
-        public override void Update(GameTime gameTime)
+        public override Scenes Update(GameTime gameTime)
         {
-            CheckPress();
             CheckAim();
+            return CheckPress();
         }
 
-        private int CheckPress()
+        private Scenes CheckPress()
         {
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
@@ -70,25 +62,25 @@ namespace Warcraft_1.Scenes
                 {
                     if (new Rectangle(831, 392, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
                         soundInstance.Play();
-                        return (int)Scenes.startgame;       //currentState
+                        return Scenes.startgame;       //currentState
                     }
                     if (new Rectangle(831, 455, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
                         soundInstance.Play();
-                        return (int)Scenes.loadgame;
+                        return Scenes.loadgame;
                     }
                     if (new Rectangle(831, 518, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
                         soundInstance.Play();
-                        return (int)Scenes.settings;
+                        return Scenes.settings;
                     }
                     if (new Rectangle(831, 626, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
                         soundInstance.Play();
-                        return (int)Scenes.quitwindow;
+                        return Scenes.quitwindow;
                     }
                 }
                 tapped = true;
             } else tapped = false;
 
-            return 0;
+            return Scenes.nullscene;
         }
         private void CheckAim()
         {

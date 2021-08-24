@@ -12,16 +12,16 @@ namespace Warcraft_1
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Settings settings;
+        Logic_Classes.Settings settings;
 
         public SoundEffect click;
         public Song bgsong;
         public SoundEffectInstance soundInstance;
 
         public bool tapped = false;
-        int currentState = 1;
 
         AScene scene;
+        Scenes.Scenes currentState = Scenes.Scenes.mainmenu;
 
 
         public Warcraft()
@@ -29,20 +29,34 @@ namespace Warcraft_1
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = false;
-            scene = new SQuit();
+            scene = new SMenu();
         }
-        
+
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-           
             scene.Load(_graphics, Content);
             base.Initialize();
 
+            GraphicAdjust();
+            SoundsAdjust();
+        }
+
+        private void GraphicAdjust()
+        {
             _graphics.PreferredBackBufferWidth = _graphics.GraphicsDevice.DisplayMode.Width;
             _graphics.PreferredBackBufferHeight = _graphics.GraphicsDevice.DisplayMode.Height;
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
+        }
+
+        private void SoundsAdjust()
+        {
+            bgsong = Content.Load<Song>("backgroundmusic");
+
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.05f;
+
+            MediaPlayer.Play(bgsong);
         }
 
         protected override void LoadContent()
@@ -76,8 +90,27 @@ namespace Warcraft_1
                 Exit();
 
             // TODO: Add your update logic here
+            Scenes.Scenes outgoingScene = scene.Update(gameTime);
 
-            scene.Update(gameTime);
+            if (outgoingScene != Scenes.Scenes.nullscene && outgoingScene != currentState)
+            {
+                currentState = outgoingScene;
+                switch (outgoingScene)
+                {
+                    case Scenes.Scenes.mainmenu:
+                        scene = new SMenu();
+                        Mouse.SetPosition(960, 586);
+                        break;
+                    case Scenes.Scenes.settings:
+                        scene = new SSettings();
+                        break;
+                    case Scenes.Scenes.quitwindow:
+                        scene = new SQuit();
+                        break;
+                }
+                scene.Load(_graphics, Content);
+            }
+
 
             base.Update(gameTime);
         }

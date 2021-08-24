@@ -23,7 +23,6 @@ namespace Warcraft_1.Scenes
         public bool tapped = false;
 
         public SoundEffect click;
-        public Song bgsong;
         public SoundEffectInstance soundInstance;
 
         public bool yesAimed = false;
@@ -45,23 +44,16 @@ namespace Warcraft_1.Scenes
             click = Content.Load<SoundEffect>("button");
             soundInstance = click.CreateInstance();
             soundInstance.Volume = 0.35f;
-
-            bgsong = Content.Load<Song>("backgroundmusic");
-
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.05f;
-
-            MediaPlayer.Play(bgsong);
         }
-        public override void Update(GameTime gameTime)
+        public override Scenes Update(GameTime gameTime)
         {
-            CheckPress();
             CheckAim();
+
+            return CheckPress();
         }
 
-        private int CheckPress()
+        private Scenes CheckPress()
         {
-            
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 if (!tapped)
@@ -69,13 +61,13 @@ namespace Warcraft_1.Scenes
                     if (new Rectangle(new Point(962, 520), new Point(components[(int)TextureSQuit.no].Width, components[(int)TextureSQuit.no].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                     {
                         soundInstance.Play();
-                        return (int)Scenes.mainmenu;
+                        return Scenes.mainmenu;
                     }
                     if (new Rectangle(new Point(863, 520), new Point(components[(int)TextureSQuit.yes].Width, components[(int)TextureSQuit.yes].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) { Environment.Exit(0); }
                 }
                 else tapped = false;
             }
-            return 0;
+            return Scenes.nullscene;
         }
 
         private void CheckAim()

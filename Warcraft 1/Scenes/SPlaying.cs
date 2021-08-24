@@ -14,9 +14,9 @@ namespace Warcraft_1.Scenes
         {
            
         }
-        public override void Update(GameTime gameTime)
+        public override Scenes Update(GameTime gameTime)
         {
-
+            return Scenes.nullscene;
         }
 
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime) { }
