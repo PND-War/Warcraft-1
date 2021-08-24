@@ -4,9 +4,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Warcraft_1.Scenes
 {
@@ -35,7 +32,6 @@ namespace Warcraft_1.Scenes
         public bool okAimed = false;
         public bool backAimed = false;
 
-        public bool tapped = false;
 
         Texture2D no;
         Texture2D yes;
@@ -73,10 +69,8 @@ namespace Warcraft_1.Scenes
 
         private Scenes CheckPress()
         {
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
             {
-                if (!tapped)
-                {
                     if (new Rectangle(new Point(863, 581), new Point(components[(int)TextureSSettings.ok].Width, components[(int)TextureSSettings.ok].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                     {
                         soundInstance.Play();
@@ -95,9 +89,6 @@ namespace Warcraft_1.Scenes
                     {
                         ChangeSett(SettingStates.SFX);
                     }
-                    tapped = true;
-                }
-                else tapped = false;
             }
             return Scenes.nullscene;
 

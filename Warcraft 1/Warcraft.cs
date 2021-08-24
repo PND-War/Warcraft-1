@@ -5,13 +5,15 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 
 using Warcraft_1.Scenes;
+using System;
+using System.Threading;
 
 namespace Warcraft_1
 {
     public class Warcraft : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        //private SpriteBatch _spriteBatch;
 
         public SoundEffect click;
         public Song bgsong;
@@ -29,6 +31,7 @@ namespace Warcraft_1
             Content.RootDirectory = "Content";
             IsMouseVisible = false;
             scene = new SMenu();
+            Logic_Classes.MouseInterpretator.Start();
         }
 
         protected override void Initialize()
@@ -76,7 +79,6 @@ namespace Warcraft_1
                 {
                     case Scenes.Scenes.mainmenu:
                         scene = new SMenu();
-                        Mouse.SetPosition(960, 586);
                         break;
                     case Scenes.Scenes.settings:
                         scene = new SSettings();
@@ -85,9 +87,10 @@ namespace Warcraft_1
                         scene = new SQuit();
                         break;
                 }
+                Thread.Sleep(40);
                 scene.Load(_graphics, Content);
+            GC.Collect();
             }
-
 
             base.Update(gameTime);
         }
