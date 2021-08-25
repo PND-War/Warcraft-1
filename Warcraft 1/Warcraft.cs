@@ -24,12 +24,12 @@ namespace Warcraft_1
         AScene scene;
         Scenes.Scenes currentState = Scenes.Scenes.mainmenu;
 
-
         public Warcraft()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = false;
+            SoundsAdjust();
             scene = new SMenu();
             Logic_Classes.MouseInterpretator.Start();
         }
@@ -38,6 +38,7 @@ namespace Warcraft_1
         {
             scene.Load(_graphics, Content);
             base.Initialize();
+
 
             GraphicAdjust();
         }
@@ -51,17 +52,18 @@ namespace Warcraft_1
         }
         private void SoundsAdjust()
         {
+            Logic_Classes.Configuration.SettingsAdjust();
             bgsong = Content.Load<Song>("backgroundmusic");
 
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.05f;
+            MediaPlayer.Volume = Logic_Classes.Settings.MusicVol ? 0.05f : 0.0f;
 
             MediaPlayer.Play(bgsong);
         }
 
         protected override void LoadContent()
         {
-            SoundsAdjust();
+           
         }
 
         protected override void Update(GameTime gameTime)
@@ -89,7 +91,7 @@ namespace Warcraft_1
                 }
                 Thread.Sleep(40);
                 scene.Load(_graphics, Content);
-            GC.Collect();
+                GC.Collect();
             }
 
             base.Update(gameTime);

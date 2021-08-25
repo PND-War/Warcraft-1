@@ -122,6 +122,8 @@ namespace Warcraft_1.Scenes
 
             MediaPlayer.Volume = Logic_Classes.Settings.MusicVol ? 0.05f : 0.0f;
             soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+
+            Logic_Classes.Configuration.JsonDataSetter();
         }
 
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
