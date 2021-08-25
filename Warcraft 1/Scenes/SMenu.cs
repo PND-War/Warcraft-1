@@ -29,7 +29,7 @@ namespace Warcraft_1.Scenes
 
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
-            _spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+            click = Content.Load<SoundEffect>("button");
 
             Texture2D cursor = Content.Load<Texture2D>("cursor");
             Texture2D background = Content.Load<Texture2D>("background");
@@ -40,11 +40,15 @@ namespace Warcraft_1.Scenes
             Texture2D exit = Content.Load<Texture2D>("exit");
 
             components.AddRange(new Texture2D[] { background, cursor, start, load, sett, exit });
+            SoundAdjust();
+        }
 
-            click = Content.Load<SoundEffect>("button");
+        private void SoundAdjust()
+        {
             soundInstance = click.CreateInstance();
             soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
         }
+
         public override Scenes Update(GameTime gameTime)
         {
             CheckAim();
@@ -59,7 +63,7 @@ namespace Warcraft_1.Scenes
                 {
                     if (new Rectangle(831, 392, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
                         soundInstance.Play();
-                        return Scenes.startgame;       //currentState
+                        return Scenes.startgame;
                     }
                     if (new Rectangle(831, 455, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
                         soundInstance.Play();

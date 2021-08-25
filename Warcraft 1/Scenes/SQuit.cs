@@ -27,7 +27,7 @@ namespace Warcraft_1.Scenes
 
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
-            _spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+            click = Content.Load<SoundEffect>("button");
 
             Texture2D cursor = Content.Load<Texture2D>("cursor");
             Texture2D background = Content.Load<Texture2D>("background");
@@ -37,8 +37,11 @@ namespace Warcraft_1.Scenes
             Texture2D no = Content.Load<Texture2D>("no");
 
             components.AddRange(new Texture2D[] { background, cursor, sure, yes, no });
+            SoundAdjust();
+        }
 
-            click = Content.Load<SoundEffect>("button");
+        private void SoundAdjust()
+        {
             soundInstance = click.CreateInstance();
             soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
         }

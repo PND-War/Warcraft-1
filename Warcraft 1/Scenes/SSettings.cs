@@ -41,6 +41,8 @@ namespace Warcraft_1.Scenes
 
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
+            click = Content.Load<SoundEffect>("button");
+         
             no = Content.Load<Texture2D>("noicon");
             yes = Content.Load<Texture2D>("yesicon");
 
@@ -55,8 +57,10 @@ namespace Warcraft_1.Scenes
             Texture2D musicturn = Logic_Classes.Settings.SFXVol ? yes : no;
 
             components.AddRange(new Texture2D[] { background, cursor, settingsicon, ok, back, soundturn, musicturn });
-
-            click = Content.Load<SoundEffect>("button");
+            SoundAdjust();
+        }
+        private void SoundAdjust()
+        {
             soundInstance = click.CreateInstance();
             soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
         }
