@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Warcraft_1.Logic_Classes
 {
@@ -10,16 +8,20 @@ namespace Warcraft_1.Logic_Classes
     {
         public static void SettingsAdjust()
         {
-            dynamic Config = JsonConvert.DeserializeObject(File.ReadAllText("settings.json"));
+            if (File.Exists("settings.json"))
+            {
+                dynamic Config = JsonConvert.DeserializeObject(File.ReadAllText("settings.json"));
 
-            string musicx = $"{Config["music"]}";
-            Settings.MusicVol = Convert.ToBoolean(musicx);
+                string musicx = $"{Config["music"]}";
+                Settings.MusicVol = Convert.ToBoolean(musicx);
 
-            string soundsx = $"{Config["sound"]}";
-            Settings.SFXVol = Convert.ToBoolean(soundsx);
+                string soundsx = $"{Config["sound"]}";
+                Settings.SFXVol = Convert.ToBoolean(soundsx);
+            }
+            else SettingsUpdate();
         }
 
-        public static void JsonDataSetter()
+        public static void SettingsUpdate()
         {
             string outputConfig = "{\"music\":" + Settings.MusicVol.ToString().ToLower() + ",\"sound\": " + Settings.SFXVol.ToString().ToLower() + "}";
             File.WriteAllText("settings.json", outputConfig);
