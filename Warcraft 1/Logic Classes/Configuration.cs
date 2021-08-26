@@ -8,7 +8,7 @@ namespace Warcraft_1.Logic_Classes
     {
         public static void SettingsAdjust()
         {
-            if(File.Exists("settings.json"))
+            if (File.Exists("settings.json"))
             {
                 dynamic Config = JsonConvert.DeserializeObject(File.ReadAllText("settings.json"));
 
@@ -18,7 +18,7 @@ namespace Warcraft_1.Logic_Classes
                 string soundsx = $"{Config["sound"]}";
                 Settings.SFXVol = Convert.ToBoolean(soundsx);
             }
-           
+            else JsonDataSetter();
         }
 
         public static void JsonDataSetter()
