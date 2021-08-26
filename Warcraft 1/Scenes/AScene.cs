@@ -21,7 +21,6 @@ namespace Warcraft_1.Scenes
         protected SoundEffect click;
         protected SoundEffectInstance soundInstance;
 
-        protected SpriteBatch _spriteBatch;
         public List<Texture2D> components = new List<Texture2D>() { };
         public abstract void Load(GraphicsDeviceManager graphics, ContentManager Content);
         public abstract Scenes Update(GameTime gameTime);

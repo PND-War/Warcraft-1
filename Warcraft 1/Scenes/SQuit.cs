@@ -43,7 +43,6 @@ namespace Warcraft_1.Scenes
         public override Scenes Update(GameTime gameTime)
         {
             CheckAim();
-
             return CheckPress();
         }
 
