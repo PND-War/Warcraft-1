@@ -18,10 +18,10 @@ namespace Warcraft_1.Logic_Classes
                 string soundsx = $"{Config["sound"]}";
                 Settings.SFXVol = Convert.ToBoolean(soundsx);
             }
-            else JsonDataSetter();
+            else SettingsUpdate();
         }
 
-        public static void JsonDataSetter()
+        public static void SettingsUpdate()
         {
             string outputConfig = "{\"music\":" + Settings.MusicVol.ToString().ToLower() + ",\"sound\": " + Settings.SFXVol.ToString().ToLower() + "}";
             File.WriteAllText("settings.json", outputConfig);

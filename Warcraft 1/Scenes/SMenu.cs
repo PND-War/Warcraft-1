@@ -17,11 +17,6 @@ namespace Warcraft_1.Scenes
 
     class SMenu : AScene
     {
-        public bool tapped = false;
-
-        public SoundEffect click;
-        public SoundEffectInstance soundInstance;
-
         public bool startAimed = false;
         public bool loadAimed = false;
         public bool settingsAimed = false;
@@ -59,27 +54,27 @@ namespace Warcraft_1.Scenes
         {
             if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
             {
-                if (!tapped)
+                if (new Rectangle(831, 392, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
-                    if (new Rectangle(831, 392, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
-                        soundInstance.Play();
-                        return Scenes.startgame;
-                    }
-                    if (new Rectangle(831, 455, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
-                        soundInstance.Play();
-                        return Scenes.loadgame;
-                    }
-                    if (new Rectangle(831, 518, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
-                        soundInstance.Play();
-                        return Scenes.settings;
-                    }
-                    if (new Rectangle(831, 626, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y)) {
-                        soundInstance.Play();
-                        return Scenes.quitwindow;
-                    }
+                    soundInstance.Play();
+                    return Scenes.startgame;
                 }
-                tapped = true;
-            } else tapped = false;
+                if (new Rectangle(831, 455, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    soundInstance.Play();
+                    return Scenes.loadgame;
+                }
+                if (new Rectangle(831, 518, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    soundInstance.Play();
+                    return Scenes.settings;
+                }
+                if (new Rectangle(831, 626, 261, 64).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    soundInstance.Play();
+                    return Scenes.quitwindow;
+                }
+            }
 
             return Scenes.nullscene;
         }

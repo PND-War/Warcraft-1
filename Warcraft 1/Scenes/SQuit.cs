@@ -17,11 +17,6 @@ namespace Warcraft_1.Scenes
     }
     class SQuit : AScene
     {
-        public bool tapped = false;
-
-        public SoundEffect click;
-        public SoundEffectInstance soundInstance;
-
         public bool yesAimed = false;
         public bool noAimed = false;
 
@@ -56,16 +51,12 @@ namespace Warcraft_1.Scenes
         {
             if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
             {
-                if (!tapped)
+                if (new Rectangle(new Point(962, 520), new Point(components[(int)TextureSQuit.no].Width, components[(int)TextureSQuit.no].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
-                    if (new Rectangle(new Point(962, 520), new Point(components[(int)TextureSQuit.no].Width, components[(int)TextureSQuit.no].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-                    {
-                        soundInstance.Play();
-                        return Scenes.mainmenu;
-                    }
-                    if (new Rectangle(new Point(863, 520), new Point(components[(int)TextureSQuit.yes].Width, components[(int)TextureSQuit.yes].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) { Environment.Exit(0); }
+                    soundInstance.Play();
+                    return Scenes.mainmenu;
                 }
-                else tapped = false;
+                if (new Rectangle(new Point(863, 520), new Point(components[(int)TextureSQuit.yes].Width, components[(int)TextureSQuit.yes].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y)) { Environment.Exit(0); }
             }
             return Scenes.nullscene;
         }
