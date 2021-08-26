@@ -12,7 +12,7 @@ namespace Warcraft_1.Scenes
 
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
-           
+
         }
         public override Scenes Update(GameTime gameTime)
         {

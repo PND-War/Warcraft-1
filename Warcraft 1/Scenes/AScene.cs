@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Warcraft_1.Scenes
 {
@@ -14,9 +15,12 @@ namespace Warcraft_1.Scenes
         settings,
         quitwindow
     }
+
     abstract class AScene
     {
-        protected SpriteBatch _spriteBatch;
+        protected SoundEffect click;
+        protected SoundEffectInstance soundInstance;
+
         public List<Texture2D> components = new List<Texture2D>() { };
         public abstract void Load(GraphicsDeviceManager graphics, ContentManager Content);
         public abstract Scenes Update(GameTime gameTime);

@@ -32,17 +32,13 @@ namespace Warcraft_1.Scenes
         public bool okAimed = false;
         public bool backAimed = false;
 
-
         Texture2D no;
         Texture2D yes;
-
-        public SoundEffect click;
-        public SoundEffectInstance soundInstance;
 
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
             click = Content.Load<SoundEffect>("button");
-         
+
             no = Content.Load<Texture2D>("noicon");
             yes = Content.Load<Texture2D>("yesicon");
 
@@ -75,24 +71,24 @@ namespace Warcraft_1.Scenes
         {
             if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
             {
-                    if (new Rectangle(new Point(863, 581), new Point(components[(int)TextureSSettings.ok].Width, components[(int)TextureSSettings.ok].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-                    {
-                        soundInstance.Play();
-                        return Scenes.mainmenu;
-                    }
-                    if (new Rectangle(new Point(962, 581), new Point(components[(int)TextureSSettings.back].Width, components[(int)TextureSSettings.back].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-                    {
-                        soundInstance.Play();
-                        return Scenes.mainmenu;
-                    }
-                    if (new Rectangle(new Point(1041, 502), new Point(components[(int)TextureSSettings.musicturn].Width, components[(int)TextureSSettings.musicturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-                    {
-                        ChangeSett(SettingStates.SOUND);
-                    }
-                    if (new Rectangle(new Point(1041, 530), new Point(components[(int)TextureSSettings.soundturn].Width, components[(int)TextureSSettings.soundturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-                    {
-                        ChangeSett(SettingStates.SFX);
-                    }
+                if (new Rectangle(new Point(863, 581), new Point(components[(int)TextureSSettings.ok].Width, components[(int)TextureSSettings.ok].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    soundInstance.Play();
+                    return Scenes.mainmenu;
+                }
+                if (new Rectangle(new Point(962, 581), new Point(components[(int)TextureSSettings.back].Width, components[(int)TextureSSettings.back].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    soundInstance.Play();
+                    return Scenes.mainmenu;
+                }
+                if (new Rectangle(new Point(1041, 502), new Point(components[(int)TextureSSettings.musicturn].Width, components[(int)TextureSSettings.musicturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    ChangeSett(SettingStates.SOUND);
+                }
+                if (new Rectangle(new Point(1041, 530), new Point(components[(int)TextureSSettings.soundturn].Width, components[(int)TextureSSettings.soundturn].Height)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    ChangeSett(SettingStates.SFX);
+                }
             }
             return Scenes.nullscene;
 
@@ -123,7 +119,7 @@ namespace Warcraft_1.Scenes
             MediaPlayer.Volume = Logic_Classes.Settings.MusicVol ? 0.05f : 0.0f;
             soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
 
-            Logic_Classes.Configuration.JsonDataSetter();
+            Logic_Classes.Configuration.SettingsUpdate();
         }
 
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
