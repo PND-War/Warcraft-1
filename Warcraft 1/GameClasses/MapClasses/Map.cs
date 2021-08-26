@@ -6,5 +6,6 @@ namespace Warcraft_1.GameClasses
 {
     class Map
     {
+
     }
 }
