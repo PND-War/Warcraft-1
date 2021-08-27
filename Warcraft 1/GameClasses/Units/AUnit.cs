@@ -132,5 +132,10 @@ namespace Warcraft_1.Units
             if (this.position.Y < this.positionToMove.Y) this.position.Y += speed;
             else this.position.Y -= speed;
         }
+
+        public Race GetRace()
+        {
+            return this.race;
+        }
     }
 }
