@@ -13,7 +13,7 @@ namespace Warcraft_1.GameClasses
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    map[i, j] = new Field(TypeOfTerrain.Earth, true);
+                    map[i, j] = new Field();
                 }
             }
         }
