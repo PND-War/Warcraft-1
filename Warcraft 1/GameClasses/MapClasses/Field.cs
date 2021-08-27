@@ -34,11 +34,15 @@ namespace Warcraft_1.GameClasses
                     returnableColor = Color.Green;
                     break;
             }
-            if (unit != null && CheckFriendly(unit))
+            if (unit != null)
             {
-                returnableColor = Color.LightGreen;
+                returnableColor = GetUnitColor(unit);
             }
             return returnableColor;
+        }
+        private Color GetUnitColor(Units.AUnit unit)
+        {
+            return CheckFriendly(unit) ? Color.LightGreen : Color.OrangeRed;
         }
         private bool CheckFriendly(Units.AUnit unit)
         {
