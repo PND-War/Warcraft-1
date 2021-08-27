@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,22 +18,13 @@ namespace Warcraft_1.GameClasses
     class Field
     {
         bool cheked;
+        public Texture2D fieldTexture;
         TypeOfTerrain terrain;
         Units.AUnit unit;
         public Field()
         {
             cheked = false;
             terrain = TypeOfTerrain.Earth;
-        }
-        public Field(TypeOfTerrain type)
-        {
-            cheked = false;
-            terrain = type;
-        }
-        public Field(TypeOfTerrain type, bool check)
-        {
-            cheked = check;
-            terrain = type;
         }
         public bool CheckTerrain()
         {
@@ -78,7 +70,7 @@ namespace Warcraft_1.GameClasses
         public bool PlaceAUnit(Units.AUnit unitG)
         {
             bool res = false;
-            if (unit == null)
+            if (unit == null && (terrain==TypeOfTerrain.Earth || terrain==TypeOfTerrain.Road || terrain==TypeOfTerrain.Bridge))
             {
                 unit = unitG;
                 res = true;
