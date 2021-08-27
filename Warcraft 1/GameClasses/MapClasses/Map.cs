@@ -6,6 +6,7 @@ namespace Warcraft_1.GameClasses
 {
     class Map
     {
-        List<List<Field>> map;  
+        Field[,] map = new Field[400,400];  
+
     }
 }

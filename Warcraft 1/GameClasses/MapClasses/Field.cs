@@ -15,8 +15,19 @@ namespace Warcraft_1.GameClasses
     }
     class Field
     {
+        bool cheked = false;
         TypeOfTerrain terrain;
         Units.AUnit unit;
+        public bool CheckTerrain()
+        {
+            bool res = false;
+            if(!cheked)
+            {
+                cheked = true;
+                res = true;
+            }
+            return res;
+        }
         public Color GetFieldColor()
         {
             Color returnableColor = new Color();
@@ -42,6 +53,10 @@ namespace Warcraft_1.GameClasses
             {
                 returnableColor = GetUnitColor(unit);
             }
+            if (!cheked)
+            {
+                returnableColor = Color.Black;
+            }
             return returnableColor;
         }
         public bool PlaceAUnit(Units.AUnit unitG)
@@ -54,7 +69,7 @@ namespace Warcraft_1.GameClasses
             }
             return res;
         }
-        public bool ClearPlace()
+        public bool ClearUnitPlace()
         {
             bool res = false;
             if (unit != null)
