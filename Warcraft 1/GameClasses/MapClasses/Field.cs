@@ -11,13 +11,29 @@ namespace Warcraft_1.GameClasses
         Wather,
         Road,
         Tree,
-        Mine
+        Mine,
+        Bridge
     }
     class Field
     {
-        bool cheked = false;
+        bool cheked;
         TypeOfTerrain terrain;
         Units.AUnit unit;
+        public Field()
+        {
+            cheked = false;
+            terrain = TypeOfTerrain.Earth;
+        }
+        public Field(TypeOfTerrain type)
+        {
+            cheked = false;
+            terrain = type;
+        }
+        public Field(TypeOfTerrain type, bool check)
+        {
+            cheked = check;
+            terrain = type;
+        }
         public bool CheckTerrain()
         {
             bool res = false;
@@ -34,7 +50,7 @@ namespace Warcraft_1.GameClasses
             switch (terrain)
             {
                 case TypeOfTerrain.Earth:
-                    returnableColor = Color.DarkGreen;
+                    returnableColor = Color.ForestGreen;
                     break;
                 case TypeOfTerrain.Wather:
                     returnableColor = Color.LightBlue;
@@ -81,7 +97,7 @@ namespace Warcraft_1.GameClasses
         }
         private Color GetUnitColor(Units.AUnit unitG)
         {
-            return CheckFriendly(unitG) ? Color.LightGreen : Color.OrangeRed;
+            return CheckFriendly(unitG) ? Color.GreenYellow : Color.OrangeRed;
         }
         private bool CheckFriendly(Units.AUnit unitG)
         {
