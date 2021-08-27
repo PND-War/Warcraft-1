@@ -6,6 +6,6 @@ namespace Warcraft_1.GameClasses
 {
     class Map
     {
-
+        List<List<Field>> map;  
     }
 }
