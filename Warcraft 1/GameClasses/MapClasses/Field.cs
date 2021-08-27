@@ -18,13 +18,19 @@ namespace Warcraft_1.GameClasses
     class Field
     {
         bool cheked;
-        public Texture2D fieldTexture;
+        public Texture2D fieldTexture { get; private set; }
         TypeOfTerrain terrain;
         Units.AUnit unit;
         public Field()
         {
             cheked = false;
             terrain = TypeOfTerrain.Earth;
+        }
+        public Field(Texture2D texture)
+        {
+            cheked = false;
+            terrain = TypeOfTerrain.Earth;
+            fieldTexture = texture;
         }
         public bool CheckTerrain()
         {
