@@ -10,7 +10,8 @@ namespace Warcraft_1.GameClasses
         Earth,
         Wather,
         Road,
-        Tree
+        Tree,
+        Mine
     }
     class Field
     {
@@ -33,6 +34,9 @@ namespace Warcraft_1.GameClasses
                 case TypeOfTerrain.Tree:
                     returnableColor = Color.Green;
                     break;
+                case TypeOfTerrain.Mine:
+                    returnableColor = Color.Yellow;
+                    break;
             }
             if (unit != null)
             {
@@ -40,14 +44,35 @@ namespace Warcraft_1.GameClasses
             }
             return returnableColor;
         }
-        private Color GetUnitColor(Units.AUnit unit)
+        public bool PlaceAUnit(Units.AUnit unitG)
         {
-            return CheckFriendly(unit) ? Color.LightGreen : Color.OrangeRed;
+            bool res = false;
+            if (unit == null)
+            {
+                unit = unitG;
+                res = true;
+            }
+            return res;
         }
-        private bool CheckFriendly(Units.AUnit unit)
+        public bool ClearPlace()
         {
-            if (unit.GetRace() == Units.Race.HUMAN) return true;
+            bool res = false;
+            if (unit != null)
+            {
+                unit = null;
+                res = true;
+            }
+            return res;
+        }
+        private Color GetUnitColor(Units.AUnit unitG)
+        {
+            return CheckFriendly(unitG) ? Color.LightGreen : Color.OrangeRed;
+        }
+        private bool CheckFriendly(Units.AUnit unitG)
+        {
+            if (unitG.GetRace() == Units.Race.HUMAN) return true;
             return false;
         }
+       
     }
 }
