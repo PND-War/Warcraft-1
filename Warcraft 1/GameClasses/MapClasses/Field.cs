@@ -19,8 +19,9 @@ namespace Warcraft_1.GameClasses
     {
         public TypeOfTerrain terrain { get; set; }
         public bool cheked { get; set; } = true;
-        public Texture2D fieldTexture { get;  set; }
-        public Units.AUnit unit { get;  set; }
+        public Texture2D fieldTexture { get; set; }
+        public Units.AUnit unit { get; set; }
+        public int SpriteId { get; set; }
         //public Field()
         //{
         //    cheked = false;
@@ -35,7 +36,7 @@ namespace Warcraft_1.GameClasses
         public bool CheckTerrain()
         {
             bool res = false;
-            if(!cheked)
+            if (!cheked)
             {
                 cheked = true;
                 res = true;
@@ -78,7 +79,7 @@ namespace Warcraft_1.GameClasses
             switch (terrain)
             {
                 case TypeOfTerrain.Earth:
-                   return new Rectangle(396, 99, 32, 32);
+                    return new Rectangle(396, 99, 32, 32);
                 case TypeOfTerrain.Water:
                     return new Rectangle(264, 66, 32, 32);
                 case TypeOfTerrain.Road:
@@ -92,11 +93,11 @@ namespace Warcraft_1.GameClasses
             }
             return new Rectangle(264, 66, 32, 32);
         }
-        
+
         public bool PlaceAUnit(Units.AUnit unitG)
         {
             bool res = false;
-            if (unit == null && (terrain==TypeOfTerrain.Earth || terrain==TypeOfTerrain.Road || terrain==TypeOfTerrain.Bridge))
+            if (unit == null && (terrain == TypeOfTerrain.Earth || terrain == TypeOfTerrain.Road || terrain == TypeOfTerrain.Bridge))
             {
                 unit = unitG;
                 res = true;
@@ -122,6 +123,6 @@ namespace Warcraft_1.GameClasses
             if (unitG.GetRace() == Units.Race.HUMAN) return true;
             return false;
         }
-       
+
     }
 }
