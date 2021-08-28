@@ -11,6 +11,7 @@ namespace Warcraft_1.Scenes
     {
         back,
         cur,
+        black,
         sure,
         yes,
         no
@@ -20,18 +21,21 @@ namespace Warcraft_1.Scenes
         public bool yesAimed = false;
         public bool noAimed = false;
 
+        float currentOpacity = 0.0f;
+
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
             click = Content.Load<SoundEffect>("button");
 
             Texture2D cursor = Content.Load<Texture2D>("cursor");
             Texture2D background = Content.Load<Texture2D>("background");
+            Texture2D blackout = Content.Load<Texture2D>("Textures/Images/blackout");
 
             Texture2D sure = Content.Load<Texture2D>("sure");
             Texture2D yes = Content.Load<Texture2D>("yes");
             Texture2D no = Content.Load<Texture2D>("no");
 
-            components.AddRange(new Texture2D[] { background, cursor, sure, yes, no });
+            components.AddRange(new Texture2D[] { background, cursor, blackout, sure, yes, no });
             SoundAdjust();
         }
 
@@ -76,12 +80,19 @@ namespace Warcraft_1.Scenes
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(components[(int)TextureSQuit.back], new Rectangle(0, 0, 1920, 1080), Color.White);
+            _spriteBatch.Draw(components[(int)TextureSQuit.black], new Rectangle(0, 0, 1920, 1080), Color.White * SmoothTransparent());
             _spriteBatch.Draw(components[(int)TextureSQuit.sure], new Vector2(831, 459), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSQuit.yes], new Vector2(863, 520), null, Color.White, 0f, Vector2.Zero, yesAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSQuit.no], new Vector2(962, 520), null, Color.White, 0f, Vector2.Zero, noAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSQuit.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
 
             _spriteBatch.End();
+        }
+
+        private float SmoothTransparent()
+        {
+            if (currentOpacity < 0.80f) currentOpacity += 0.02f;
+            return currentOpacity;
         }
     }
 }

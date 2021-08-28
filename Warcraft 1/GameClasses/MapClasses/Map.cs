@@ -40,8 +40,6 @@ namespace Warcraft_1.GameClasses
             
         }
         
-
-
         public void DrawMini(SpriteBatch spriteBatch, Texture2D pixel)
         {
             for (int i = 0; i < 100; i++)
