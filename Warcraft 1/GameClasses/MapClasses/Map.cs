@@ -29,9 +29,9 @@ namespace Warcraft_1.GameClasses
             }
         }
 
-        public void Read()
+        public void Read(string path)
         {
-            map = JsonConvert.DeserializeObject<Field[,]>(File.ReadAllText("map.wc"));
+            map = JsonConvert.DeserializeObject<Field[,]>(File.ReadAllText(path));
         }
         public void Save(string path)
         {

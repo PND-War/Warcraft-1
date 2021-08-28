@@ -9,7 +9,7 @@ namespace Warcraft_1.Scenes
 {
     class SPlaying : AScene
     {
-        Map map = new Map();
+        public Map map { get; private set; } = new Map();
         Texture2D emptyButton;
 
         Texture2D profile;
@@ -39,7 +39,7 @@ namespace Warcraft_1.Scenes
             map.maptiles = Content.Load<Texture2D>("Textures/Game/groundcells");
             click = Content.Load<SoundEffect>("Sounds/button");
             //map.Save("map.wc");
-            map.Read();
+            
 
             Texture2D cursor = Content.Load<Texture2D>("Textures/UI/cursor");
             Texture2D Interface = Content.Load<Texture2D>("Textures/UI/Interface");
@@ -86,6 +86,7 @@ namespace Warcraft_1.Scenes
             {
                 if (new Rectangle(40, 952, 410, 88).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
+                    map.Save("save.wc");
                     return Scenes.mainmenu;
                 }
             }

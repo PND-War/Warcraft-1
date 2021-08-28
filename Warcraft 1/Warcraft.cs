@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
-
 using Warcraft_1.Scenes;
 using System;
 using System.Threading;
+using System.IO;
 
 namespace Warcraft_1
 {
@@ -81,6 +81,10 @@ namespace Warcraft_1
                 {
                     case Scenes.Scenes.startgame:
                         scene = new SPlaying();
+                        if (File.Exists("map.wc"))
+                        {
+                            (scene as SPlaying).map.Read("map.wc");
+                        }
                         break;
                     case Scenes.Scenes.mainmenu:
                         scene = new SMenu();
@@ -90,6 +94,20 @@ namespace Warcraft_1
                         break;
                     case Scenes.Scenes.quitwindow:
                         scene = new SQuit();
+                        break;
+                    case Scenes.Scenes.loadgame:
+                        scene = new SPlaying();
+                        if(File.Exists("save.wc"))
+                        {
+                            (scene as SPlaying).map.Read("save.wc");
+                        }
+                        else
+                        {
+                            if (File.Exists("map.wc"))
+                            {
+                                (scene as SPlaying).map.Read("map.wc");
+                            }
+                        }
                         break;
                 }
                 Thread.Sleep(40);
