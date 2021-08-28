@@ -25,7 +25,26 @@ namespace Warcraft_1.Logic_Classes
         {
             timeElapsed = true;
         }
+        public static bool GetPressedAllTime(MouseButton mButton)
+        {
+            bool yes = true;
+            MouseState mouseState = Mouse.GetState();
 
+            switch (mButton)
+            {
+                case MouseButton.Left:
+                    yes = yes && mouseState.LeftButton == ButtonState.Pressed;
+                    break;
+                case MouseButton.Right:
+                    yes = yes && mouseState.RightButton == ButtonState.Pressed;
+                    break;
+                case MouseButton.Middle:
+                    yes = yes && mouseState.MiddleButton == ButtonState.Pressed;
+                    break;
+            }
+            lastState = mouseState;
+            return yes;
+        }
         public static bool GetPressed(MouseButton mButton)
         {
             bool yes = false;

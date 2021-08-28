@@ -83,15 +83,11 @@ namespace Warcraft_1.Scenes
         private Scenes CheckPress()
         {
             //minimap interaction
-            if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
+            if (Logic_Classes.MouseInterpretator.GetPressedAllTime(Logic_Classes.MouseButton.Left))
             {
-                if (new Rectangle(49, 49, 400-(44*4), 400 - (31 * 4)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if (new Rectangle(45, 45, 400, 400).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
-                   map.Camera = new Point((Mouse.GetState().X-45)/4, (Mouse.GetState().Y-45)/4);
-                }
-                else if(new Rectangle(400 - (44 * 4), 400 - (31 * 4), (44 * 4), (31 * 4)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-                {
-                    map.Camera = new Point((Mouse.GetState().X - 45) / 4, (Mouse.GetState().Y - 45) / 4);
+                   map.Camera = new Point(Mouse.GetState().X < 400-(((int)CameraMaxVal.X-10)*4) ? (Mouse.GetState().X-45)/4 : Map.mapSize - (int)CameraMaxVal.X, Mouse.GetState().Y < 400 - (((int)CameraMaxVal.Y-8) * 4) ?  (Mouse.GetState().Y-45)/4 : Map.mapSize - (int)CameraMaxVal.Y);
                 }
             }
             return Scenes.nullscene;
