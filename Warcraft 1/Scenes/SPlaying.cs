@@ -82,6 +82,13 @@ namespace Warcraft_1.Scenes
         }
         private Scenes CheckPress()
         {
+            if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
+            {
+                if (new Rectangle(40, 952, 410, 88).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    return Scenes.mainmenu;
+                }
+            }
             //minimap interaction
             if (Logic_Classes.MouseInterpretator.GetPressedAllTime(Logic_Classes.MouseButton.Left))
             {
@@ -90,6 +97,7 @@ namespace Warcraft_1.Scenes
                    map.Camera = new Point(Mouse.GetState().X < 400-(((int)CameraMaxVal.X-10)*4) ? (Mouse.GetState().X-45)/4 : Map.mapSize - (int)CameraMaxVal.X, Mouse.GetState().Y < 400 - (((int)CameraMaxVal.Y-8) * 4) ?  (Mouse.GetState().Y-45)/4 : Map.mapSize - (int)CameraMaxVal.Y);
                 }
             }
+            
             return Scenes.nullscene;
         }
 
@@ -104,7 +112,7 @@ namespace Warcraft_1.Scenes
             map.DrawMain(_spriteBatch);
             _spriteBatch.Draw(components[(int)TextureSPlay.Interface], new Rectangle(0, 0, 1920, 1080), Color.White);
 
-            map.DrawMini(_spriteBatch, components[(int)TextureSPlay.Pixel]);//minimap
+            map.DrawMini(_spriteBatch, components[(int)TextureSPlay.Pixel]);
 
             _spriteBatch.Draw(profile, new Vector2(40, 471), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(moveButton, new Vector2(40, 661), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);

@@ -70,14 +70,6 @@ namespace Warcraft_1
         {
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
-            if(Keyboard.GetState().IsKeyDown(Keys.Escape) && scene is SPlaying )
-            {
-                scene = new SMenu();
-                currentState = Scenes.Scenes.mainmenu;
-                Thread.Sleep(40);
-                scene.Load(_graphics, Content);
-                GC.Collect();
-            }
 
             // TODO: Add your update logic here
             Scenes.Scenes outgoingScene = scene.Update(gameTime);
