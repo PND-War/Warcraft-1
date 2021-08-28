@@ -58,6 +58,25 @@ namespace Warcraft_1.Scenes
         }
         public override Scenes Update(GameTime gameTime)
         {
+            //movement in map
+
+            if ((Mouse.GetState().X == 0 || Keyboard.GetState().IsKeyDown(Keys.Left)) && map.Camera.X > 0)
+            {
+                map.Camera = new Point(map.Camera.X - 1, map.Camera.Y);
+            }
+            if ((Mouse.GetState().Y == 0 || Keyboard.GetState().IsKeyDown(Keys.Up)) && map.Camera.Y > 0)
+            {
+                map.Camera = new Point(map.Camera.X, map.Camera.Y-1);
+            }
+            if ((Mouse.GetState().X == 1919 || Keyboard.GetState().IsKeyDown(Keys.Right)) && map.Camera.X < 56)
+            {
+                map.Camera = new Point(map.Camera.X + 1, map.Camera.Y);
+            }
+            if ((Mouse.GetState().Y == 1079 || Keyboard.GetState().IsKeyDown(Keys.Down)) && map.Camera.Y < 69)
+            {
+                map.Camera = new Point(map.Camera.X, map.Camera.Y + 1);
+            }
+
             return Scenes.nullscene;
         }
 

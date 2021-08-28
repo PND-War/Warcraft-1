@@ -47,7 +47,7 @@ namespace Warcraft_1
         {
             _graphics.PreferredBackBufferWidth = _graphics.GraphicsDevice.DisplayMode.Width;
             _graphics.PreferredBackBufferHeight = _graphics.GraphicsDevice.DisplayMode.Height;
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
         }
         private void SoundsAdjust()
