@@ -53,7 +53,7 @@ namespace Warcraft_1
         private void SoundsAdjust()
         {
             Logic_Classes.Configuration.SettingsAdjust();
-            bgsong = Content.Load<Song>("backgroundmusic");
+            bgsong = Content.Load<Song>("Sounds/backgroundmusic");
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = Logic_Classes.Settings.MusicVol ? 0.05f : 0.0f;

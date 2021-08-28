@@ -19,11 +19,11 @@ namespace Warcraft_1.Scenes
         }
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
-            click = Content.Load<SoundEffect>("button");
+            click = Content.Load<SoundEffect>("Sounds/button");
             //map.Save("map.wc");
             map.Read();
-            Texture2D cursor = Content.Load<Texture2D>("cursor");
-            Texture2D Interface = Content.Load<Texture2D>("Interface");
+            Texture2D cursor = Content.Load<Texture2D>("Textures/UI/cursor");
+            Texture2D Interface = Content.Load<Texture2D>("Textures/UI/Interface");
             Texture2D Pixel = new Texture2D(graphics.GraphicsDevice, 1, 1);
             Pixel.SetData<Color>(new Color[1] { Color.White });
 

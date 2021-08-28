@@ -24,15 +24,15 @@ namespace Warcraft_1.Scenes
 
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
-            click = Content.Load<SoundEffect>("button");
+            click = Content.Load<SoundEffect>("Sounds/button");
 
-            Texture2D cursor = Content.Load<Texture2D>("cursor");
-            Texture2D background = Content.Load<Texture2D>("background");
+            Texture2D cursor = Content.Load<Texture2D>("Textures/UI/cursor");
+            Texture2D background = Content.Load<Texture2D>("Textures/Images/background");
 
-            Texture2D start = Content.Load<Texture2D>("start");
-            Texture2D load = Content.Load<Texture2D>("load");
-            Texture2D sett = Content.Load<Texture2D>("settingsbut");
-            Texture2D exit = Content.Load<Texture2D>("exit");
+            Texture2D start = Content.Load<Texture2D>("Textures/UI/start");
+            Texture2D load = Content.Load<Texture2D>("Textures/UI/load");
+            Texture2D sett = Content.Load<Texture2D>("Textures/UI/settingsbut");
+            Texture2D exit = Content.Load<Texture2D>("Textures/UI/exit");
 
             components.AddRange(new Texture2D[] { background, cursor, start, load, sett, exit });
             SoundAdjust();
