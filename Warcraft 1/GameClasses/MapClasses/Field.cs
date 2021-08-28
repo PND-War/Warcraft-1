@@ -63,6 +63,9 @@ namespace Warcraft_1.GameClasses
                 case TypeOfTerrain.Mine:
                     returnableColor = Color.Yellow;
                     break;
+                case TypeOfTerrain.Bridge:
+                    returnableColor = Color.DarkOrange;
+                    break;
             }
             if (unit != null)
             {

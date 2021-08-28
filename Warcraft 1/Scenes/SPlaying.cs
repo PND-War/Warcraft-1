@@ -58,15 +58,18 @@ namespace Warcraft_1.Scenes
         }
         public override Scenes Update(GameTime gameTime)
         {
-            //movement in map
-
+            CheckMapMove();
+            return CheckPress();
+        }
+        private void CheckMapMove()
+        {
             if ((Mouse.GetState().X == 0 || Keyboard.GetState().IsKeyDown(Keys.Left)) && map.Camera.X > 0)
             {
                 map.Camera = new Point(map.Camera.X - 1, map.Camera.Y);
             }
             if ((Mouse.GetState().Y == 0 || Keyboard.GetState().IsKeyDown(Keys.Up)) && map.Camera.Y > 0)
             {
-                map.Camera = new Point(map.Camera.X, map.Camera.Y-1);
+                map.Camera = new Point(map.Camera.X, map.Camera.Y - 1);
             }
             if ((Mouse.GetState().X == 1919 || Keyboard.GetState().IsKeyDown(Keys.Right)) && map.Camera.X < 56)
             {
@@ -76,7 +79,21 @@ namespace Warcraft_1.Scenes
             {
                 map.Camera = new Point(map.Camera.X, map.Camera.Y + 1);
             }
-
+        }
+        private Scenes CheckPress()
+        {
+            //minimap interaction
+            if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
+            {
+                if (new Rectangle(49, 49, 400-(44*4), 400 - (31 * 4)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                   map.Camera = new Point((Mouse.GetState().X-45)/4, (Mouse.GetState().Y-45)/4);
+                }
+                else if(new Rectangle(400 - (44 * 4), 400 - (31 * 4), (44 * 4), (31 * 4)).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    map.Camera = new Point((Mouse.GetState().X - 45) / 4, (Mouse.GetState().Y - 45) / 4);
+                }
+            }
             return Scenes.nullscene;
         }
 
