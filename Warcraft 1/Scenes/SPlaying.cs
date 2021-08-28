@@ -10,24 +10,45 @@ namespace Warcraft_1.Scenes
     class SPlaying : AScene
     {
         Map map = new Map();
+        Texture2D emptyButton;
+
+        Texture2D profile;
+
+        Texture2D moveButton;
+        Texture2D defenseButton;
+        Texture2D attackButton;
+        Texture2D somethingButton;
 
         enum TextureSPlay
         {
             cur,
             Interface,
-            Pixel
+            Pixel,
+            Menu
         }
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
+            emptyButton = Content.Load<Texture2D>("Textures/UI/ButtonEmpty");
+            profile = Content.Load<Texture2D>("Textures/UI/ProfileEmpty");
+
+            moveButton = emptyButton;
+            defenseButton = emptyButton;
+            attackButton = emptyButton;
+            somethingButton = emptyButton;
+
+            map.maptiles = Content.Load<Texture2D>("Textures/Game/groundcells");
             click = Content.Load<SoundEffect>("Sounds/button");
             //map.Save("map.wc");
             map.Read();
+
             Texture2D cursor = Content.Load<Texture2D>("Textures/UI/cursor");
             Texture2D Interface = Content.Load<Texture2D>("Textures/UI/Interface");
+            Texture2D Menu = Content.Load<Texture2D>("Textures/UI/MenuButton");
+
             Texture2D Pixel = new Texture2D(graphics.GraphicsDevice, 1, 1);
             Pixel.SetData<Color>(new Color[1] { Color.White });
 
-            components.AddRange(new Texture2D[] { cursor, Interface, Pixel });
+            components.AddRange(new Texture2D[] { cursor, Interface, Pixel, Menu});
             SoundAdjust();
         }
         private void SoundAdjust()
@@ -47,10 +68,20 @@ namespace Warcraft_1.Scenes
 
             _spriteBatch.Begin();
 
+
+            map.DrawMain(_spriteBatch);
             _spriteBatch.Draw(components[(int)TextureSPlay.Interface], new Rectangle(0, 0, 1920, 1080), Color.White);
 
-
             map.DrawMini(_spriteBatch, components[(int)TextureSPlay.Pixel]);//minimap
+
+            _spriteBatch.Draw(profile, new Vector2(40, 471), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(moveButton, new Vector2(40, 661), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(defenseButton, new Vector2(250, 661), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(attackButton, new Vector2(40, 791), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(somethingButton, new Vector2(250, 791), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(somethingButton, new Vector2(250, 791), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+
+            _spriteBatch.Draw(components[(int)TextureSPlay.Menu], new Vector2(40, 952), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
             _spriteBatch.Draw(components[(int)TextureSPlay.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
 

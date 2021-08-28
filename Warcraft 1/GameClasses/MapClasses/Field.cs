@@ -9,7 +9,7 @@ namespace Warcraft_1.GameClasses
     enum TypeOfTerrain
     {
         Earth,
-        Wather,
+        Water,
         Road,
         Tree,
         Mine,
@@ -50,7 +50,7 @@ namespace Warcraft_1.GameClasses
                 case TypeOfTerrain.Earth:
                     returnableColor = Color.ForestGreen;
                     break;
-                case TypeOfTerrain.Wather:
+                case TypeOfTerrain.Water:
                     returnableColor = Color.Blue;
                     break;
                 case TypeOfTerrain.Road:
@@ -73,6 +73,26 @@ namespace Warcraft_1.GameClasses
             }
             return returnableColor;
         }
+        public Rectangle GetFieldTerrain()
+        {
+            switch (terrain)
+            {
+                case TypeOfTerrain.Earth:
+                   return new Rectangle(396, 99, 32, 32);
+                case TypeOfTerrain.Water:
+                    return new Rectangle(264, 66, 32, 32);
+                case TypeOfTerrain.Road:
+                    return new Rectangle(66, 429, 32, 32);
+                case TypeOfTerrain.Tree:
+                    return new Rectangle(429, 33, 32, 32);
+                case TypeOfTerrain.Mine:
+                    return new Rectangle(264, 66, 32, 32);
+                case TypeOfTerrain.Bridge:
+                    return new Rectangle(66, 264, 32, 32);
+            }
+            return new Rectangle(264, 66, 32, 32);
+        }
+        
         public bool PlaceAUnit(Units.AUnit unitG)
         {
             bool res = false;
