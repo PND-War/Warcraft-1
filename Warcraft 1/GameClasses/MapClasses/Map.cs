@@ -1,5 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Text.Json;
+
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Warcraft_1.GameClasses
 {
@@ -18,6 +22,24 @@ namespace Warcraft_1.GameClasses
             }
         }
 
+        public void Read()
+        {
+            map = JsonConvert.DeserializeObject<Field[,]>(File.ReadAllText("map.wc"));
+        }
+        public void Save(string path)
+        {
+            if(!File.Exists(path))
+            {
+                File.Create(path).Close();
+                File.WriteAllText(path, JsonConvert.SerializeObject(map));
+            }
+            else
+            {
+                File.WriteAllText(path, JsonConvert.SerializeObject(map));
+            }
+            
+        }
+        
 
 
         public void DrawMini(SpriteBatch spriteBatch, Texture2D pixel)

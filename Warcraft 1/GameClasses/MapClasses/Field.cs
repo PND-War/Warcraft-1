@@ -17,21 +17,21 @@ namespace Warcraft_1.GameClasses
     }
     class Field
     {
-        bool cheked;
-        public Texture2D fieldTexture { get; private set; }
-        TypeOfTerrain terrain;
-        Units.AUnit unit;
-        public Field()
-        {
-            cheked = false;
-            terrain = TypeOfTerrain.Earth;
-        }
-        public Field(Texture2D texture)
-        {
-            cheked = false;
-            terrain = TypeOfTerrain.Earth;
-            fieldTexture = texture;
-        }
+        public TypeOfTerrain terrain { get; set; }
+        public bool cheked { get; set; } = true;
+        public Texture2D fieldTexture { get;  set; }
+        public Units.AUnit unit { get;  set; }
+        //public Field()
+        //{
+        //    cheked = false;
+        //    terrain = TypeOfTerrain.Earth;
+        //}
+        //public Field(Texture2D texture)
+        //{
+        //    cheked = false;
+        //    terrain = TypeOfTerrain.Earth;
+        //    fieldTexture = texture;
+        //}
         public bool CheckTerrain()
         {
             bool res = false;
@@ -51,10 +51,10 @@ namespace Warcraft_1.GameClasses
                     returnableColor = Color.ForestGreen;
                     break;
                 case TypeOfTerrain.Wather:
-                    returnableColor = Color.LightBlue;
+                    returnableColor = Color.Blue;
                     break;
                 case TypeOfTerrain.Road:
-                    returnableColor = Color.Brown;
+                    returnableColor = Color.SandyBrown;
                     break;
                 case TypeOfTerrain.Tree:
                     returnableColor = Color.Green;

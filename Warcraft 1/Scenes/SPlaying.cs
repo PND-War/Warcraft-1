@@ -3,9 +3,6 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Warcraft_1.GameClasses;
 
 namespace Warcraft_1.Scenes
@@ -13,8 +10,6 @@ namespace Warcraft_1.Scenes
     class SPlaying : AScene
     {
         Map map = new Map();
-
-
 
         enum TextureSPlay
         {
@@ -25,7 +20,8 @@ namespace Warcraft_1.Scenes
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
             click = Content.Load<SoundEffect>("button");
-
+            //map.Save("map.wc");
+            map.Read();
             Texture2D cursor = Content.Load<Texture2D>("cursor");
             Texture2D Interface = Content.Load<Texture2D>("Interface");
             Texture2D Pixel = new Texture2D(graphics.GraphicsDevice, 1, 1);
@@ -46,6 +42,7 @@ namespace Warcraft_1.Scenes
 
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
         {
+            //map.Read();
             SpriteBatch _spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             _spriteBatch.Begin();
