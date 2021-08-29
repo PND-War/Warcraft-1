@@ -82,9 +82,9 @@ namespace Warcraft_1.GameClasses
             switch (terrain)
             {
                 case TypeOfTerrain.Earth:
-                    return new Rectangle(396, 99, 32, 32);
+                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Water, spriteId);
                 case TypeOfTerrain.Water:
-                    return new Rectangle(264, 66, 32, 32);
+                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Water, spriteId);
                 case TypeOfTerrain.Road:
                     return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Road, spriteId);
                 case TypeOfTerrain.Tree:
