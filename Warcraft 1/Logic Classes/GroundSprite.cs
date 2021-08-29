@@ -6,10 +6,9 @@ using System.Text;
 
 namespace Warcraft_1.Logic_Classes
 {
-
-    static class GroundSprite
+    public static class GroundSprite
     {
-        static Dictionary<int, Point> groundId = new Dictionary<int, Point>()
+        public static Dictionary<int, Point> groundId = new Dictionary<int, Point>()
         {
              //Water
              {1, new Point(231, 0)},
@@ -90,16 +89,20 @@ namespace Warcraft_1.Logic_Classes
              {72, new Point(396, 132)},
              {73, new Point(429, 132)},
              {74, new Point(462, 132)},
+             {75, new Point(363, 165)},
+             {76, new Point(396, 165)},
+             {77, new Point(429, 165)},
+             {78, new Point(462, 165)},
         };
 
-        static Rectangle GetRecquiredSprite(GameClasses.TypeOfTerrain terrain, int id)
+        public static Rectangle GetRecquiredSprite(GameClasses.TypeOfTerrain terrain, int id)
         {
             Point Location = new Point();
-            groundId.TryGetValue(GetStartId(terrain), out Location);
+            groundId.TryGetValue(GetStartId(terrain) + id, out Location);
 
             return new Rectangle(Location, new Point(32,32));
         }
-        private static int GetStartId(GameClasses.TypeOfTerrain terrain)
+        public static int GetStartId(GameClasses.TypeOfTerrain terrain)
         {
             switch (terrain)
             {

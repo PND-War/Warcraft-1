@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Warcraft_1.GameClasses
 {
-    enum TypeOfTerrain
+    public enum TypeOfTerrain
     {
         Earth,
         Water,
@@ -21,7 +21,7 @@ namespace Warcraft_1.GameClasses
         public bool cheked { get; set; } = true;
         public Texture2D fieldTexture { get; set; }
         public Units.AUnit unit { get; set; }
-        public int SpriteId { get; set; }
+        public int spriteId { get; set; }
         //public Field()
         //{
         //    cheked = false;
@@ -86,7 +86,7 @@ namespace Warcraft_1.GameClasses
                 case TypeOfTerrain.Water:
                     return new Rectangle(264, 66, 32, 32);
                 case TypeOfTerrain.Road:
-                    return new Rectangle(66, 429, 32, 32);
+                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Road, spriteId);
                 case TypeOfTerrain.Tree:
                     return new Rectangle(429, 33, 32, 32);
                 case TypeOfTerrain.Mine:
