@@ -126,6 +126,5 @@ namespace Warcraft_1.GameClasses
             if (unitG.GetRace() == Units.Race.HUMAN) return true;
             return false;
         }
-
     }
 }

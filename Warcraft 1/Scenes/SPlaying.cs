@@ -104,7 +104,7 @@ namespace Warcraft_1.Scenes
 
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
         {
-            //map.Read();
+            map.Read("map.wc");
             SpriteBatch _spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             _spriteBatch.Begin();

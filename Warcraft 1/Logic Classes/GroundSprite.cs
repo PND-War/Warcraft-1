@@ -97,7 +97,7 @@ namespace Warcraft_1.Logic_Classes
              {80, new Point(462, 165)},
              //Special
              {81, new Point(396, 99)}, //defaultground
-             {82, new Point(198, 165)}, //watergroundslevaverhniz
+             {82, new Point(198, 165)}, //watergroundslevaverhniz 7
              {83, new Point(231, 165)}, //watergroundslevaverhniz
              {84, new Point(264, 165)}, //watergroundslevaverhniz
              {85, new Point(297, 165)}, //watergroundslevaverhniz
