@@ -117,11 +117,11 @@ namespace Warcraft_1.Logic_Classes
                 case GameClasses.TypeOfTerrain.Water:
                     return 0;
                 case GameClasses.TypeOfTerrain.Tree:
-                    return 17;
+                    return 18;
                 case GameClasses.TypeOfTerrain.Bridge:
-                    return 26;
+                    return 27;
                 case GameClasses.TypeOfTerrain.Road:
-                    return 68;
+                    return 69;
             }
             return 0;
         }
