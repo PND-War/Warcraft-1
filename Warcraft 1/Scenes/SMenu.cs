@@ -12,7 +12,9 @@ namespace Warcraft_1.Scenes
         start,
         load,
         sett,
-        exit
+        exit,
+        black,
+        sky
     }
 
     class SMenu : AScene
@@ -22,19 +24,24 @@ namespace Warcraft_1.Scenes
         public bool settingsAimed = false;
         public bool exitAimed = false;
 
+        float currentOpacity = 0.01f;
+        private bool OpacityAdding = true;
+
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
             click = Content.Load<SoundEffect>("Sounds/button");
 
             Texture2D cursor = Content.Load<Texture2D>("Textures/UI/cursor");
             Texture2D background = Content.Load<Texture2D>("Textures/Images/background");
+            Texture2D backgroundblack = Content.Load<Texture2D>("Textures/Images/blackoutmainmenu");
+            Texture2D backgroundsky = Content.Load<Texture2D>("Textures/Images/backgroundsky");
 
             Texture2D start = Content.Load<Texture2D>("Textures/UI/start");
             Texture2D load = Content.Load<Texture2D>("Textures/UI/load");
             Texture2D sett = Content.Load<Texture2D>("Textures/UI/settingsbut");
             Texture2D exit = Content.Load<Texture2D>("Textures/UI/exit");
 
-            components.AddRange(new Texture2D[] { background, cursor, start, load, sett, exit });
+            components.AddRange(new Texture2D[] { background, cursor, start, load, sett, exit, backgroundblack, backgroundsky });
             SoundAdjust();
         }
 
@@ -100,6 +107,9 @@ namespace Warcraft_1.Scenes
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(components[(int)TextureSMenu.back], new Rectangle(0, 0, 1920, 1080), Color.White);
+            _spriteBatch.Draw(components[(int)TextureSMenu.black], new Rectangle(0, 0, 1920, 1080), Color.White * SmoothTransparent());
+            _spriteBatch.Draw(components[(int)TextureSMenu.sky], new Rectangle(0, 0, 1920, 1080), Color.White * 0.5f * SmoothTransparent());
+
             _spriteBatch.Draw(components[(int)TextureSMenu.start], new Vector2(831, 392), null, Color.White, 0f, Vector2.Zero, startAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSMenu.load], new Vector2(831, 455), null, Color.White, 0f, Vector2.Zero, loadAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSMenu.sett], new Vector2(831, 518), null, Color.White, 0f, Vector2.Zero, settingsAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
@@ -107,6 +117,14 @@ namespace Warcraft_1.Scenes
             _spriteBatch.Draw(components[(int)TextureSMenu.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
 
             _spriteBatch.End();
+        }
+
+        private float SmoothTransparent()
+        {
+            if (currentOpacity < 1.0f && currentOpacity > 0.0f) currentOpacity = OpacityAdding? currentOpacity += 0.0025f: currentOpacity -= 0.0025f;
+
+            if (currentOpacity > 0.98f || currentOpacity < 0.01f) OpacityAdding = !OpacityAdding;
+            return currentOpacity;
         }
     }
 }
