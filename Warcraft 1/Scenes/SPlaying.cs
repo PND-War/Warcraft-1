@@ -28,6 +28,8 @@ namespace Warcraft_1.Scenes
         }
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
+            if(!Logic_Classes.UnitsTextures.IsLoaded) Logic_Classes.UnitsTextures.Load(Content);
+
             emptyButton = Content.Load<Texture2D>("Textures/UI/ButtonEmpty");
             profile = Content.Load<Texture2D>("Textures/UI/ProfileEmpty");
 
@@ -60,6 +62,7 @@ namespace Warcraft_1.Scenes
         }
         public override Scenes Update(GameTime gameTime)
         {
+            map.Update(gameTime);
             CheckMapMove();
             return CheckPress();
         }
@@ -111,7 +114,7 @@ namespace Warcraft_1.Scenes
 
             _spriteBatch.Begin();
 
-            map.DrawMain(_spriteBatch);
+            map.DrawMain(_spriteBatch, components[(int)TextureSPlay.Pixel]);
             _spriteBatch.Draw(components[(int)TextureSPlay.Interface], new Rectangle(0, 0, 1920, 1080), Color.White);
 
             map.DrawMini(_spriteBatch, components[(int)TextureSPlay.Pixel]);

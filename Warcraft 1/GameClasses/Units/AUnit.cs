@@ -21,8 +21,10 @@ namespace Warcraft_1.Units
         NONE
     }
 
-    abstract class AUnit
+    abstract class AUnit : Logic_Classes.Sprite
     {
+        protected bool IsLoaded;
+
         protected int speed;
         protected int armor;
         protected int damage;
@@ -42,11 +44,10 @@ namespace Warcraft_1.Units
         protected Point spriteSize;
         public Texture2D texture;
 
-        protected bool isChoosed;
         protected Point positionToMove;
 
         // Базовый конструктор, все параметры инициализирует нулем
-        protected AUnit()
+        protected AUnit() : base()
         {
             this.speed = 0;
             this.armor = 0;
@@ -66,7 +67,6 @@ namespace Warcraft_1.Units
             this.spriteSize = new Point(0, 0);
             this.texture = null;
 
-            this.isChoosed = false;
             this.positionToMove = new Point(0, 0);
         }
 
@@ -109,12 +109,11 @@ namespace Warcraft_1.Units
             this.spriteSize = spriteSize;
             this.texture = texture;
 
-            this.isChoosed = false;
             this.positionToMove = new Point(0, 0);
         }
 
-        public abstract void Load(GraphicsDeviceManager graphics, ContentManager Content);
-        public abstract void Update(GameTime gameTime);
+        public abstract void Load();
+        public abstract void Update(GameTime gameTime, int i, int j);
 
         protected void Regeneration()
         {

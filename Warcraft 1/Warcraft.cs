@@ -97,7 +97,7 @@ namespace Warcraft_1
                         break;
                     case Scenes.Scenes.loadgame:
                         scene = new SPlaying();
-                        if(File.Exists("save.wc"))
+                        if (File.Exists("save.wc"))
                         {
                             (scene as SPlaying).map.Read("save.wc");
                         }

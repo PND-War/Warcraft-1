@@ -83,11 +83,6 @@ namespace Warcraft_1.Logic_Classes
              {66, new Point(396, 165)},
              {67, new Point(429, 165)},
              {68, new Point(462, 165)},
-             //Buildings
-             {69, new Point(0, 0)},
-             {70, new Point(33, 0)},
-             {71, new Point(0, 33)},
-             {72, new Point(33, 33)},
              //Special
              {75, new Point(396, 99)}, //defaultground
              {76, new Point(198, 165)}, //watergroundslevaverhniz 7
@@ -95,6 +90,16 @@ namespace Warcraft_1.Logic_Classes
              {78, new Point(264, 165)}, //watergroundslevaverhniz
              {79, new Point(297, 165)}, //watergroundslevaverhniz
              {80, new Point(330, 165)}, //watergroundslevaverhnizchtototam
+             //Buildings
+             {81, new Point(0, 0)},
+             {82, new Point(33, 0)},
+             {83, new Point(66, 0)},
+             {84, new Point(0, 33)},
+             {85, new Point(33, 33)},
+             {86, new Point(66, 33)},
+             {87, new Point(0, 66)},
+             {88, new Point(33, 66)},
+             {89, new Point(66, 66)},
         };
 
         public static Rectangle GetRecquiredSprite(GameClasses.TypeOfTerrain terrain, int id)
@@ -117,7 +122,7 @@ namespace Warcraft_1.Logic_Classes
                 case GameClasses.TypeOfTerrain.Road:
                     return 57;
                 case GameClasses.TypeOfTerrain.Mine:
-                    return 68;
+                    return 80;
             }
             return 0;
         }

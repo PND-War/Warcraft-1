@@ -13,11 +13,10 @@ namespace Warcraft_1.Units
             this.race = Race.HUMAN;
             this.role = Role.WARRIOR;
         }
-        public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
+        public override void Load()
         {
-
         }
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, int i, int j)
         {
             Regeneration();
             UpdatePosition();
