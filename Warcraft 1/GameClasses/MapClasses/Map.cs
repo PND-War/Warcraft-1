@@ -110,6 +110,7 @@ namespace Warcraft_1.GameClasses
 
             if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
             {
+                Logic_Classes.MouseInterpretator.ResetInter();
                 MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
                 if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map[MouseCoords.X, MouseCoords.Y].unit != null) group.FocusedUnit = MouseCoords;
                 else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100)) group.FocusedUnit = new Point(-1, -1);

@@ -25,6 +25,10 @@ namespace Warcraft_1.Logic_Classes
         {
             timeElapsed = true;
         }
+        public static void ResetInter()
+        {
+            lastState = new MouseState();
+        }
         public static bool GetPressedAllTime(MouseButton mButton)
         {
             bool yes = true;
