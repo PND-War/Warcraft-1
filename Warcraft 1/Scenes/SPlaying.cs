@@ -76,7 +76,7 @@ namespace Warcraft_1.Scenes
         {
             map.Update(gameTime);
             CheckMapMove();
-            CheckFocusMove();
+            //CheckFocusMove();
             return CheckPress();
         }
         private void CheckMapMove()
