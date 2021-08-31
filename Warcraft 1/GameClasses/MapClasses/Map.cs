@@ -18,7 +18,7 @@ namespace Warcraft_1.GameClasses
         public Logic_Classes.Group group;
 
         public Point Camera = new Point(0, mapSize - (int)CameraMaxVal.Y);
-        Field[,] map { get; set; }
+        public Field[,] map { get; set; }
         private const int fieldPixelSize = 32;
         public const int mapSize = 100;
         public Map()

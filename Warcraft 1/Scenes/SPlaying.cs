@@ -18,13 +18,15 @@ namespace Warcraft_1.Scenes
         Texture2D defenseButton;
         Texture2D attackButton;
         Texture2D somethingButton;
-
         enum TextureSPlay
         {
             cur,
             Interface,
             Pixel,
-            Menu
+            Menu,
+            ProfileEmpty,
+            Frame,
+            Health
         }
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
@@ -49,10 +51,14 @@ namespace Warcraft_1.Scenes
             Texture2D Interface = Content.Load<Texture2D>("Textures/UI/Interface");
             Texture2D Menu = Content.Load<Texture2D>("Textures/UI/MenuButton");
 
+            Texture2D ProfileEmpty = Content.Load<Texture2D>("Textures/UI/ProfileEmpty");
+            Texture2D Frame = Content.Load<Texture2D>("Textures/UI/Frame");
+            Texture2D Health = Content.Load<Texture2D>("Textures/UI/HEALTH");
+
             Texture2D Pixel = new Texture2D(graphics.GraphicsDevice, 1, 1);
             Pixel.SetData<Color>(new Color[1] { Color.White });
 
-            components.AddRange(new Texture2D[] { cursor, Interface, Pixel, Menu});
+            components.AddRange(new Texture2D[] { cursor, Interface, Pixel, Menu, ProfileEmpty, Frame, Health});
             SoundAdjust();
         }
         private void SoundAdjust()
@@ -128,6 +134,18 @@ namespace Warcraft_1.Scenes
 
             _spriteBatch.Draw(components[(int)TextureSPlay.Menu], new Vector2(40, 952), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
+            if(Logic_Classes.UnitsTextures.IsLoaded && map.group.FocusedUnit.X != -1)
+            {
+                _spriteBatch.Draw(components[(int)TextureSPlay.Frame], new Rectangle(83, 500, 156, 113), Color.White);
+                _spriteBatch.Draw(components[(int)TextureSPlay.Health], new Rectangle(253, 555, 156, 58), Color.White);
+                _spriteBatch.Draw(Logic_Classes.UnitsTextures.Icons, new Rectangle(88, 505, Logic_Classes.IconSprite.XScale, Logic_Classes.IconSprite.YScale), Logic_Classes.IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole()), Color.White);
+                for(int i = 0; i < map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetCurHP()/ map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetMaxHP()*145; i++)
+                {
+                    _spriteBatch.Draw(components[(int)TextureSPlay.Pixel], new Rectangle(259+i, 588, 1, 20), Color.Green);
+                }
+
+            }
+            
             _spriteBatch.Draw(components[(int)TextureSPlay.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
 
             _spriteBatch.End();

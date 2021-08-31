@@ -136,5 +136,17 @@ namespace Warcraft_1.Units
         {
             return this.race;
         }
+        public Role GetRole()
+        {
+            return this.role;
+        }
+        public int GetCurHP()
+        {
+            return currentHealth;
+        }
+        public int GetMaxHP()
+        {
+            return maxHealth;
+        }
     }
 }
