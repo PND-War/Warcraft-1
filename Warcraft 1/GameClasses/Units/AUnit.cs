@@ -24,6 +24,7 @@ namespace Warcraft_1.Units
     abstract class AUnit : Logic_Classes.Sprite
     {
         protected bool IsLoaded;
+        public bool IsMoving;
 
         protected int speed;
         protected int armor;
