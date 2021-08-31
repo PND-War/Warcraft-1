@@ -41,11 +41,9 @@ namespace Warcraft_1.Units
         protected Race race;
         protected Role role;
 
-        protected Point position;
         protected Point spriteSize;
-        public Texture2D texture;
 
-        protected Point positionToMove;
+        public Point positionToMove;
 
         // Базовый конструктор, все параметры инициализирует нулем
         protected AUnit() : base()
@@ -64,32 +62,28 @@ namespace Warcraft_1.Units
             this.race = Race.NONE;
             this.role = Role.NONE;
 
-            this.position = new Point(0, 0);
             this.spriteSize = new Point(0, 0);
-            this.texture = null;
 
             this.positionToMove = new Point(0, 0);
         }
 
         // Конструктор только с самыми базовыми параметрами (скорость, здоровье, позиция и т.д)
         protected AUnit(int speed, int damage, int maxHealth,
-            Point position, Point spriteSize, Texture2D texture) : this()
+            Point position, Point spriteSize) : this()
         {
             this.speed = speed;
             this.damage = damage;
             this.maxHealth = maxHealth;
             this.currentHealth = maxHealth;
 
-            this.position = position;
+            this.positionToMove = position;
             this.spriteSize = spriteSize;
-            this.texture = texture;
         }
 
         // Конструктор с переопределением всех параметров для потомков
         protected AUnit(int speed, int armor, int damage, int maxHealth,
             int regeneration, int gold, int food, int reward, string bio,
-            Race race, Role role, Point position, Point spriteSize,
-            Texture2D texture)
+            Race race, Role role, Point position, Point spriteSize)
         {
             this.speed = speed;
             this.armor = armor;
@@ -106,15 +100,13 @@ namespace Warcraft_1.Units
             this.race = race;
             this.role = role;
 
-            this.position = position;
             this.spriteSize = spriteSize;
-            this.texture = texture;
 
-            this.positionToMove = new Point(0, 0);
+            this.positionToMove = position;
         }
 
         public abstract void Load();
-        public abstract void Update(GameTime gameTime, int i, int j);
+        public abstract void Update(GameTime gameTime);
 
         protected void Regeneration()
         {
@@ -123,14 +115,6 @@ namespace Warcraft_1.Units
 
             if (this.currentHealth > this.maxHealth)
                 this.currentHealth = this.maxHealth;
-        }
-        protected void UpdatePosition()
-        {
-            if (this.position.X < this.positionToMove.X) this.position.X += speed;
-            else this.position.X -= speed;
-
-            if (this.position.Y < this.positionToMove.Y) this.position.Y += speed;
-            else this.position.Y -= speed;
         }
 
         public Race GetRace()

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using System.IO;
 using Newtonsoft.Json;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Warcraft_1.GameClasses
 {
@@ -19,7 +20,7 @@ namespace Warcraft_1.GameClasses
 
         public Point Camera = new Point(0, mapSize - (int)CameraMaxVal.Y);
         public Field[,] map { get; set; }
-        private const int fieldPixelSize = 32;
+        public const int fieldPixelSize = 32;
         public const int mapSize = 100;
         public Map()
         {
@@ -36,8 +37,17 @@ namespace Warcraft_1.GameClasses
 
         public void Read(string path)
         {
-            map = JsonConvert.DeserializeObject<Field[,]>(File.ReadAllText(path));
-            map[7, 86].unit = new Units.HumWorker();
+            try
+            {
+                map = JsonConvert.DeserializeObject<Field[,]>(File.ReadAllText(path));
+                map[7, 86].unit = new Units.HumWorker() { positionToMove = new Point(7, 86)};
+
+            }
+            catch(Exception)
+            {
+                map = JsonConvert.DeserializeObject<Field[,]>(File.ReadAllText("map.wc"));
+            }
+            
         }
         public void Save(string path)
         {
@@ -83,8 +93,7 @@ namespace Warcraft_1.GameClasses
                     if (map[i, j].unit != null)
                     {
                         map[i, j].unit.Load();
-                        map[i, j].unit.Position = new Vector2(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize);
-                        map[i, j].unit.Draw(spriteBatch);
+                        spriteBatch.Draw(map[i, j].unit.Texture, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].unit.Rect, Color.White);
                     }
                 }
             }
@@ -110,19 +119,31 @@ namespace Warcraft_1.GameClasses
 
             if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
             {
+                
                 Logic_Classes.MouseInterpretator.ResetInter();
                 MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
                 if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map[MouseCoords.X, MouseCoords.Y].unit != null) group.FocusedUnit = MouseCoords;
                 else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100)) group.FocusedUnit = new Point(-1, -1);
+                
             }
-
+            else if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Right))
+            {
+                if (group.FocusedUnit.X != -1 && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y) )
+                {
+                    MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
+                    if(map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
+                    {
+                        map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
+                    }
+                }
+            }
             for (int i = 0 + Camera.X; i < (int)CameraMaxVal.X + Camera.X; i++)
             {
                 for (int j = 0 + Camera.Y; j < (int)CameraMaxVal.Y + Camera.Y; j++)
                 {
                     if (map[i, j].unit != null)
                     {
-                        map[i, j].unit.Update(gameTime, i, j);
+                        map[i, j].unit.Update(gameTime);
                     }
                 }
             }

@@ -8,7 +8,7 @@ namespace Warcraft_1.Units
 {
     class HumWarrior : AUnit
     {
-        public HumWarrior() : base(1, 50, 250, new Point(0, 0), new Point(32, 32), null)
+        public HumWarrior() : base(1, 50, 250, new Point(0, 0), new Point(32, 32))
         {
             this.race = Race.HUMAN;
             this.role = Role.WARRIOR;
@@ -16,10 +16,9 @@ namespace Warcraft_1.Units
         public override void Load()
         {
         }
-        public override void Update(GameTime gameTime, int i, int j)
+        public override void Update(GameTime gameTime)
         {
             Regeneration();
-            UpdatePosition();
         }
 
     }

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Threading;
 using Warcraft_1.GameClasses;
 
 namespace Warcraft_1.Scenes
@@ -75,6 +76,7 @@ namespace Warcraft_1.Scenes
         {
             map.Update(gameTime);
             CheckMapMove();
+            CheckFocusMove();
             return CheckPress();
         }
         private void CheckMapMove()
@@ -105,7 +107,9 @@ namespace Warcraft_1.Scenes
                     map.Save("save.wc");
                     return Scenes.mainmenu;
                 }
+               
             }
+            
             //minimap interaction
             if (Logic_Classes.MouseInterpretator.GetPressedAllTime(Logic_Classes.MouseButton.Left))
             {
@@ -118,6 +122,45 @@ namespace Warcraft_1.Scenes
             return Scenes.nullscene;
         }
 
+        //private void CheckFocusMove()
+        //{
+        //    if(map.group.FocusedUnit.X != -1 && map.group.FocusedUnit != map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving)
+        //    {
+        //        map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving = true;
+        //        Thread thread = new Thread(MoveFocusUnit);
+        //        thread.Start();
+        //    }
+        //}
+        //private void MoveFocusUnit()
+        //{
+        //    Units.AUnit aUnit = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit;
+        //    Point Pos = map.group.FocusedUnit;
+        //    do
+        //    {
+        //        Point miniToMove = new Point(Pos.X, Pos.Y);
+        //        if(Pos.X < aUnit.positionToMove.X && map.map[Pos.X +1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Mine)
+        //        {
+        //            miniToMove.X++;
+        //        }
+        //        else if(Pos.X > aUnit.positionToMove.X && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Mine)
+        //        {
+        //            miniToMove.X--;
+        //        }
+
+        //        if (Pos.Y < aUnit.positionToMove.X && map.map[Pos.X, Pos.Y +1].terrain != TypeOfTerrain.Tree && map.map[Pos.X , Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X, Pos.Y + 1].terrain != TypeOfTerrain.Mine)
+        //        {
+        //            miniToMove.Y++;
+        //        }
+        //        else if (Pos.Y > aUnit.positionToMove.X && map.map[Pos.X , Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X , Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X, Pos.Y - 1].terrain != TypeOfTerrain.Mine)
+        //        {
+        //            miniToMove.Y--;
+        //        }
+
+        //                aUnit.UpdateAnim(true, Logic_Classes.DIRS.UP);
+        //        Pos = miniToMove;
+        //    } while (aUnit.positionToMove != Pos);
+        //    aUnit.IsMoving = false;
+        //}
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
         {
             //map.Read("map.wc");
