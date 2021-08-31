@@ -13,6 +13,13 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Fonts/Font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Font.spritefont
+
 #begin Sounds/backgroundmusic.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
@@ -24,6 +31,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/button.wav
+
+#begin Sounds/Game/HumWorker.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/Game/HumWorker.mp3
 
 #begin Textures/Game/buildingtiles.png
 /importer:TextureImporter
