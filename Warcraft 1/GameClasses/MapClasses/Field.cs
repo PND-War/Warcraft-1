@@ -90,9 +90,9 @@ namespace Warcraft_1.GameClasses
                 case TypeOfTerrain.Tree:
                     return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Tree, spriteId);
                 case TypeOfTerrain.Mine:
-                    return new Rectangle(264, 66, 32, 32);
+                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Mine, spriteId);
                 case TypeOfTerrain.Bridge:
-                    return new Rectangle(66, 264, 32, 32);
+                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Bridge, spriteId);
             }
             return new Rectangle(264, 66, 32, 32);
         }

@@ -37,6 +37,8 @@ namespace Warcraft_1.Scenes
             somethingButton = emptyButton;
 
             map.maptiles = Content.Load<Texture2D>("Textures/Game/groundcells");
+            map.buildingtiles = Content.Load<Texture2D>("Textures/Game/buildingtiles");
+
             click = Content.Load<SoundEffect>("Sounds/button");
             //map.Save("map.wc");
             
@@ -104,11 +106,10 @@ namespace Warcraft_1.Scenes
 
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
         {
-            map.Read("map.wc");
+            //map.Read("map.wc");
             SpriteBatch _spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             _spriteBatch.Begin();
-
 
             map.DrawMain(_spriteBatch);
             _spriteBatch.Draw(components[(int)TextureSPlay.Interface], new Rectangle(0, 0, 1920, 1080), Color.White);

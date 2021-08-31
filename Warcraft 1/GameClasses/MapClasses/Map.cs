@@ -13,6 +13,8 @@ namespace Warcraft_1.GameClasses
     class Map
     {
         public Texture2D maptiles;
+        public Texture2D buildingtiles;
+
         public Point Camera = new Point(0, 0);
         Field[,] map { get; set; }
         private const int fieldPixelSize = 32;
@@ -60,20 +62,24 @@ namespace Warcraft_1.GameClasses
             {
                 for (int j = 0; j < (int)CameraMaxVal.Y; j++)
                 {
-                    if(i == (int)CameraMaxVal.X -1 || j == (int)CameraMaxVal.Y -1 || i == 0 || j == 0)
+                    if (i == (int)CameraMaxVal.X - 1 || j == (int)CameraMaxVal.Y - 1 || i == 0 || j == 0)
                     {
-                        spriteBatch.Draw(pixel, new Rectangle(45 + (i * 4)+Camera.X*4, 45 + (j * 4)+Camera.Y*4, 4, 4), Color.White);
+                        spriteBatch.Draw(pixel, new Rectangle(45 + (i * 4) + Camera.X * 4, 45 + (j * 4) + Camera.Y * 4, 4, 4), Color.White);
                     }
                 }
             }
         }
         public void DrawMain(SpriteBatch spriteBatch)
         {
-            for (int i = 0+Camera.X; i < (int)CameraMaxVal.X + Camera.X; i++)
+            for (int i = 0 + Camera.X; i < (int)CameraMaxVal.X + Camera.X; i++)
             {
                 for (int j = 0 + Camera.Y; j < (int)CameraMaxVal.Y + Camera.Y; j++)
                 {
-                    spriteBatch.Draw(maptiles, new Rectangle(494 + (i- +Camera.X) * fieldPixelSize, 44 + (j- +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].GetFieldTerrain(), Color.White);
+                    if (map[i, j].terrain == TypeOfTerrain.Mine)
+                        spriteBatch.Draw(buildingtiles, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].GetFieldTerrain(), Color.White);
+
+                    else
+                        spriteBatch.Draw(maptiles, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].GetFieldTerrain(), Color.White);
                 }
             }
         }
