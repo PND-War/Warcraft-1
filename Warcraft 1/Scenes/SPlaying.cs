@@ -243,11 +243,11 @@ namespace Warcraft_1.Scenes
                             moveAdd = new Point(1, 1);
                             break;
                     }
-                    for (int i = 0; i < 320; i++)
+                    for (int i = 0; i < 160; i++)
                     {
-                        if (i % 10 == 0)
+                        if (i % 5 == 0)
                         {
-                            aUnit.positionInMoving = new Point(494 + (Pos.X - map.Camera.X) * Map.fieldPixelSize + (moveAdd.X * (i / 10 + 1)), 44 + (Pos.Y - map.Camera.Y) * Map.fieldPixelSize + (moveAdd.Y * (i / 10 + 1)));
+                            aUnit.positionInMoving = new Point(494 + (Pos.X - map.Camera.X) * Map.fieldPixelSize + (moveAdd.X * (i / 5 + 1)), 44 + (Pos.Y - map.Camera.Y) * Map.fieldPixelSize + (moveAdd.Y * (i / 5 + 1)));
                             aUnit.UpdateAnim(true, direction);
                         }
                         Thread.Sleep(1);
