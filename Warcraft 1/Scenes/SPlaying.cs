@@ -175,7 +175,7 @@ namespace Warcraft_1.Scenes
                     map.map[Pos.X, Pos.Y].ClearUnitPlace();
                     aUnit.positionInMoving = new Point(494 + (Pos.X - map.Camera.X) * Map.fieldPixelSize, 44 + (Pos.Y - map.Camera.Y) * Map.fieldPixelSize);
                     aUnit.IsMoving = true;
-                    Pos = newPos;
+                    
                     
                     Logic_Classes.DIRS direction = Logic_Classes.DIRS.NONE;
                     if (up && right)
@@ -252,6 +252,7 @@ namespace Warcraft_1.Scenes
                         }
                         Thread.Sleep(1);
                     }
+                    Pos = newPos;
                 }
 
 
