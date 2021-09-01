@@ -15,6 +15,7 @@ namespace Warcraft_1.Units
         }
         public override void Load()
         {
+
         }
         public override void Update(GameTime gameTime)
         {

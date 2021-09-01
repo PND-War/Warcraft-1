@@ -3,8 +3,11 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Warcraft_1.GameClasses;
+using Warcraft_1.Units;
 
 namespace Warcraft_1.Scenes
 {
@@ -76,7 +79,7 @@ namespace Warcraft_1.Scenes
         {
             map.Update(gameTime);
             CheckMapMove();
-            //CheckFocusMove();
+            CheckFocusMove();
             return CheckPress();
         }
         private void CheckMapMove()
@@ -107,9 +110,9 @@ namespace Warcraft_1.Scenes
                     map.Save("save.wc");
                     return Scenes.mainmenu;
                 }
-               
+
             }
-            
+
             //minimap interaction
             if (Logic_Classes.MouseInterpretator.GetPressedAllTime(Logic_Classes.MouseButton.Left))
             {
@@ -122,45 +125,147 @@ namespace Warcraft_1.Scenes
             return Scenes.nullscene;
         }
 
-        //private void CheckFocusMove()
-        //{
-        //    if(map.group.FocusedUnit.X != -1 && map.group.FocusedUnit != map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving)
-        //    {
-        //        map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving = true;
-        //        Thread thread = new Thread(MoveFocusUnit);
-        //        thread.Start();
-        //    }
-        //}
-        //private void MoveFocusUnit()
-        //{
-        //    Units.AUnit aUnit = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit;
-        //    Point Pos = map.group.FocusedUnit;
-        //    do
-        //    {
-        //        Point miniToMove = new Point(Pos.X, Pos.Y);
-        //        if(Pos.X < aUnit.positionToMove.X && map.map[Pos.X +1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Mine)
-        //        {
-        //            miniToMove.X++;
-        //        }
-        //        else if(Pos.X > aUnit.positionToMove.X && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Mine)
-        //        {
-        //            miniToMove.X--;
-        //        }
+        private void CheckFocusMove()
+        {
+            if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && map.group.FocusedUnit != map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving)
+            {
+                Task task = new Task(() => MoveFocusUnit());
+                task.Start();
+            }
+        }
+        private void MoveFocusUnit()
+        {
+            //AUnit aUnit = AUnit.DeepCopy(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit);
+            AUnit aUnit = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit;
+            Point Pos = map.group.FocusedUnit;
+            map.group.FocusedUnit = new Point(-1, -1);
+            do
+            {
+                Point newPos = new Point(Pos.X, Pos.Y);
 
-        //        if (Pos.Y < aUnit.positionToMove.X && map.map[Pos.X, Pos.Y +1].terrain != TypeOfTerrain.Tree && map.map[Pos.X , Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X, Pos.Y + 1].terrain != TypeOfTerrain.Mine)
-        //        {
-        //            miniToMove.Y++;
-        //        }
-        //        else if (Pos.Y > aUnit.positionToMove.X && map.map[Pos.X , Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X , Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X, Pos.Y - 1].terrain != TypeOfTerrain.Mine)
-        //        {
-        //            miniToMove.Y--;
-        //        }
+                bool up = false;
+                bool left = false;
+                bool down = false;
+                bool right = false;
+                if (Pos.X < aUnit.positionToMove.X && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Mine)
+                {
+                    newPos.X++; right = true;
+                }
+                else if (Pos.X > aUnit.positionToMove.X && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Mine)
+                {
+                    newPos.X--; left = true;
+                }
 
-        //                aUnit.UpdateAnim(true, Logic_Classes.DIRS.UP);
-        //        Pos = miniToMove;
-        //    } while (aUnit.positionToMove != Pos);
-        //    aUnit.IsMoving = false;
-        //}
+                if (Pos.Y < aUnit.positionToMove.Y && map.map[Pos.X, Pos.Y + 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X, Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X, Pos.Y + 1].terrain != TypeOfTerrain.Mine)
+                {
+                    newPos.Y++; down = true;
+                }
+                else if (Pos.Y > aUnit.positionToMove.Y && map.map[Pos.X, Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X, Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X, Pos.Y - 1].terrain != TypeOfTerrain.Mine)
+                {
+                    newPos.Y--; up = true;
+                }
+
+                if (!up && !left && !down && !right)
+                {
+                    break;
+                }
+                else
+                {
+                    map.map[newPos.X, newPos.Y].PlaceAUnit(aUnit);
+                    map.map[Pos.X, Pos.Y].ClearUnitPlace();
+                    aUnit.positionInMoving = new Point(494 + (Pos.X - map.Camera.X) * Map.fieldPixelSize, 44 + (Pos.Y - map.Camera.Y) * Map.fieldPixelSize);
+                    aUnit.IsMoving = true;
+                    Pos = newPos;
+                    
+                    Logic_Classes.DIRS direction = Logic_Classes.DIRS.NONE;
+                    if (up && right)
+                    {
+                        direction = Logic_Classes.DIRS.UPRIGHT;
+                    }
+                    else if (up && left)
+                    {
+                        direction = Logic_Classes.DIRS.UPLEFT;
+                    }
+                    else if (up && left)
+                    {
+                        direction = Logic_Classes.DIRS.UPLEFT;
+                    }
+                    else if (down && right)
+                    {
+                        direction = Logic_Classes.DIRS.DOWNRIGHT;
+                    }
+                    else if (down && left)
+                    {
+                        direction = Logic_Classes.DIRS.DOWNLEFT;
+                    }
+                    else if (up)
+                    {
+                        direction = Logic_Classes.DIRS.UP;
+                    }
+                    else if (down)
+                    {
+                        direction = Logic_Classes.DIRS.DOWN;
+                    }
+                    else if (left)
+                    {
+                        direction = Logic_Classes.DIRS.LEFT;
+                    }
+                    else if (right)
+                    {
+                        direction = Logic_Classes.DIRS.RIGHT;
+                    }
+
+                    Point moveAdd = new Point();
+                    switch (direction)
+                    {
+                        case Logic_Classes.DIRS.UP:
+                            moveAdd = new Point(0, -1);
+                            break;
+                        case Logic_Classes.DIRS.RIGHT:
+                            moveAdd = new Point(1, 0);
+                            break;
+                        case Logic_Classes.DIRS.DOWN:
+                            moveAdd = new Point(0, 1);
+                            break;
+                        case Logic_Classes.DIRS.LEFT:
+                            moveAdd = new Point(-1, 0);
+                            break;
+                        case Logic_Classes.DIRS.UPLEFT:
+                            moveAdd = new Point(-1, -1);
+                            break;
+                        case Logic_Classes.DIRS.UPRIGHT:
+                            moveAdd = new Point(1, -1);
+                            break;
+                        case Logic_Classes.DIRS.DOWNLEFT:
+                            moveAdd = new Point(-1, 1);
+                            break;
+                        case Logic_Classes.DIRS.DOWNRIGHT:
+                            moveAdd = new Point(1, 1);
+                            break;
+                    }
+                    for (int i = 0; i < 320; i++)
+                    {
+                        if (i % 10 == 0)
+                        {
+                            aUnit.positionInMoving = new Point(494 + (Pos.X - map.Camera.X) * Map.fieldPixelSize + (moveAdd.X * (i / 10 + 1)), 44 + (Pos.Y - map.Camera.Y) * Map.fieldPixelSize + (moveAdd.Y * (i / 10 + 1)));
+                            aUnit.UpdateAnim(true, direction);
+                        }
+                        Thread.Sleep(1);
+                    }
+                }
+
+
+
+
+            } while (aUnit.positionToMove != Pos);
+            aUnit.IsMoving = false;
+            aUnit.Frame = 1;
+
+            map.map[Pos.X, Pos.Y].ClearUnitPlace();
+            map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
+            GC.Collect();
+
+        }
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
         {
             //map.Read("map.wc");
@@ -182,7 +287,7 @@ namespace Warcraft_1.Scenes
 
             _spriteBatch.Draw(components[(int)TextureSPlay.Menu], new Vector2(40, 952), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
-            if (Logic_Classes.UnitsTextures.IsLoaded && map.group.FocusedUnit.X != -1)
+            if (Logic_Classes.UnitsTextures.IsLoaded && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null)
             {
                 string UnitName;
                 Logic_Classes.UnitNames.UnitName.TryGetValue((int)map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole(), out UnitName);

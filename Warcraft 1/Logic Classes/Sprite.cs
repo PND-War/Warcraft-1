@@ -12,7 +12,12 @@ namespace Warcraft_1.Logic_Classes
         UP = 0,
         RIGHT,
         DOWN,
-        LEFT
+        LEFT,
+        UPLEFT,
+        UPRIGHT,
+        DOWNLEFT,
+        DOWNRIGHT,
+        NONE
     }
     public enum AXIS
     {
@@ -78,7 +83,7 @@ namespace Warcraft_1.Logic_Classes
         private void UpdateFrame(bool IsMoving)
         {
             if (Frame >= MaxFrame) Frame = 0;
-            if (IsMoving) Frame += 0.0000002f;
+            if (IsMoving) Frame += 0.2f;
         }               // Обновляет кадр анимации
         private void UpdateRect(DIRS Direction)
         {
@@ -87,7 +92,6 @@ namespace Warcraft_1.Logic_Classes
         }         // Обновляет рамки текущего кадра в анимации
 
         #endregion
-
 
         //public void ChangeSprite()
         //{

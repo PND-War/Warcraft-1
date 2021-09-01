@@ -25,6 +25,7 @@ namespace Warcraft_1.Units
     {
         protected bool IsLoaded;
         public bool IsMoving;
+        public Point positionInMoving;
 
         protected int speed;
         protected int armor;
@@ -103,6 +104,31 @@ namespace Warcraft_1.Units
             this.spriteSize = spriteSize;
 
             this.positionToMove = position;
+        }
+
+        static public AUnit DeepCopy(AUnit unit)
+        {
+            AUnit aUnit = new HumWarrior();
+
+            aUnit.speed = unit.speed;
+            aUnit.armor = unit.armor;
+            aUnit.damage = unit.damage;
+            aUnit.maxHealth = unit.maxHealth;
+            aUnit.currentHealth = unit.currentHealth;
+            aUnit.regeneration = unit.regeneration;
+            aUnit.Texture = unit.Texture;
+            aUnit.positionToMove = unit.positionToMove;
+            aUnit.positionInMoving = unit.positionInMoving;
+            aUnit.gold = unit.gold;
+            aUnit.food = unit.food;
+            aUnit.reward = unit.reward;
+
+            aUnit.bio = unit.bio;
+            aUnit.race = unit.race;
+            aUnit.role = unit.role;
+
+            aUnit.spriteSize = unit.spriteSize;
+            return aUnit;
         }
 
         public abstract void Load();
