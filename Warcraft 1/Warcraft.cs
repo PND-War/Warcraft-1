@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using Warcraft_1.Scenes;
@@ -62,9 +61,7 @@ namespace Warcraft_1
         }
 
         protected override void LoadContent()
-        {
-           
-        }
+        {}
 
         protected override void Update(GameTime gameTime)
         {

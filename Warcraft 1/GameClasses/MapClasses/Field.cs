@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Warcraft_1.GameClasses
 {
@@ -22,17 +19,6 @@ namespace Warcraft_1.GameClasses
         public Texture2D fieldTexture { get; set; }
         public Units.AUnit unit { get; set; }
         public int spriteId { get; set; }
-        //public Field()
-        //{
-        //    cheked = false;
-        //    terrain = TypeOfTerrain.Earth;
-        //}
-        //public Field(Texture2D texture)
-        //{
-        //    cheked = false;
-        //    terrain = TypeOfTerrain.Earth;
-        //    fieldTexture = texture;
-        //}
         public bool CheckTerrain()
         {
             bool res = false;

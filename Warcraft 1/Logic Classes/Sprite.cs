@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Warcraft_1.GameClasses;
 
 namespace Warcraft_1.Logic_Classes
@@ -26,7 +23,6 @@ namespace Warcraft_1.Logic_Classes
     }
     class Sprite
     {
-        //private Vector2 Origin;           // Начальная точка
         public Texture2D Texture;        // Текстура 
 
         public Rectangle Rect;           // Границы отрисовки
