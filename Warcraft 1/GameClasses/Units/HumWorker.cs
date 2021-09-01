@@ -23,7 +23,7 @@ namespace Warcraft_1.Units
         }
         public override void Update(GameTime gameTime)
         {
-            this.UpdateAnim(false, Logic_Classes.DIRS.DOWN);
+            //this.UpdateAnim(false, Logic_Classes.DIRS.DOWN);
         }
     }
 }
