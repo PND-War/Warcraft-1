@@ -20,7 +20,7 @@ namespace Warcraft_1.Units
 
     abstract class AUnit : Logic_Classes.Sprite
     {
-        protected bool IsLoaded;
+        public bool IsLoaded;
         public bool IsMoving;
         public Point positionInMoving;
         public SoundEffect action;

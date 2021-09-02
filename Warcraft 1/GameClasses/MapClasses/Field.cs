@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 namespace Warcraft_1.GameClasses
 {
@@ -16,7 +17,7 @@ namespace Warcraft_1.GameClasses
     {
         public TypeOfTerrain terrain { get; set; }
         public bool cheked { get; set; } = true;
-        public Texture2D fieldTexture { get; set; }
+        [JsonIgnore]
         public Units.AUnit unit { get; set; }
         public int spriteId { get; set; }
         public bool CheckTerrain()

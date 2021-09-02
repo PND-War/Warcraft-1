@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using Warcraft_1.GameClasses;
 
 namespace Warcraft_1.Logic_Classes
@@ -23,24 +24,18 @@ namespace Warcraft_1.Logic_Classes
     }
     public class Sprite
     {
-        public Texture2D Texture;        // Текстура 
+        [JsonIgnore]
+        public Texture2D Texture { get; set; }
+        public Rectangle Rect;       
 
-        public Rectangle Rect;           // Границы отрисовки
+        public float Frame = 0;           
+        private float MaxFrame = 0;       
 
-        public float Frame = 0;           // Начальный кадр       (Если есть анимация)
-        private float MaxFrame = 0;       // Количество кадров    (Если есть анимация)
-
+        
         public Sprite()
         {
             this.Rect = new Rectangle(0, 0, 32, 32);
             Texture = null;
-        }
-        public Sprite(Texture2D texture, Rectangle rect)
-        {
-            this.Rect = rect;
-            this.Texture = texture;
-            //this.Origin = new Vector2(texture.Width / 2, texture.Height / 2);
-            this.MaxFrame = texture.Width / rect.Width;
         }
 
         public void Init(Texture2D texture, Rectangle rect)
@@ -55,7 +50,7 @@ namespace Warcraft_1.Logic_Classes
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.Texture, this.Rect, Color.White);      // Отрисовка спрайта
+            spriteBatch.Draw(this.Texture, this.Rect, Color.White);      
         }
         #endregion
 
@@ -70,7 +65,7 @@ namespace Warcraft_1.Logic_Classes
         {
             this.UpdateFrame(IsMoving);
             this.UpdateRect(Direction);
-        }   //Обновляет анимацию, если она есть
+        }
 
 
         //Private methods
@@ -80,13 +75,12 @@ namespace Warcraft_1.Logic_Classes
         {
             if (Frame >= MaxFrame) Frame = 0;
             if (IsMoving) Frame += 0.2f;
-        }               // Обновляет кадр анимации
+        }
         private void UpdateRect(DIRS Direction)
-        {
-            this.Rect.X =  (int)Direction * Map.fieldPixelSize;              // Обновляем кадр анимации исходя из кадра
-            this.Rect.Y = (int)this.Frame * Map.fieldPixelSize;         // Обновляем номер анимации исходя из направления
-        }         // Обновляет рамки текущего кадра в анимации
-
+            {
+                Rect.X = (int)Direction * Map.fieldPixelSize;
+                Rect.Y = (int)this.Frame * Map.fieldPixelSize;
+            }
         #endregion
 
         //public void ChangeSprite()

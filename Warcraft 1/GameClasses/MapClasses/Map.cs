@@ -32,6 +32,10 @@ namespace Warcraft_1.GameClasses
         public int Wood;
         [DataMember]
         public int Gold;
+        [DataMember]
+        public System.Collections.Generic.List<Units.HumWorker> units;
+        [DataMember]
+        public System.Collections.Generic.List<Point> unitsCords;
         public Map()
         {
             map = new Field[mapSize, mapSize];
@@ -43,17 +47,28 @@ namespace Warcraft_1.GameClasses
                 }
             }
             group = new Logic_Classes.Group();
+            units = new System.Collections.Generic.List<Units.HumWorker>();
+            unitsCords = new System.Collections.Generic.List<Point>();
         }
 
         public void Read(string path)
         {
             try
             {
-                Map tmp = JsonConvert.DeserializeObject<Map>(File.ReadAllText(path)); //не работает из-за абстракции
+                Map tmp = JsonConvert.DeserializeObject<Map>(File.ReadAllText(path));
                 this.map = tmp.map;
                 this.Gold = tmp.Gold;
                 this.Wood = tmp.Wood;
-                map[7, 86].unit = new Units.HumWorker() { positionToMove = new Point(7, 86) };
+                if (tmp.units != null)
+                {
+                    for (int i = 0; i < tmp.units.Count; i++)
+                    {
+                        map[tmp.unitsCords[i].X, tmp.unitsCords[i].Y].unit = tmp.units[i];
+                    }
+                }
+                if (path == "map.wc")
+                    map[7, 86].unit = new Units.HumWorker() { positionToMove = new Point(7, 86) };
+
 
             }
             catch (Exception)
@@ -62,11 +77,24 @@ namespace Warcraft_1.GameClasses
                 this.map = tmp.map;
                 this.Gold = tmp.Gold;
                 this.Wood = tmp.Wood;
+                map[7, 86].unit = new Units.HumWorker() { positionToMove = new Point(7, 86) };
             }
 
         }
         public void Save(string path)
         {
+            for (int i = 0; i < mapSize; i++)
+            {
+                for (int j = 0; j < mapSize; j++)
+                {
+                    if (map[i, j].unit != null)
+                    {
+                        map[i, j].unit.IsLoaded = false;
+                        units.Add(map[i, j].unit as Units.HumWorker);
+                        unitsCords.Add(new Point(i, j));
+                    }
+                }
+            }
             if (!File.Exists(path))
             {
                 File.Create(path).Close();
@@ -163,13 +191,13 @@ namespace Warcraft_1.GameClasses
                         try
                         {
                             map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
-                            if(map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null)
+                            if (map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null)
                             {
                                 soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
                                 soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
                             }
                         }
-                        catch(Exception){}
+                        catch (Exception) { }
                     }
                 }
             }
