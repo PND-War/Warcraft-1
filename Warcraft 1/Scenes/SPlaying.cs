@@ -139,6 +139,7 @@ namespace Warcraft_1.Scenes
             AUnit aUnit = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit;
             Point Pos = map.group.FocusedUnit;
             map.group.FocusedUnit = new Point(-1, -1);
+            Logic_Classes.DIRS direction = Logic_Classes.DIRS.NONE;
             do
             {
                 Point newPos = new Point(Pos.X, Pos.Y);
@@ -167,7 +168,13 @@ namespace Warcraft_1.Scenes
 
                 if (!up && !left && !down && !right)
                 {
-                    break;
+                    aUnit.IsMoving = false;
+                    aUnit.Frame = 0;
+                    map.map[Pos.X, Pos.Y].ClearUnitPlace();
+                    map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
+                    aUnit.positionToMove = Pos;
+                    aUnit.UpdateAnim(false, direction);
+                    return;
                 }
                 else
                 {
@@ -175,9 +182,9 @@ namespace Warcraft_1.Scenes
                     map.map[Pos.X, Pos.Y].ClearUnitPlace();
                     aUnit.positionInMoving = new Point(494 + (Pos.X - map.Camera.X) * Map.fieldPixelSize, 44 + (Pos.Y - map.Camera.Y) * Map.fieldPixelSize);
                     aUnit.IsMoving = true;
-                    
-                    
-                    Logic_Classes.DIRS direction = Logic_Classes.DIRS.NONE;
+
+
+                    direction = Logic_Classes.DIRS.NONE;
                     if (up && right)
                     {
                         direction = Logic_Classes.DIRS.UPRIGHT;
@@ -260,8 +267,8 @@ namespace Warcraft_1.Scenes
 
             } while (aUnit.positionToMove != Pos);
             aUnit.IsMoving = false;
-            aUnit.Frame = 1;
-
+            aUnit.Frame = 0;
+            aUnit.UpdateAnim(false, direction);
             map.map[Pos.X, Pos.Y].ClearUnitPlace();
             map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
             GC.Collect();
