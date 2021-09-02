@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace Warcraft_1.Units
 {
@@ -9,10 +11,11 @@ namespace Warcraft_1.Units
             this.race = Race.HUMAN;
             this.role = Role.WORKER;
         }
-        public override void Load()
+        public override void Load(ContentManager Content)
         {
             if (!IsLoaded)
             {
+                action = Content.Load<SoundEffect>("Sounds/Game/HumWorker");
                 Init(Logic_Classes.UnitsTextures.Worker, new Rectangle(0, 0, GameClasses.Map.fieldPixelSize, GameClasses.Map.fieldPixelSize));
                 IsLoaded = true;
             }

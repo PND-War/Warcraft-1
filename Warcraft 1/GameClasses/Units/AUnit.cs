@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace Warcraft_1.Units
 {
@@ -21,6 +23,7 @@ namespace Warcraft_1.Units
         protected bool IsLoaded;
         public bool IsMoving;
         public Point positionInMoving;
+        public SoundEffect action;
 
         protected int speed;
         protected int armor;
@@ -126,7 +129,7 @@ namespace Warcraft_1.Units
             return aUnit;
         }
 
-        public abstract void Load();
+        public abstract void Load(ContentManager Content);
         public abstract void Update(GameTime gameTime);
 
         protected void Regeneration()

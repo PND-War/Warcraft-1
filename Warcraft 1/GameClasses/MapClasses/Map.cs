@@ -4,6 +4,8 @@ using System.IO;
 using Newtonsoft.Json;
 using Microsoft.Xna.Framework.Input;
 using System;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Warcraft_1.GameClasses
 {
@@ -17,7 +19,8 @@ namespace Warcraft_1.GameClasses
         public Texture2D maptiles;
         public Texture2D buildingtiles;
         public Logic_Classes.Group group;
-
+        public ContentManager Content;
+        public SoundEffectInstance soundInstance;
         public Point Camera = new Point(0, mapSize - (int)CameraMaxVal.Y);
         public Field[,] map { get; set; }
         public const int fieldPixelSize = 32;
@@ -94,7 +97,7 @@ namespace Warcraft_1.GameClasses
                     {
                         if (!map[i, j].unit.IsMoving)
                         {
-                            map[i, j].unit.Load();
+                            map[i, j].unit.Load(Content);
                             spriteBatch.Draw(map[i, j].unit.Texture, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].unit.Rect, Color.White);
                         }
                     }
@@ -108,7 +111,7 @@ namespace Warcraft_1.GameClasses
 
                     if (map[i, j].unit != null && map[i, j].unit.IsMoving)
                     {
-                        map[i, j].unit.Load();
+                        map[i, j].unit.Load(Content);
                         spriteBatch.Draw(map[i, j].unit.Texture, new Rectangle(map[i, j].unit.positionInMoving.X, map[i, j].unit.positionInMoving.Y, fieldPixelSize, fieldPixelSize), map[i, j].unit.Rect, Color.White);
                     }
 
@@ -157,6 +160,8 @@ namespace Warcraft_1.GameClasses
                         try
                         {
                         map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
+                            soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
+                            soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
                         }
                         catch(Exception)
                         {

@@ -68,6 +68,7 @@ namespace Warcraft_1.Scenes
             Pixel.SetData<Color>(new Color[1] { Color.White });
 
             components.AddRange(new Texture2D[] { cursor, Interface, Pixel, Menu, ProfileEmpty, Frame, Health });
+            this.map.Content = Content;
             SoundAdjust();
         }
         private void SoundAdjust()

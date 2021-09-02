@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 
 namespace Warcraft_1.Units
 {
@@ -9,9 +10,9 @@ namespace Warcraft_1.Units
             this.race = Race.HUMAN;
             this.role = Role.WARRIOR;
         }
-        public override void Load()
+        public override void Load(ContentManager Content)
         {
-
+            
         }
         public override void Update(GameTime gameTime)
         {
