@@ -45,7 +45,7 @@ namespace Warcraft_1.Units
         public Point positionToMove;
 
         // Базовый конструктор, все параметры инициализирует нулем
-        protected AUnit() : base()
+        public AUnit() : base()
         {
             this.speed = 0;
             this.armor = 0;

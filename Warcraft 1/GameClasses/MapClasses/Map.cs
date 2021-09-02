@@ -49,7 +49,7 @@ namespace Warcraft_1.GameClasses
         {
             try
             {
-                Map tmp = JsonConvert.DeserializeObject<Map>(File.ReadAllText(path));
+                Map tmp = JsonConvert.DeserializeObject<Map>(File.ReadAllText(path)); //не работает из-за абстракции
                 this.map = tmp.map;
                 this.Gold = tmp.Gold;
                 this.Wood = tmp.Wood;
@@ -59,6 +59,9 @@ namespace Warcraft_1.GameClasses
             catch (Exception)
             {
                 Map tmp = JsonConvert.DeserializeObject<Map>(File.ReadAllText("map.wc"));
+                this.map = tmp.map;
+                this.Gold = tmp.Gold;
+                this.Wood = tmp.Wood;
             }
 
         }
@@ -111,39 +114,30 @@ namespace Warcraft_1.GameClasses
                             spriteBatch.Draw(map[i, j].unit.Texture, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].unit.Rect, Color.White);
                         }
                     }
-
                 }
             }
             for (int i = 0 + Camera.X; i < (int)CameraMaxVal.X + Camera.X; i++)
             {
                 for (int j = 0 + Camera.Y; j < (int)CameraMaxVal.Y + Camera.Y; j++)
                 {
-
                     if (map[i, j].unit != null && map[i, j].unit.IsMoving)
                     {
                         map[i, j].unit.Load(Content);
                         spriteBatch.Draw(map[i, j].unit.Texture, new Rectangle(map[i, j].unit.positionInMoving.X, map[i, j].unit.positionInMoving.Y, fieldPixelSize, fieldPixelSize), map[i, j].unit.Rect, Color.White);
                     }
-
                 }
             }
-
             if (group.FocusedUnit != new Point(-1, -1))
             {
                 for (int i = 0; i < (int)fieldPixelSize; i++)
                 {
                     for (int j = 0; j < (int)fieldPixelSize; j++)
                     {
-
-
                         if (i == fieldPixelSize - 1 || j == fieldPixelSize - 1 || i == 0 || j == 0)
                         {
                             spriteBatch.Draw(pixel, new Rectangle(494 + (i) + (group.FocusedUnit.X - Camera.X) * fieldPixelSize, 44 + (j) + (group.FocusedUnit.Y - Camera.Y) * fieldPixelSize, 2, 2), Color.Lime);
                         }
-
-
                     }
-
                 }
             }
         }
