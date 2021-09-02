@@ -50,6 +50,68 @@ namespace Warcraft_1.GameClasses
             units = new System.Collections.Generic.List<Units.HumWorker>();
             unitsCords = new System.Collections.Generic.List<Point>();
         }
+        public void CreateUnit(int x, int y, Units.Race race, Units.Role role)
+        {
+            bool human = true;
+            if (race == Units.Race.ORC)
+            {
+                human = false;
+            }
+            switch (role)
+            {
+                case Units.Role.WORKER:
+                    if (human)
+                    {
+                        map[x, y].unit = new Units.HumWorker();
+                    }
+                    else
+                    {
+                        map[x, y].unit = new Units.OrcWorker();
+                    }
+                    break;
+                case Units.Role.WARRIOR:
+                    if (human)
+                    {
+                        map[x, y].unit = new Units.HumWarrior();
+                    }
+                    else
+                    {
+                        map[x, y].unit = new Units.OrcWarrior();
+                    }
+                    break;
+                case Units.Role.NONE:
+                    break;
+            }
+            if (map[x, y].unit != null)
+            {
+                map[x, y].unit.positionToMove = new Point(x, y);
+                if (human)
+                {
+                    CheckAround(x, y);
+                }
+            }
+        }
+        public void CheckAround(int x, int y)
+        {
+            const int checkRad = 5;
+            for (int i = checkRad * -1; i <= checkRad; i++)
+            {
+                for (int j = checkRad * -1; j <= checkRad; j++)
+                {
+                    int c = 0;
+                    if (i == checkRad * -1)
+                        c++;
+                    if (j == checkRad * -1)
+                        c++;
+                    if (i == checkRad)
+                        c++;
+                    if (j == checkRad)
+                        c++;
+                    if (c != 2 && x + i < 100 && x + i >= 0 && y + j < 100 && y + j >= 0)
+                        map[x + i, y + j].cheked = true;
+                }
+            }
+        }
 
         public void Read(string path)
         {
@@ -67,7 +129,7 @@ namespace Warcraft_1.GameClasses
                     }
                 }
                 if (path == "map.wc")
-                    map[7, 86].unit = new Units.HumWorker() { positionToMove = new Point(7, 86) };
+                    CreateUnit(7, 86, Units.Race.HUMAN, Units.Role.WORKER);
 
 
             }
@@ -77,7 +139,7 @@ namespace Warcraft_1.GameClasses
                 this.map = tmp.map;
                 this.Gold = tmp.Gold;
                 this.Wood = tmp.Wood;
-                map[7, 86].unit = new Units.HumWorker() { positionToMove = new Point(7, 86) };
+                CreateUnit(7, 86, Units.Race.HUMAN, Units.Role.WORKER);
             }
 
         }
@@ -133,26 +195,30 @@ namespace Warcraft_1.GameClasses
             {
                 for (int j = 0 + Camera.Y; j < (int)CameraMaxVal.Y + Camera.Y; j++)
                 {
-                    spriteBatch.Draw(map[i, j].terrain == TypeOfTerrain.Mine ? buildingtiles : maptiles, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].GetFieldTerrain(), Color.White);
-                    if (map[i, j].unit != null)
+                    spriteBatch.Draw(map[i, j].terrain == TypeOfTerrain.Mine ? buildingtiles : maptiles, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].GetFieldTerrain(), map[i, j].cheked ? Color.White : Color.Black);
+                    if (map[i, j].unit != null && !map[i, j].unit.IsMoving && map[i, j].cheked)
                     {
-                        if (!map[i, j].unit.IsMoving)
-                        {
-                            map[i, j].unit.Load(Content);
-                            spriteBatch.Draw(map[i, j].unit.Texture, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].unit.Rect, Color.White);
-                        }
+                        map[i, j].unit.Load(Content);
+                        spriteBatch.Draw(map[i, j].unit.Texture, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].unit.Rect, Color.White);
+
                     }
+
+
                 }
             }
             for (int i = 0 + Camera.X; i < (int)CameraMaxVal.X + Camera.X; i++)
             {
                 for (int j = 0 + Camera.Y; j < (int)CameraMaxVal.Y + Camera.Y; j++)
                 {
-                    if (map[i, j].unit != null && map[i, j].unit.IsMoving)
+                    if (map[i, j].cheked)
                     {
-                        map[i, j].unit.Load(Content);
-                        spriteBatch.Draw(map[i, j].unit.Texture, new Rectangle(map[i, j].unit.positionInMoving.X, map[i, j].unit.positionInMoving.Y, fieldPixelSize, fieldPixelSize), map[i, j].unit.Rect, Color.White);
+                        if (map[i, j].unit != null && map[i, j].unit.IsMoving)
+                        {
+                            map[i, j].unit.Load(Content);
+                            spriteBatch.Draw(map[i, j].unit.Texture, new Rectangle(map[i, j].unit.positionInMoving.X, map[i, j].unit.positionInMoving.Y, fieldPixelSize, fieldPixelSize), map[i, j].unit.Rect, Color.White);
+                        }
                     }
+
                 }
             }
             if (group.FocusedUnit != new Point(-1, -1))
@@ -161,10 +227,12 @@ namespace Warcraft_1.GameClasses
                 {
                     for (int j = 0; j < (int)fieldPixelSize; j++)
                     {
-                        if (i == fieldPixelSize - 1 || j == fieldPixelSize - 1 || i == 0 || j == 0)
-                        {
-                            spriteBatch.Draw(pixel, new Rectangle(494 + (i) + (group.FocusedUnit.X - Camera.X) * fieldPixelSize, 44 + (j) + (group.FocusedUnit.Y - Camera.Y) * fieldPixelSize, 2, 2), Color.Lime);
-                        }
+                            if (i == fieldPixelSize - 1 || j == fieldPixelSize - 1 || i == 0 || j == 0)
+                            {
+                                spriteBatch.Draw(pixel, new Rectangle(494 + (i) + (group.FocusedUnit.X - Camera.X) * fieldPixelSize, 44 + (j) + (group.FocusedUnit.Y - Camera.Y) * fieldPixelSize, 2, 2), Color.Lime);
+                            }
+                            
+
                     }
                 }
             }
@@ -186,6 +254,23 @@ namespace Warcraft_1.GameClasses
                 if (group.FocusedUnit.X != -1 && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit != null && !map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
                     MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
+                    if (map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
+                    {
+                        try
+                        {
+                            map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
+                            if (map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null)
+                            {
+                                soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
+                                soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+                            }
+                        }
+                        catch (Exception) { }
+                    }
+                }
+                else if (group.FocusedUnit.X != -1 && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit != null && !map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.IsMoving && new Rectangle(45, 45, 400, 400).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    MouseCoords = new Point((Mouse.GetState().Position.X - 45) / 4, (Mouse.GetState().Position.Y - 45) / 4);
                     if (map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
                     {
                         try

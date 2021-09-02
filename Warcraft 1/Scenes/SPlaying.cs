@@ -251,6 +251,7 @@ namespace Warcraft_1.Scenes
                             moveAdd = new Point(1, 1);
                             break;
                     }
+                    map.CheckAround(newPos.X, newPos.Y);
                     for (int i = 0; i < 160; i++)
                     {
                         if (i % 5 == 0)
