@@ -11,7 +11,12 @@ namespace Warcraft_1.GameClasses
         Road,
         Tree,
         Mine,
-        Bridge
+        Bridge,
+        Building
+    }
+    public enum BuildingType
+    {
+        None
     }
     class Field
     {
@@ -20,6 +25,9 @@ namespace Warcraft_1.GameClasses
         [JsonIgnore]
         public Units.AUnit unit { get; set; }
         public int spriteId { get; set; }
+
+        public Units.Race buildOf = Units.Race.NONE;
+        public BuildingType buildingType = BuildingType.None;
         public bool CheckTerrain()
         {
             bool res = false;
@@ -52,6 +60,9 @@ namespace Warcraft_1.GameClasses
                     break;
                 case TypeOfTerrain.Bridge:
                     returnableColor = Color.DarkOrange;
+                    break;
+                case TypeOfTerrain.Building:
+                    returnableColor = GetBuildColor(buildOf);
                     break;
             }
             if (unit != null)
@@ -108,9 +119,18 @@ namespace Warcraft_1.GameClasses
         {
             return CheckFriendly(unitG) ? Color.GreenYellow : Color.OrangeRed;
         }
+        private Color GetBuildColor(Units.Race race)
+        {
+            return CheckFriendly(race) ? Color.GreenYellow : Color.OrangeRed;
+        }
         private bool CheckFriendly(Units.AUnit unitG)
         {
             if (unitG.GetRace() == Units.Race.HUMAN) return true;
+            return false;
+        }
+        private bool CheckFriendly(Units.Race race)
+        {
+            if (race == Units.Race.HUMAN) return true;
             return false;
         }
     }
