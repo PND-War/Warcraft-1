@@ -21,7 +21,7 @@ namespace Warcraft_1.Logic_Classes
         X = 1,
         Y = 2
     }
-    class Sprite
+    public class Sprite
     {
         public Texture2D Texture;        // Текстура 
 

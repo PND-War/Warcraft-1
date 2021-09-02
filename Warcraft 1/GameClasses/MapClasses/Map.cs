@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
+using System.Runtime.Serialization;
 
 namespace Warcraft_1.GameClasses
 {
@@ -14,6 +15,7 @@ namespace Warcraft_1.GameClasses
         X = 44,
         Y = 31
     }
+    [DataContract]
     class Map
     {
         public Texture2D maptiles;
@@ -22,9 +24,14 @@ namespace Warcraft_1.GameClasses
         public ContentManager Content;
         public SoundEffectInstance soundInstance;
         public Point Camera = new Point(0, mapSize - (int)CameraMaxVal.Y);
-        public Field[,] map { get; set; }
         public const int fieldPixelSize = 32;
         public const int mapSize = 100;
+        [DataMember]
+        public Field[,] map { get; set; }
+        [DataMember]
+        public int Wood;
+        [DataMember]
+        public int Gold;
         public Map()
         {
             map = new Field[mapSize, mapSize];
@@ -42,13 +49,16 @@ namespace Warcraft_1.GameClasses
         {
             try
             {
-                map = JsonConvert.DeserializeObject<Field[,]>(File.ReadAllText(path));
+                Map tmp = JsonConvert.DeserializeObject<Map>(File.ReadAllText(path));
+                this.map = tmp.map;
+                this.Gold = tmp.Gold;
+                this.Wood = tmp.Wood;
                 map[7, 86].unit = new Units.HumWorker() { positionToMove = new Point(7, 86) };
 
             }
             catch (Exception)
             {
-                map = JsonConvert.DeserializeObject<Field[,]>(File.ReadAllText("map.wc"));
+                Map tmp = JsonConvert.DeserializeObject<Map>(File.ReadAllText("map.wc"));
             }
 
         }
@@ -57,11 +67,11 @@ namespace Warcraft_1.GameClasses
             if (!File.Exists(path))
             {
                 File.Create(path).Close();
-                File.WriteAllText(path, JsonConvert.SerializeObject(map));
+                File.WriteAllText(path, JsonConvert.SerializeObject(this));
             }
             else
             {
-                File.WriteAllText(path, JsonConvert.SerializeObject(map));
+                File.WriteAllText(path, JsonConvert.SerializeObject(this));
             }
 
         }
@@ -143,7 +153,6 @@ namespace Warcraft_1.GameClasses
 
             if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
             {
-
                 Logic_Classes.MouseInterpretator.ResetInter();
                 MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
                 if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map[MouseCoords.X, MouseCoords.Y].unit != null) group.FocusedUnit = MouseCoords;
@@ -159,14 +168,14 @@ namespace Warcraft_1.GameClasses
                     {
                         try
                         {
-                        map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
-                            soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
-                            soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+                            map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
+                            if(map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null)
+                            {
+                                soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
+                                soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+                            }
                         }
-                        catch(Exception)
-                        {
-
-                        }
+                        catch(Exception){}
                     }
                 }
             }
