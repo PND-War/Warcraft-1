@@ -33,7 +33,8 @@ namespace Warcraft_1.Scenes
             Menu,
             ProfileEmpty,
             Frame,
-            Health
+            Health,
+            Resourses
         }
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
@@ -54,7 +55,7 @@ namespace Warcraft_1.Scenes
 
             click = Content.Load<SoundEffect>("Sounds/button");
             //map.Save("map.wc");
-
+            Texture2D Resourses = Content.Load<Texture2D>("Textures/Game/Resources");
 
             Texture2D cursor = Content.Load<Texture2D>("Textures/UI/cursor");
             Texture2D Interface = Content.Load<Texture2D>("Textures/UI/Interface");
@@ -67,7 +68,7 @@ namespace Warcraft_1.Scenes
             Texture2D Pixel = new Texture2D(graphics.GraphicsDevice, 1, 1);
             Pixel.SetData<Color>(new Color[1] { Color.White });
 
-            components.AddRange(new Texture2D[] { cursor, Interface, Pixel, Menu, ProfileEmpty, Frame, Health });
+            components.AddRange(new Texture2D[] { cursor, Interface, Pixel, Menu, ProfileEmpty, Frame, Health, Resourses });
             this.map.Content = Content;
             SoundAdjust();
         }
@@ -300,6 +301,11 @@ namespace Warcraft_1.Scenes
             _spriteBatch.Draw(somethingButton, new Vector2(250, 791), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
             _spriteBatch.Draw(components[(int)TextureSPlay.Menu], new Vector2(40, 952), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+
+            _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(0, 0, 1000, 0), new Rectangle(0, 0, 42, 29), Color.White);
+            _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(0, 0, 1050, 0), new Rectangle(42, 0, 27, 29), Color.White);
+
+
 
             if (Logic_Classes.UnitsTextures.IsLoaded && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null)
             {
