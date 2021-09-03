@@ -80,6 +80,11 @@ namespace Warcraft_1.Logic_Classes
              {66, new Point(396, 165)},
              {67, new Point(429, 165) },
              {68, new Point(462, 165)},
+             {69, new Point(363, 0)}, //rock1
+             {70, new Point(363, 33)}, //rock2
+             {71, new Point(363, 66)}, //rock3
+             {72, new Point(363, 99)}, //crater1
+             {73, new Point(363, 132)}, //crater2
              //Special
              {74, new Point(132, 165)}, //unchecked
              {75, new Point(396, 99)}, //defaultground
