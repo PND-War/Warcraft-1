@@ -129,14 +129,19 @@ namespace Warcraft_1.Scenes
 
         private void CheckFocusMove()
         {
-            if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && map.group.FocusedUnit != map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving)
+            if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && map.group.FocusedUnit != map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving && (map.group.WoodOntain || map.group.GoldOntain))
+            {
+                Task task = new Task(() => MoveFocusUnitToObtain(map.group.WoodOntain));
+                task.Start();
+            }
+            else if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && map.group.FocusedUnit != map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving)
             {
                 Task task = new Task(() => MoveFocusUnit());
                 task.Start();
             }
             else if(map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit == null)
             {
-                map.group.FocusedUnit = new Point(-1, -1);
+                map.group.ChangePoint(-1, -1);
             }
         }
         private void MoveFocusUnit()
@@ -144,7 +149,7 @@ namespace Warcraft_1.Scenes
             //AUnit aUnit = AUnit.DeepCopy(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit);
             AUnit aUnit = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit;
             Point Pos = map.group.FocusedUnit;
-            map.group.FocusedUnit = new Point(-1, -1);
+            map.group.ChangePoint(-1, -1);
             Logic_Classes.DIRS direction = Logic_Classes.DIRS.NONE;
             do
             {
@@ -292,6 +297,34 @@ namespace Warcraft_1.Scenes
             map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
             GC.Collect();
 
+        }
+        private void MoveFocusUnitToObtain(bool wood)
+        {
+            Point pos = new Point(map.group.FocusedUnit.X, map.group.FocusedUnit.Y);
+            HumWorker aUnit = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit as HumWorker;
+            MoveFocusUnit();
+            aUnit.IsMoving = true;
+            TypeOfTerrain type = wood ? TypeOfTerrain.Tree : TypeOfTerrain.Mine;
+            bool can = false;
+            for(int i = pos.X-1; i <= pos.X+1; i++)
+            {
+                for (int j = pos.Y - 1; j <= pos.Y + 1; j++)
+                {
+                    if(map.map[i,j].terrain == type)
+                    {
+                        can = true;
+                    }
+                }
+            }
+            if(can)
+            {
+                aUnit.UpdateAnim(false, Logic_Classes.DIRS.NONE);
+                Thread.Sleep(5000);
+                aUnit.IsCarryingWood = wood;
+                aUnit.IsCarryingGold = !wood;
+                aUnit.UpdateAnim(false, Logic_Classes.DIRS.DOWN);
+            }
+            aUnit.IsMoving = false;
         }
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
         {

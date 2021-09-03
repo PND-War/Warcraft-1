@@ -244,8 +244,8 @@ namespace Warcraft_1.GameClasses
             {
                 Logic_Classes.MouseInterpretator.ResetInter();
                 MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
-                if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map[MouseCoords.X, MouseCoords.Y].unit != null) group.FocusedUnit = MouseCoords;
-                else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100)) group.FocusedUnit = new Point(-1, -1);
+                if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map[MouseCoords.X, MouseCoords.Y].unit != null) group.ChangePoint(MouseCoords);
+                else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100)) group.ChangePoint(-1, -1);
 
             }
             else if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Right))
@@ -258,12 +258,27 @@ namespace Warcraft_1.GameClasses
                         try
                         {
                             map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
-                            if (map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null)
+                            if (map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove != group.FocusedUnit)
                             {
                                 soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
                                 soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
                                 soundInstance.Play();
                             }
+                        }
+                        catch (Exception) { }
+                    }
+                    else if((map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree || map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Mine) && (Keyboard.GetState().IsKeyDown(Keys.D)))
+                    {
+                        try
+                        {
+                            map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
+                            if (map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove != group.FocusedUnit)
+                            {
+                                soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
+                                soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+                                soundInstance.Play();
+                            }
+                            group.OntainChange(true, map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree? TypeOfTerrain.Tree : TypeOfTerrain.Mine);
                         }
                         catch (Exception) { }
                     }
@@ -276,10 +291,11 @@ namespace Warcraft_1.GameClasses
                         try
                         {
                             map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
-                            if (map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null)
+                            if (map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove != group.FocusedUnit)
                             {
                                 soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
                                 soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+                                soundInstance.Play();
                             }
                         }
                         catch (Exception) { }

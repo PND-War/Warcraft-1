@@ -15,7 +15,7 @@ namespace Warcraft_1.Logic_Classes
         DOWNLEFT = 5,
         LEFT = 6,
         UPLEFT = 7,
-        NONE
+        NONE=24
     }
     public enum AXIS
     {
@@ -27,7 +27,7 @@ namespace Warcraft_1.Logic_Classes
         [JsonIgnore]
         public Texture2D Texture { get; set; }
         public Rectangle Rect;
-
+        protected DIRS lastDir = DIRS.DOWN;
         public float Frame = 0;
         private float MaxFrame = 0;
 
@@ -63,24 +63,31 @@ namespace Warcraft_1.Logic_Classes
         //}    //Обновляет позицию 
         public void UpdateAnim(bool IsMoving, DIRS Direction)
         {
+            lastDir = Direction;
             this.UpdateFrame(IsMoving);
             this.UpdateRect(Direction, false, false);
+        }
+        public virtual void UpdateAnim(bool IsMoving)
+        {
+            this.UpdateFrame(IsMoving);
+            this.UpdateRect(lastDir, false, false);
         }
 
         public void UpdateAnim(bool IsMoving, DIRS Direction, bool IsCarryingWood, bool IsCarryingGold)
         {
+            lastDir = Direction;
             this.UpdateFrame(IsMoving);
             this.UpdateRect(Direction, IsCarryingWood, IsCarryingGold);
         }
         //Private methods
         #region Private methods
 
-        private void UpdateFrame(bool IsMoving)
+        protected void UpdateFrame(bool IsMoving)
         {
             if (Frame >= MaxFrame) Frame = 0;
             if (IsMoving) Frame += 0.2f;
         }
-        private void UpdateRect(DIRS Direction, bool IsCarryingWood, bool IsCarryingGold)
+        protected void UpdateRect(DIRS Direction, bool IsCarryingWood, bool IsCarryingGold)
         {
             if(IsCarryingGold)
             {

@@ -24,7 +24,12 @@ namespace Warcraft_1.Units
         }
         public override void Update(GameTime gameTime)
         {
-            //this.UpdateAnim(false, Logic_Classes.DIRS.DOWN);
+            this.UpdateAnim(false);
+        }
+        public override void UpdateAnim(bool IsMoving)
+        {
+            this.UpdateFrame(IsMoving);
+            this.UpdateRect(lastDir, IsCarryingWood, IsCarryingGold);
         }
     }
 }

@@ -4,10 +4,39 @@ namespace Warcraft_1.Logic_Classes
 {
     public class Group
     {
-        public Point FocusedUnit;
+        public Point FocusedUnit { get; private set; }
+        public bool WoodOntain { get; private set; } = false;
+        public bool GoldOntain { get; private set; } = false;
         public Group()
         {
             FocusedUnit = new Point(-1, -1);
+        }
+        public void ChangePoint(int x, int y)
+        {
+            FocusedUnit = new Point(x, y);
+            OntainChange(false);
+        }
+        public void ChangePoint(Point pt)
+        {
+            FocusedUnit = new Point(pt.X, pt.Y);
+            OntainChange(false);
+        }
+        public void OntainChange(bool can, GameClasses.TypeOfTerrain typeOfTerrain)
+        {
+            switch (typeOfTerrain)
+            {
+                case GameClasses.TypeOfTerrain.Tree:
+                    WoodOntain = can;
+                    break;
+                case GameClasses.TypeOfTerrain.Mine:
+                    GoldOntain = can;
+                    break;
+            }
+        }
+        public void OntainChange(bool can)
+        {
+             WoodOntain = can;
+             GoldOntain = can;
         }
     }
 }
