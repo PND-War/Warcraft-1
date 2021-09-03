@@ -25,6 +25,7 @@ namespace Warcraft_1.Units
         public Point positionInMoving;
         public SoundEffect action;
 
+
         protected int speed;
         protected int armor;
         protected int damage;

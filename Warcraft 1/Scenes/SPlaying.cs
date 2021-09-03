@@ -34,7 +34,9 @@ namespace Warcraft_1.Scenes
             ProfileEmpty,
             Frame,
             Health,
-            Resourses
+            Resourses,
+            BtnAttack,
+            BtnWalk
         }
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
@@ -65,10 +67,14 @@ namespace Warcraft_1.Scenes
             Texture2D Frame = Content.Load<Texture2D>("Textures/UI/Frame");
             Texture2D Health = Content.Load<Texture2D>("Textures/UI/HEALTH");
 
+
+            //Texture2D BtnAttack = Content.Load<Texture2D>("Textures/Game/ButtonAttack");
+            //Texture2D BtnWalk = Content.Load<Texture2D>("Textures/Game/ButtonWalk");
+
             Texture2D Pixel = new Texture2D(graphics.GraphicsDevice, 1, 1);
             Pixel.SetData<Color>(new Color[1] { Color.White });
 
-            components.AddRange(new Texture2D[] { cursor, Interface, Pixel, Menu, ProfileEmpty, Frame, Health, Resourses });
+            components.AddRange(new Texture2D[] { cursor, Interface, Pixel, Menu, ProfileEmpty, Frame, Health, Resourses, });
             this.map.Content = Content;
             SoundAdjust();
         }
@@ -376,6 +382,9 @@ namespace Warcraft_1.Scenes
 
             _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(120, 5, 42, 29), new Rectangle(0, 0, 42, 29), Color.White);
             _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(280, 5, 27, 29), new Rectangle(42, 0, 27, 29), Color.White);
+
+            //_spriteBatch.DrawString(font, map.Wood.ToString(), new Vector2(170, 5), Color.White);
+            //_spriteBatch.DrawString(font, map.Gold.ToString(), new Vector2(315, 5), Color.White);
 
             _spriteBatch.Draw(components[(int)TextureSPlay.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
 
