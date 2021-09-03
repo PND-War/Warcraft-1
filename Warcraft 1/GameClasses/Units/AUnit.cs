@@ -41,7 +41,7 @@ namespace Warcraft_1.Units
         protected Role role;
 
         protected Point spriteSize;
-        public bool IsCarryingWood = true;
+        
         public Point positionToMove;
 
         // Базовый конструктор, все параметры инициализирует нулем

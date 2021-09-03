@@ -262,7 +262,19 @@ namespace Warcraft_1.Scenes
                         if (i % 5 == 0)
                         {
                             aUnit.positionInMoving = new Point(494 + (Pos.X - map.Camera.X) * Map.fieldPixelSize + (moveAdd.X * (i / 5 + 1)), 44 + (Pos.Y - map.Camera.Y) * Map.fieldPixelSize + (moveAdd.Y * (i / 5 + 1)));
-                            aUnit.UpdateAnim(true, direction, aUnit.IsCarryingWood);
+                            
+                            if(aUnit is HumWorker hum)
+                            {
+                                aUnit.UpdateAnim(true, direction, hum.IsCarryingWood, hum.IsCarryingGold);
+                            }
+                            else if (aUnit is OrcWorker orc)
+                            {
+                                aUnit.UpdateAnim(true, direction, orc.IsCarryingWood, orc.IsCarryingGold);
+                            }
+                            else
+                            {
+                                aUnit.UpdateAnim(true, direction);
+                            }
                         }
                         Thread.Sleep(1);
                     }

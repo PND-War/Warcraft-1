@@ -64,13 +64,13 @@ namespace Warcraft_1.Logic_Classes
         public void UpdateAnim(bool IsMoving, DIRS Direction)
         {
             this.UpdateFrame(IsMoving);
-            this.UpdateRect(Direction, false);
+            this.UpdateRect(Direction, false, false);
         }
 
-        public void UpdateAnim(bool IsMoving, DIRS Direction, bool IsCarryingWood)
+        public void UpdateAnim(bool IsMoving, DIRS Direction, bool IsCarryingWood, bool IsCarryingGold)
         {
             this.UpdateFrame(IsMoving);
-            this.UpdateRect(Direction, IsCarryingWood);
+            this.UpdateRect(Direction, IsCarryingWood, IsCarryingGold);
         }
         //Private methods
         #region Private methods
@@ -80,9 +80,16 @@ namespace Warcraft_1.Logic_Classes
             if (Frame >= MaxFrame) Frame = 0;
             if (IsMoving) Frame += 0.2f;
         }
-        private void UpdateRect(DIRS Direction, bool IsCarryingWood)
+        private void UpdateRect(DIRS Direction, bool IsCarryingWood, bool IsCarryingGold)
         {
-            Rect.X = (IsCarryingWood ? 8 : 0) * Map.fieldPixelSize + (int)Direction * Map.fieldPixelSize;
+            if(IsCarryingGold)
+            {
+                Rect.X = 16 * Map.fieldPixelSize + (int)Direction * Map.fieldPixelSize;
+            }
+            else
+            {
+                Rect.X = (IsCarryingWood ? 8 : 0) * Map.fieldPixelSize + (int)Direction * Map.fieldPixelSize;
+            }
             Rect.Y = (int)this.Frame * Map.fieldPixelSize;
         }
         #endregion

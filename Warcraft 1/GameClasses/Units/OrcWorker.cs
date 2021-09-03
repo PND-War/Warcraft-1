@@ -6,6 +6,8 @@ namespace Warcraft_1.Units
 {
     class OrcWorker : AUnit
     {
+        public bool IsCarryingWood = false;
+        public bool IsCarryingGold = false;
         public OrcWorker() : base(1, 10, 100, new Point(0, 0), new Point(GameClasses.Map.fieldPixelSize, GameClasses.Map.fieldPixelSize))
         {
             this.race = Race.ORC;
