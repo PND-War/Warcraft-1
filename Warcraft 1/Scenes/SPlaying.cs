@@ -133,6 +133,10 @@ namespace Warcraft_1.Scenes
                 Task task = new Task(() => MoveFocusUnit());
                 task.Start();
             }
+            else if(map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit == null)
+            {
+                map.group.FocusedUnit = new Point(-1, -1);
+            }
         }
         private void MoveFocusUnit()
         {
@@ -157,24 +161,24 @@ namespace Warcraft_1.Scenes
                 {
                     newPos.X--; left = true;
                 }
-
-                if (Pos.Y < aUnit.positionToMove.Y && map.map[Pos.X, Pos.Y + 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X, Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X, Pos.Y + 1].terrain != TypeOfTerrain.Mine)
+                int n = right ? 1 : 0 + (left ? -1 : 0);
+                if (Pos.Y < aUnit.positionToMove.Y && map.map[Pos.X+n, Pos.Y + 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Mine)
                 {
                     newPos.Y++; down = true;
                 }
-                else if (Pos.Y > aUnit.positionToMove.Y && map.map[Pos.X, Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X, Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X, Pos.Y - 1].terrain != TypeOfTerrain.Mine)
+                else if (Pos.Y > aUnit.positionToMove.Y && map.map[Pos.X+n, Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Mine)
                 {
                     newPos.Y--; up = true;
                 }
 
                 if (!up && !left && !down && !right)
                 {
+                    aUnit.positionToMove = Pos;
                     aUnit.IsMoving = false;
+                    aUnit.UpdateAnim(false, direction != Logic_Classes.DIRS.NONE ? direction : Logic_Classes.DIRS.DOWN);
                     aUnit.Frame = 0;
                     map.map[Pos.X, Pos.Y].ClearUnitPlace();
                     map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
-                    aUnit.positionToMove = Pos;
-                    aUnit.UpdateAnim(false, direction);
                     return;
                 }
                 else
@@ -269,8 +273,8 @@ namespace Warcraft_1.Scenes
 
             } while (aUnit.positionToMove != Pos);
             aUnit.IsMoving = false;
+            aUnit.UpdateAnim(false, direction != Logic_Classes.DIRS.NONE ? direction : Logic_Classes.DIRS.DOWN);
             aUnit.Frame = 0;
-            aUnit.UpdateAnim(false, direction);
             map.map[Pos.X, Pos.Y].ClearUnitPlace();
             map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
             GC.Collect();

@@ -129,7 +129,7 @@ namespace Warcraft_1.GameClasses
                     }
                 }
                 if (path == "map.wc")
-                    CreateUnit(7, 86, Units.Race.HUMAN, Units.Role.WORKER);
+                    CreateUnit(9, 90, Units.Race.HUMAN, Units.Role.WORKER);
 
 
             }
@@ -139,7 +139,7 @@ namespace Warcraft_1.GameClasses
                 this.map = tmp.map;
                 this.Gold = tmp.Gold;
                 this.Wood = tmp.Wood;
-                CreateUnit(7, 86, Units.Race.HUMAN, Units.Role.WORKER);
+                CreateUnit(9, 90, Units.Race.HUMAN, Units.Role.WORKER);
             }
 
         }
@@ -200,10 +200,7 @@ namespace Warcraft_1.GameClasses
                     {
                         map[i, j].unit.Load(Content);
                         spriteBatch.Draw(map[i, j].unit.Texture, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].unit.Rect, Color.White);
-
                     }
-
-
                 }
             }
             for (int i = 0 + Camera.X; i < (int)CameraMaxVal.X + Camera.X; i++)
