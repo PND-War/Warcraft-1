@@ -55,7 +55,7 @@ namespace Warcraft_1.Scenes
 
             click = Content.Load<SoundEffect>("Sounds/button");
             //map.Save("map.wc");
-            Texture2D Resourses = Content.Load<Texture2D>("Textures/Game/Resources");
+            Texture2D Resourses = Content.Load<Texture2D>("Textures/Game/ResourceIcons");
 
             Texture2D cursor = Content.Load<Texture2D>("Textures/UI/cursor");
             Texture2D Interface = Content.Load<Texture2D>("Textures/UI/Interface");
@@ -302,9 +302,7 @@ namespace Warcraft_1.Scenes
 
             _spriteBatch.Draw(components[(int)TextureSPlay.Menu], new Vector2(40, 952), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
-            _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(0, 0, 1000, 0), new Rectangle(0, 0, 42, 29), Color.White);
-            _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(0, 0, 1050, 0), new Rectangle(42, 0, 27, 29), Color.White);
-
+           
 
 
             if (Logic_Classes.UnitsTextures.IsLoaded && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null)
@@ -323,6 +321,16 @@ namespace Warcraft_1.Scenes
                 }
 
             }
+            _spriteBatch.DrawString(font, map.Wood.ToString(), new Vector2(173, 7), Color.Black);
+            _spriteBatch.DrawString(font, map.Gold.ToString(), new Vector2(318, 7), Color.Black);
+
+            _spriteBatch.DrawString(font, map.Wood.ToString(), new Vector2(170, 5), Color.White);
+            _spriteBatch.DrawString(font, map.Gold.ToString(), new Vector2(315, 5), Color.White);
+
+            
+
+            _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(120, 5, 42, 29), new Rectangle(0, 0, 42, 29), Color.White);
+            _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(280, 5, 27, 29), new Rectangle(42, 0, 27, 29), Color.White);
 
             _spriteBatch.Draw(components[(int)TextureSPlay.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
 
