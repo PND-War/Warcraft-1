@@ -309,7 +309,7 @@ namespace Warcraft_1.Scenes
                 _spriteBatch.Draw(components[(int)TextureSPlay.Frame], new Rectangle(83, 500, 156, 113), Color.White);
                 _spriteBatch.Draw(components[(int)TextureSPlay.Health], new Rectangle(253, 555, 156, 58), Color.White);
                 _spriteBatch.Draw(Logic_Classes.UnitsTextures.Icons, new Rectangle(88, 505, Logic_Classes.IconSprite.XScale, Logic_Classes.IconSprite.YScale), Logic_Classes.IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole()), Color.White);
-                _spriteBatch.DrawString(font, UnitName, new Vector2(251, 500), Color.DarkKhaki);
+                _spriteBatch.DrawString(font, UnitName, new Vector2(251, 500), new Color(54, 26, 32, 255));
 
                 for (int i = 0; i < map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetCurHP() / map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetMaxHP() * 145; i++)
                 {

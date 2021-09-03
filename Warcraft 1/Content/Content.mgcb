@@ -32,11 +32,11 @@
 /processorParam:Quality=Best
 /build:Sounds/button.wav
 
-#begin Sounds/Game/HumWorker.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
+#begin Sounds/Game/HumWorker.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/Game/HumWorker.mp3
+/build:Sounds/Game/HumWorker.wav
 
 #begin Textures/Game/buildingtiles.png
 /importer:TextureImporter
