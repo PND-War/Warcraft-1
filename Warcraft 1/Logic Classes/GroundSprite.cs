@@ -78,7 +78,7 @@ namespace Warcraft_1.Logic_Classes
              {64, new Point(462, 132)},
              {65, new Point(363, 165)},
              {66, new Point(396, 165)},
-             {67, new Point(429, 165)},
+             {67, new Point(429, 165) },
              {68, new Point(462, 165)},
              //Special
              {74, new Point(132, 165)}, //unchecked
@@ -105,7 +105,7 @@ namespace Warcraft_1.Logic_Classes
             Point Location = new Point();
             groundId.TryGetValue(GetStartId(terrain) + id, out Location);
 
-            return new Rectangle(Location, new Point(32,32));
+            return new Rectangle(Location, new Point(32, 32));
         }
         public static Rectangle GetRecquiredSprite(int id)
         {
