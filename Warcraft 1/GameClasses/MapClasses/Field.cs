@@ -1,22 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
+using Warcraft_1.SpriteAndUnits;
 
-namespace Warcraft_1.GameClasses
+namespace Warcraft_1.GameClasses.MapClasses
 {
-    public enum TypeOfTerrain
-    {
-        Earth,
-        Water,
-        Road,
-        Tree,
-        Mine,
-        Bridge,
-        Building
-    }
-    public enum BuildingType
-    {
-        None
-    }
+    
+    
     class Field
     {
         public TypeOfTerrain terrain { get; set; }
@@ -79,17 +68,17 @@ namespace Warcraft_1.GameClasses
             switch (terrain)
             {
                 case TypeOfTerrain.Earth:
-                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Water, spriteId);
+                    return GroundSprite.GetRecquiredSprite(TypeOfTerrain.Water, spriteId);
                 case TypeOfTerrain.Water:
-                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Water, spriteId);
+                    return GroundSprite.GetRecquiredSprite(TypeOfTerrain.Water, spriteId);
                 case TypeOfTerrain.Road:
-                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Road, spriteId);
+                    return GroundSprite.GetRecquiredSprite(TypeOfTerrain.Road, spriteId);
                 case TypeOfTerrain.Tree:
-                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Tree, spriteId);
+                    return GroundSprite.GetRecquiredSprite(TypeOfTerrain.Tree, spriteId);
                 case TypeOfTerrain.Mine:
-                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Mine, spriteId);
+                    return GroundSprite.GetRecquiredSprite(TypeOfTerrain.Mine, spriteId);
                 case TypeOfTerrain.Bridge:
-                    return Logic_Classes.GroundSprite.GetRecquiredSprite(TypeOfTerrain.Bridge, spriteId);
+                    return GroundSprite.GetRecquiredSprite(TypeOfTerrain.Bridge, spriteId);
             }
             return new Rectangle(264, 66, 32, 32);
         }

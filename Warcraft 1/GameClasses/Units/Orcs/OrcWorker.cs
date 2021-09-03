@@ -2,15 +2,15 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 
-namespace Warcraft_1.Units
+namespace Warcraft_1.GameClasses.Units
 {
-    class HumWorker : AUnit
+    class OrcWorker : AUnit
     {
         public bool IsCarryingWood = false;
         public bool IsCarryingGold = false;
-        public HumWorker() : base(1, 10, 100, new Point(0, 0), new Point(GameClasses.Map.fieldPixelSize, GameClasses.Map.fieldPixelSize))
+        public OrcWorker() : base(1, 10, 100, new Point(0, 0), new Point(MapClasses.Map.fieldPixelSize, MapClasses.Map.fieldPixelSize))
         {
-            this.race = Race.HUMAN;
+            this.race = Race.ORC;
             this.role = Role.WORKER;
         }
         public override void Load(ContentManager Content)
@@ -18,13 +18,13 @@ namespace Warcraft_1.Units
             if (!IsLoaded)
             {
                 action = Content.Load<SoundEffect>("Sounds/Game/HumWorker");
-                Init(Logic_Classes.UnitsTextures.Worker, new Rectangle(0, 0, GameClasses.Map.fieldPixelSize, GameClasses.Map.fieldPixelSize));
+                Init(SpriteAndUnits.UnitsTextures.Worker, new Rectangle(0, 0, MapClasses.Map.fieldPixelSize, MapClasses.Map.fieldPixelSize));
                 IsLoaded = true;
             }
         }
         public override void Update(GameTime gameTime)
         {
-            this.UpdateAnim(false);
+           this.UpdateAnim(false);
         }
         public override void UpdateAnim(bool IsMoving)
         {

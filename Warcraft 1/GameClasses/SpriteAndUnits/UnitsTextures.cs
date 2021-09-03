@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Warcraft_1.Logic_Classes
+namespace Warcraft_1.SpriteAndUnits
 {
     public static class UnitsTextures
     {

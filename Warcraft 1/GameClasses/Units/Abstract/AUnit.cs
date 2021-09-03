@@ -2,23 +2,11 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 
-namespace Warcraft_1.Units
+namespace Warcraft_1.GameClasses.Units
 {
-    enum Race
-    {
-        HUMAN,
-        ORC,
-        NONE
-    }
+    
 
-    enum Role
-    {
-        WORKER,
-        WARRIOR,
-        NONE
-    }
-
-    abstract class AUnit : Logic_Classes.Sprite
+    abstract class AUnit : Sprite
     {
         public bool IsLoaded;
         public bool IsMoving;

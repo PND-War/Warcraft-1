@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Warcraft_1.Units;
+using Warcraft_1.GameClasses.Units;
 
-namespace Warcraft_1.Logic_Classes
+namespace Warcraft_1.SpriteAndUnits
 {
     static class IconSprite
     {

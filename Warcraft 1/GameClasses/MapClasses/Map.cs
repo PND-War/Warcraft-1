@@ -7,14 +7,10 @@ using System;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using System.Runtime.Serialization;
+using Warcraft_1.GameClasses.Units;
 
-namespace Warcraft_1.GameClasses
+namespace Warcraft_1.GameClasses.MapClasses
 {
-    enum CameraMaxVal
-    {
-        X = 44,
-        Y = 31
-    }
     [DataContract]
     class Map
     {
@@ -33,7 +29,7 @@ namespace Warcraft_1.GameClasses
         [DataMember]
         public int Gold;
         [DataMember]
-        public System.Collections.Generic.List<Units.HumWorker> units;
+        public System.Collections.Generic.List<HumWorker> units;
         [DataMember]
         public System.Collections.Generic.List<Point> unitsCords;
         public Map()
@@ -196,7 +192,7 @@ namespace Warcraft_1.GameClasses
                 for (int j = 0 + Camera.Y; j < (int)CameraMaxVal.Y + Camera.Y; j++)
                 {
                     if (map[i, j].cheked) spriteBatch.Draw(map[i, j].terrain == TypeOfTerrain.Mine ? buildingtiles : maptiles, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].GetFieldTerrain(), Color.White);
-                    else spriteBatch.Draw(maptiles, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), Logic_Classes.GroundSprite.GetRecquiredSprite(74), Color.White);
+                    else spriteBatch.Draw(maptiles, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), SpriteAndUnits.GroundSprite.GetRecquiredSprite(74), Color.White);
 
                     if (map[i, j].unit != null && !map[i, j].unit.IsMoving && map[i, j].cheked)
                     {

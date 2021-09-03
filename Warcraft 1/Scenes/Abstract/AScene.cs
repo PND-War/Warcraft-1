@@ -6,16 +6,6 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace Warcraft_1.Scenes
 {
-    enum Scenes
-    {
-        nullscene,
-        mainmenu,
-        startgame,
-        loadgame,
-        settings,
-        quitwindow
-    }
-
     abstract class AScene
     {
         protected SoundEffect click;

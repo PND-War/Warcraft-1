@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Warcraft_1.Logic_Classes
+namespace Warcraft_1.SpriteAndUnits
 {
     public static class UnitNames
     {

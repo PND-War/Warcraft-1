@@ -1,18 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
-namespace Warcraft_1.Units
+namespace Warcraft_1.GameClasses.Units
 {
-    class OrcWarrior : AUnit
+    class HumWarrior : AUnit
     {
-        public OrcWarrior() : base(1, 50, 250, new Point(0, 0), new Point(GameClasses.Map.fieldPixelSize, GameClasses.Map.fieldPixelSize))
+        public HumWarrior() : base(1, 50, 250, new Point(0, 0), new Point(MapClasses.Map.fieldPixelSize, MapClasses.Map.fieldPixelSize))
         {
-            this.race = Race.ORC;
+            this.race = Race.HUMAN;
             this.role = Role.WARRIOR;
         }
         public override void Load(ContentManager Content)
         {
-
+            
         }
         public override void Update(GameTime gameTime)
         {

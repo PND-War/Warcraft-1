@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Warcraft_1.GameClasses.MapClasses;
 
-namespace Warcraft_1.Logic_Classes
+namespace Warcraft_1.SpriteAndUnits
 {
     public static class GroundSprite
     {
@@ -105,7 +106,7 @@ namespace Warcraft_1.Logic_Classes
              {89, new Point(66, 66)},
         };
 
-        public static Rectangle GetRecquiredSprite(GameClasses.TypeOfTerrain terrain, int id)
+        public static Rectangle GetRecquiredSprite(TypeOfTerrain terrain, int id)
         {
             Point Location = new Point();
             groundId.TryGetValue(GetStartId(terrain) + id, out Location);
@@ -119,19 +120,19 @@ namespace Warcraft_1.Logic_Classes
 
             return new Rectangle(Location, new Point(32, 32));
         }
-        public static int GetStartId(GameClasses.TypeOfTerrain terrain)
+        public static int GetStartId(TypeOfTerrain terrain)
         {
             switch (terrain)
             {
-                case GameClasses.TypeOfTerrain.Water:
+                case TypeOfTerrain.Water:
                     return 0;
-                case GameClasses.TypeOfTerrain.Tree:
+                case TypeOfTerrain.Tree:
                     return 18;
-                case GameClasses.TypeOfTerrain.Bridge:
+                case TypeOfTerrain.Bridge:
                     return 27;
-                case GameClasses.TypeOfTerrain.Road:
+                case TypeOfTerrain.Road:
                     return 57;
-                case GameClasses.TypeOfTerrain.Mine:
+                case TypeOfTerrain.Mine:
                     return 80;
             }
             return 0;

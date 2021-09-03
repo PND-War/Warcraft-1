@@ -1,27 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
-using Warcraft_1.GameClasses;
+using Warcraft_1.GameClasses.MapClasses;
 
-namespace Warcraft_1.Logic_Classes
+namespace Warcraft_1.GameClasses.Units
 {
-    public enum DIRS
-    {
-        UP = 0,
-        UPRIGHT = 1,
-        RIGHT = 2,
-        DOWNRIGHT = 3,
-        DOWN = 4,
-        DOWNLEFT = 5,
-        LEFT = 6,
-        UPLEFT = 7,
-        NONE=24
-    }
-    public enum AXIS
-    {
-        X = 1,
-        Y = 2
-    }
     public class Sprite
     {
         [JsonIgnore]

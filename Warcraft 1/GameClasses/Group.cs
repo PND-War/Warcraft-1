@@ -21,14 +21,14 @@ namespace Warcraft_1.Logic_Classes
             FocusedUnit = new Point(pt.X, pt.Y);
             OntainChange(false);
         }
-        public void OntainChange(bool can, GameClasses.TypeOfTerrain typeOfTerrain)
+        public void OntainChange(bool can, GameClasses.MapClasses.TypeOfTerrain typeOfTerrain)
         {
             switch (typeOfTerrain)
             {
-                case GameClasses.TypeOfTerrain.Tree:
+                case GameClasses.MapClasses.TypeOfTerrain.Tree:
                     WoodOntain = can;
                     break;
-                case GameClasses.TypeOfTerrain.Mine:
+                case GameClasses.MapClasses.TypeOfTerrain.Mine:
                     GoldOntain = can;
                     break;
             }

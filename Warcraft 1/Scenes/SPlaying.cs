@@ -7,7 +7,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Warcraft_1.GameClasses;
-using Warcraft_1.Units;
+using Warcraft_1.GameClasses.MapClasses;
+using Warcraft_1.GameClasses.Units;
+using Warcraft_1.SpriteAndUnits;
 
 namespace Warcraft_1.Scenes
 {
@@ -40,7 +42,7 @@ namespace Warcraft_1.Scenes
         }
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
-            if (!Logic_Classes.UnitsTextures.IsLoaded) Logic_Classes.UnitsTextures.Load(Content);
+            if (!UnitsTextures.IsLoaded) UnitsTextures.Load(Content);
 
             font = Content.Load<SpriteFont>("Fonts/Font");
 
@@ -156,7 +158,7 @@ namespace Warcraft_1.Scenes
             AUnit aUnit = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit;
             Point Pos = map.group.FocusedUnit;
             map.group.ChangePoint(-1, -1);
-            Logic_Classes.DIRS direction = Logic_Classes.DIRS.NONE;
+            DIRS direction = DIRS.NONE;
             do
             {
                 Point newPos = new Point(Pos.X, Pos.Y);
@@ -187,7 +189,7 @@ namespace Warcraft_1.Scenes
                 {
                     aUnit.positionToMove = Pos;
                     aUnit.IsMoving = false;
-                    aUnit.UpdateAnim(false, direction != Logic_Classes.DIRS.NONE ? direction : Logic_Classes.DIRS.DOWN);
+                    aUnit.UpdateAnim(false, direction != DIRS.NONE ? direction : DIRS.DOWN);
                     aUnit.Frame = 0;
                     map.map[Pos.X, Pos.Y].ClearUnitPlace();
                     map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
@@ -201,69 +203,69 @@ namespace Warcraft_1.Scenes
                     aUnit.IsMoving = true;
 
 
-                    direction = Logic_Classes.DIRS.NONE;
+                    direction = DIRS.NONE;
                     if (up && right)
                     {
-                        direction = Logic_Classes.DIRS.UPRIGHT;
+                        direction = DIRS.UPRIGHT;
                     }
                     else if (up && left)
                     {
-                        direction = Logic_Classes.DIRS.UPLEFT;
+                        direction = DIRS.UPLEFT;
                     }
                     else if (up && left)
                     {
-                        direction = Logic_Classes.DIRS.UPLEFT;
+                        direction = DIRS.UPLEFT;
                     }
                     else if (down && right)
                     {
-                        direction = Logic_Classes.DIRS.DOWNRIGHT;
+                        direction = DIRS.DOWNRIGHT;
                     }
                     else if (down && left)
                     {
-                        direction = Logic_Classes.DIRS.DOWNLEFT;
+                        direction = DIRS.DOWNLEFT;
                     }
                     else if (up)
                     {
-                        direction = Logic_Classes.DIRS.UP;
+                        direction = DIRS.UP;
                     }
                     else if (down)
                     {
-                        direction = Logic_Classes.DIRS.DOWN;
+                        direction = DIRS.DOWN;
                     }
                     else if (left)
                     {
-                        direction = Logic_Classes.DIRS.LEFT;
+                        direction = DIRS.LEFT;
                     }
                     else if (right)
                     {
-                        direction = Logic_Classes.DIRS.RIGHT;
+                        direction = DIRS.RIGHT;
                     }
 
                     Point moveAdd = new Point();
                     switch (direction)
                     {
-                        case Logic_Classes.DIRS.UP:
+                        case DIRS.UP:
                             moveAdd = new Point(0, -1);
                             break;
-                        case Logic_Classes.DIRS.RIGHT:
+                        case DIRS.RIGHT:
                             moveAdd = new Point(1, 0);
                             break;
-                        case Logic_Classes.DIRS.DOWN:
+                        case DIRS.DOWN:
                             moveAdd = new Point(0, 1);
                             break;
-                        case Logic_Classes.DIRS.LEFT:
+                        case DIRS.LEFT:
                             moveAdd = new Point(-1, 0);
                             break;
-                        case Logic_Classes.DIRS.UPLEFT:
+                        case DIRS.UPLEFT:
                             moveAdd = new Point(-1, -1);
                             break;
-                        case Logic_Classes.DIRS.UPRIGHT:
+                        case DIRS.UPRIGHT:
                             moveAdd = new Point(1, -1);
                             break;
-                        case Logic_Classes.DIRS.DOWNLEFT:
+                        case DIRS.DOWNLEFT:
                             moveAdd = new Point(-1, 1);
                             break;
-                        case Logic_Classes.DIRS.DOWNRIGHT:
+                        case DIRS.DOWNRIGHT:
                             moveAdd = new Point(1, 1);
                             break;
                     }
@@ -297,7 +299,7 @@ namespace Warcraft_1.Scenes
 
             } while (aUnit.positionToMove != Pos);
             aUnit.IsMoving = false;
-            aUnit.UpdateAnim(false, direction != Logic_Classes.DIRS.NONE ? direction : Logic_Classes.DIRS.DOWN);
+            aUnit.UpdateAnim(false, direction != DIRS.NONE ? direction : DIRS.DOWN);
             aUnit.Frame = 0;
             map.map[Pos.X, Pos.Y].ClearUnitPlace();
             map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
@@ -324,11 +326,11 @@ namespace Warcraft_1.Scenes
             }
             if(can)
             {
-                aUnit.UpdateAnim(false, Logic_Classes.DIRS.NONE);
+                aUnit.UpdateAnim(false, DIRS.NONE);
                 Thread.Sleep(5000);
                 aUnit.IsCarryingWood = wood;
                 aUnit.IsCarryingGold = !wood;
-                aUnit.UpdateAnim(false, Logic_Classes.DIRS.DOWN);
+                aUnit.UpdateAnim(false, DIRS.DOWN);
             }
             aUnit.IsMoving = false;
         }
@@ -356,14 +358,14 @@ namespace Warcraft_1.Scenes
            
 
 
-            if (Logic_Classes.UnitsTextures.IsLoaded && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null)
+            if (UnitsTextures.IsLoaded && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null)
             {
                 string UnitName;
-                Logic_Classes.UnitNames.UnitName.TryGetValue((int)map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole(), out UnitName);
+                UnitNames.UnitName.TryGetValue((int)map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole(), out UnitName);
 
                 _spriteBatch.Draw(components[(int)TextureSPlay.Frame], new Rectangle(83, 500, 156, 113), Color.White);
                 _spriteBatch.Draw(components[(int)TextureSPlay.Health], new Rectangle(253, 555, 156, 58), Color.White);
-                _spriteBatch.Draw(Logic_Classes.UnitsTextures.Icons, new Rectangle(88, 505, Logic_Classes.IconSprite.XScale, Logic_Classes.IconSprite.YScale), Logic_Classes.IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole()), Color.White);
+                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(88, 505, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole()), Color.White);
                 _spriteBatch.DrawString(font, UnitName, new Vector2(251, 500), new Color(54, 26, 32, 255));
 
                 for (int i = 0; i < map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetCurHP() / map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetMaxHP() * 145; i++)
