@@ -15,7 +15,7 @@ namespace Warcraft_1.Units
         {
             if (!IsLoaded)
             {
-                //action = Content.Load<SoundEffect>("Sounds/Game/HumWorker");
+                action = Content.Load<SoundEffect>("Sounds/Game/HumWorker");
                 Init(Logic_Classes.UnitsTextures.Worker, new Rectangle(0, 0, GameClasses.Map.fieldPixelSize, GameClasses.Map.fieldPixelSize));
                 IsLoaded = true;
             }

@@ -262,6 +262,7 @@ namespace Warcraft_1.GameClasses
                             {
                                 soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
                                 soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+                                soundInstance.Play();
                             }
                         }
                         catch (Exception) { }
