@@ -195,7 +195,9 @@ namespace Warcraft_1.GameClasses
             {
                 for (int j = 0 + Camera.Y; j < (int)CameraMaxVal.Y + Camera.Y; j++)
                 {
-                    spriteBatch.Draw(map[i, j].terrain == TypeOfTerrain.Mine ? buildingtiles : maptiles, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].GetFieldTerrain(), map[i, j].cheked ? Color.White : Color.Black);
+                    if (map[i, j].cheked) spriteBatch.Draw(map[i, j].terrain == TypeOfTerrain.Mine ? buildingtiles : maptiles, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), map[i, j].GetFieldTerrain(), Color.White);
+                    else spriteBatch.Draw(maptiles, new Rectangle(494 + (i - +Camera.X) * fieldPixelSize, 44 + (j - +Camera.Y) * fieldPixelSize, fieldPixelSize, fieldPixelSize), Logic_Classes.GroundSprite.GetRecquiredSprite(74), Color.White);
+
                     if (map[i, j].unit != null && !map[i, j].unit.IsMoving && map[i, j].cheked)
                     {
                         map[i, j].unit.Load(Content);

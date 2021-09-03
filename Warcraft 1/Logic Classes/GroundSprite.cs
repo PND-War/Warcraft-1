@@ -81,6 +81,7 @@ namespace Warcraft_1.Logic_Classes
              {67, new Point(429, 165)},
              {68, new Point(462, 165)},
              //Special
+             {74, new Point(132, 165)}, //unchecked
              {75, new Point(396, 99)}, //defaultground
              {76, new Point(198, 165)}, //watergroundslevaverhniz 7
              {77, new Point(231, 165)}, //watergroundslevaverhniz
@@ -105,6 +106,13 @@ namespace Warcraft_1.Logic_Classes
             groundId.TryGetValue(GetStartId(terrain) + id, out Location);
 
             return new Rectangle(Location, new Point(32,32));
+        }
+        public static Rectangle GetRecquiredSprite(int id)
+        {
+            Point Location = new Point();
+            groundId.TryGetValue(id, out Location);
+
+            return new Rectangle(Location, new Point(32, 32));
         }
         public static int GetStartId(GameClasses.TypeOfTerrain terrain)
         {

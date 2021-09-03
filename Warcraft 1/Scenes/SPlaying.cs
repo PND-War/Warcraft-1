@@ -261,7 +261,7 @@ namespace Warcraft_1.Scenes
                         if (i % 5 == 0)
                         {
                             aUnit.positionInMoving = new Point(494 + (Pos.X - map.Camera.X) * Map.fieldPixelSize + (moveAdd.X * (i / 5 + 1)), 44 + (Pos.Y - map.Camera.Y) * Map.fieldPixelSize + (moveAdd.Y * (i / 5 + 1)));
-                            aUnit.UpdateAnim(true, direction);
+                            aUnit.UpdateAnim(true, direction, aUnit.IsCarryingWood);
                         }
                         Thread.Sleep(1);
                     }

@@ -26,12 +26,12 @@ namespace Warcraft_1.Logic_Classes
     {
         [JsonIgnore]
         public Texture2D Texture { get; set; }
-        public Rectangle Rect;       
+        public Rectangle Rect;
 
-        public float Frame = 0;           
-        private float MaxFrame = 0;       
+        public float Frame = 0;
+        private float MaxFrame = 0;
 
-        
+
         public Sprite()
         {
             this.Rect = new Rectangle(0, 0, 32, 32);
@@ -42,7 +42,7 @@ namespace Warcraft_1.Logic_Classes
         {
             this.Rect = rect;
             this.Texture = texture;
-            this.MaxFrame = 5;
+            this.MaxFrame = 8;
         }
 
         //Public methods
@@ -50,7 +50,7 @@ namespace Warcraft_1.Logic_Classes
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.Texture, this.Rect, Color.White);      
+            spriteBatch.Draw(this.Texture, this.Rect, Color.White);
         }
         #endregion
 
@@ -64,10 +64,14 @@ namespace Warcraft_1.Logic_Classes
         public void UpdateAnim(bool IsMoving, DIRS Direction)
         {
             this.UpdateFrame(IsMoving);
-            this.UpdateRect(Direction);
+            this.UpdateRect(Direction, false);
         }
 
-
+        public void UpdateAnim(bool IsMoving, DIRS Direction, bool IsCarryingWood)
+        {
+            this.UpdateFrame(IsMoving);
+            this.UpdateRect(Direction, IsCarryingWood);
+        }
         //Private methods
         #region Private methods
 
@@ -76,11 +80,11 @@ namespace Warcraft_1.Logic_Classes
             if (Frame >= MaxFrame) Frame = 0;
             if (IsMoving) Frame += 0.2f;
         }
-        private void UpdateRect(DIRS Direction)
-            {
-                Rect.X = (int)Direction * Map.fieldPixelSize;
-                Rect.Y = (int)this.Frame * Map.fieldPixelSize;
-            }
+        private void UpdateRect(DIRS Direction, bool IsCarryingWood)
+        {
+            Rect.X = (IsCarryingWood ? 8 : 0) * Map.fieldPixelSize + (int)Direction * Map.fieldPixelSize;
+            Rect.Y = (int)this.Frame * Map.fieldPixelSize;
+        }
         #endregion
 
         //public void ChangeSprite()
