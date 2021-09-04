@@ -54,9 +54,9 @@ namespace Warcraft_1.Scenes
             emptyButton = Content.Load<Texture2D>("Textures/UI/ButtonEmpty");
             profile = Content.Load<Texture2D>("Textures/UI/ProfileEmpty");
 
-            moveButton = emptyButton;
+            moveButton = Content.Load<Texture2D>("Textures/UI/ButtonMove");
             buildButton = emptyButton;
-            attackButton = emptyButton;
+            attackButton = Content.Load<Texture2D>("Textures/UI/ButtonAttack");
             obtainButton = emptyButton;
 
             map.maptiles = Content.Load<Texture2D>("Textures/Game/groundcells");
@@ -378,12 +378,13 @@ namespace Warcraft_1.Scenes
 
             if(!buildMode)
             {
-                _spriteBatch.Draw(moveButton, moveCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                
                 _spriteBatch.Draw(buildButton, buildCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                _spriteBatch.Draw(attackButton, attackCoords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 _spriteBatch.Draw(obtainButton, obtainCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 if(map.group.FocusedUnit.X != -1)
                 {
+                    _spriteBatch.Draw(moveButton, moveCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                    _spriteBatch.Draw(attackButton, attackCoords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                     if (map.obtainMode)
                     {
                         _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 9, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(Race.HUMAN, Role.NONE), Color.White);
@@ -396,6 +397,11 @@ namespace Warcraft_1.Scenes
                     {
                         _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.buildIcon, Color.White);
                     }
+                }
+                else
+                {
+                    _spriteBatch.Draw(obtainButton, moveCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                    _spriteBatch.Draw(obtainButton, attackCoords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 }
             }
             else if(map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole() == Role.WORKER)
