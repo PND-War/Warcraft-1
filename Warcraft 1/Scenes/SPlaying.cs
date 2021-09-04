@@ -25,8 +25,8 @@ namespace Warcraft_1.Scenes
         Texture2D attackButton;
         Texture2D obtainButton;
 
-        Vector2 moveCords = new Vector2(250, 661);
         Vector2 atackCords = new Vector2(40, 661);
+        Vector2 moveCords = new Vector2(250, 661);
         Vector2 obtainCords = new Vector2(40, 791);
         Vector2 buildCords = new Vector2(250, 791);
         Point btnSize = new Point(200, 120);
@@ -125,19 +125,20 @@ namespace Warcraft_1.Scenes
                     map.Save("save.wc");
                     return Scenes.mainmenu;
                 }
-                if (new Rectangle((int)moveCords.X, (int)moveCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1)
+                if (new Rectangle((int)atackCords.X, (int)atackCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1)
                 {
                     if (!buildMode)
                     {
+
+                    }
                         //BUILD1
-                    }
                 }
-                else if (new Rectangle((int)atackCords.X, (int)atackCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1)
+                else if (new Rectangle((int)moveCords.X, (int)moveCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1)
                 {
                     if (!buildMode)
                     {
-                        //BUILD2
                     }
+                        //BUILD2
                 }
                 else if (new Rectangle((int)obtainCords.X, (int)obtainCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit is HumWorker)
                 {

@@ -264,8 +264,9 @@ namespace Warcraft_1.GameClasses.MapClasses
                         }
                         catch (Exception) { }
                     }
-                    else if((map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree || map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Mine) && (Keyboard.GetState().IsKeyDown(Keys.D)))
+                    else if((map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree || map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Mine) && (Keyboard.GetState().IsKeyDown(Keys.D) || obtainMode))
                     {
+                        obtainMode = false;
                         try
                         {
                             map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
