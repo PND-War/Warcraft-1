@@ -5,7 +5,7 @@ namespace Warcraft_1.Logic_Classes
     public class Group
     {
         public Point FocusedUnit { get; private set; }
-        public bool WoodOntain { get; private set; } = false;
+        public bool WoodObtain { get; private set; } = false;
         public bool GoldOntain { get; private set; } = false;
         public Group()
         {
@@ -26,7 +26,7 @@ namespace Warcraft_1.Logic_Classes
             switch (typeOfTerrain)
             {
                 case GameClasses.MapClasses.TypeOfTerrain.Tree:
-                    WoodOntain = can;
+                    WoodObtain = can;
                     break;
                 case GameClasses.MapClasses.TypeOfTerrain.Mine:
                     GoldOntain = can;
@@ -35,7 +35,7 @@ namespace Warcraft_1.Logic_Classes
         }
         public void OntainChange(bool can)
         {
-             WoodOntain = can;
+             WoodObtain = can;
              GoldOntain = can;
         }
     }
