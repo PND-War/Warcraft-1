@@ -20,6 +20,7 @@ namespace Warcraft_1.GameClasses.MapClasses
         public ContentManager Content;
         public SoundEffectInstance soundInstance;
         public Point Camera = new Point(0, mapSize - (int)CameraMaxVal.Y);
+        public bool obtainMode = false;
         public const int fieldPixelSize = 32;
         public const int mapSize = 100;
         [DataMember]
@@ -240,7 +241,7 @@ namespace Warcraft_1.GameClasses.MapClasses
             {
                 Logic_Classes.MouseInterpretator.ResetInter();
                 MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
-                if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map[MouseCoords.X, MouseCoords.Y].unit != null) group.ChangePoint(MouseCoords);
+                if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map[MouseCoords.X, MouseCoords.Y].unit != null && !map[MouseCoords.X, MouseCoords.Y].unit.IsMoving) group.ChangePoint(MouseCoords);
                 else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100)) group.ChangePoint(-1, -1);
 
             }

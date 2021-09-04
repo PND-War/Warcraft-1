@@ -2,6 +2,9 @@
 {
     public enum BuildingType
     {
+        MainBuild,
+        Barracks,
+        Farm,
         None
     }
 }

@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Warcraft_1.GameClasses;
 using Warcraft_1.GameClasses.MapClasses;
 using Warcraft_1.GameClasses.Units;
 using Warcraft_1.SpriteAndUnits;
@@ -20,11 +19,17 @@ namespace Warcraft_1.Scenes
 
         Texture2D profile;
 
+        bool buildMode = false;
         Texture2D moveButton;
-        Texture2D defenseButton;
+        Texture2D buildButton;
         Texture2D attackButton;
-        Texture2D somethingButton;
+        Texture2D obtainButton;
 
+        Vector2 moveCords = new Vector2(250, 661);
+        Vector2 atackCords = new Vector2(40, 661);
+        Vector2 obtainCords = new Vector2(40, 791);
+        Vector2 buildCords = new Vector2(250, 791);
+        Point btnSize = new Point(200, 120);
         private SpriteFont font;
 
         enum TextureSPlay
@@ -50,9 +55,9 @@ namespace Warcraft_1.Scenes
             profile = Content.Load<Texture2D>("Textures/UI/ProfileEmpty");
 
             moveButton = emptyButton;
-            defenseButton = emptyButton;
+            buildButton = emptyButton;
             attackButton = emptyButton;
-            somethingButton = emptyButton;
+            obtainButton = emptyButton;
 
             map.maptiles = Content.Load<Texture2D>("Textures/Game/groundcells");
             map.buildingtiles = Content.Load<Texture2D>("Textures/Game/buildingtiles");
@@ -120,7 +125,30 @@ namespace Warcraft_1.Scenes
                     map.Save("save.wc");
                     return Scenes.mainmenu;
                 }
-
+                if (new Rectangle((int)moveCords.X, (int)moveCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1)
+                {
+                    if (!buildMode)
+                    {
+                        //BUILD1
+                    }
+                }
+                else if (new Rectangle((int)atackCords.X, (int)atackCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1)
+                {
+                    if (!buildMode)
+                    {
+                        //BUILD2
+                    }
+                }
+                else if (new Rectangle((int)obtainCords.X, (int)obtainCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit is HumWorker)
+                {
+                    if(!buildMode)
+                        map.obtainMode = !map.obtainMode;
+                    //BUILD3
+                }
+                else if (new Rectangle((int)buildCords.X, (int)buildCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit is HumWorker)
+                {
+                    buildMode = !buildMode;
+                }
             }
 
             //minimap interaction
@@ -130,9 +158,9 @@ namespace Warcraft_1.Scenes
                 {
                     map.Camera = new Point(Mouse.GetState().X < 400 - (((int)CameraMaxVal.X - 10) * 4) ? (Mouse.GetState().X - 45) / 4 : Map.mapSize - (int)CameraMaxVal.X, Mouse.GetState().Y < 400 - (((int)CameraMaxVal.Y - 8) * 4) ? (Mouse.GetState().Y - 45) / 4 : Map.mapSize - (int)CameraMaxVal.Y);
                 }
+                
             }
-
-            return Scenes.nullscene;
+                return Scenes.nullscene;
         }
 
         private void CheckFocusMove()
@@ -347,11 +375,49 @@ namespace Warcraft_1.Scenes
             map.DrawMini(_spriteBatch, components[(int)TextureSPlay.Pixel]);
 
             _spriteBatch.Draw(profile, new Vector2(40, 471), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(moveButton, new Vector2(40, 661), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(defenseButton, new Vector2(250, 661), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(attackButton, new Vector2(40, 791), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(somethingButton, new Vector2(250, 791), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(somethingButton, new Vector2(250, 791), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+
+            if(!buildMode)
+            {
+                _spriteBatch.Draw(moveButton, moveCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(buildButton, buildCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(attackButton, atackCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(obtainButton, obtainCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                if(map.group.FocusedUnit.X != -1)
+                {
+                    if (map.obtainMode)
+                    {
+                        _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 9, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(Race.HUMAN, Role.NONE), Color.White);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 9, IconSprite.XScale, IconSprite.YScale), IconSprite.obtainIcon, Color.White);
+                    }
+                    if (map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole() == Role.WORKER)
+                    {
+                        _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.buildIcon, Color.White);
+                    }
+                }
+            }
+            else if(map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole() == Role.WORKER)
+            {
+                _spriteBatch.Draw(obtainButton, moveCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(obtainButton, buildCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(obtainButton, atackCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(obtainButton, obtainCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+
+                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)atackCords.X + 27, (int)atackCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), BuildingType.MainBuild), Color.White);
+                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)moveCords.X + 27, (int)moveCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), BuildingType.Barracks), Color.White);
+                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), BuildingType.Farm), Color.White);
+                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), Role.NONE), Color.White);
+            }
+            else
+            {
+                buildMode = false;
+                _spriteBatch.Draw(moveButton, moveCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(buildButton, buildCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(attackButton, atackCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(obtainButton, obtainCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            }
 
             _spriteBatch.Draw(components[(int)TextureSPlay.Menu], new Vector2(40, 952), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
@@ -372,7 +438,6 @@ namespace Warcraft_1.Scenes
                 {
                     _spriteBatch.Draw(components[(int)TextureSPlay.Pixel], new Rectangle(259 + i, 588, 1, 20), Color.Green);
                 }
-
             }
             _spriteBatch.DrawString(font, map.Wood.ToString(), new Vector2(173, 7), Color.Black);
             _spriteBatch.DrawString(font, map.Gold.ToString(), new Vector2(318, 7), Color.Black);
@@ -380,13 +445,9 @@ namespace Warcraft_1.Scenes
             _spriteBatch.DrawString(font, map.Wood.ToString(), new Vector2(170, 5), Color.White);
             _spriteBatch.DrawString(font, map.Gold.ToString(), new Vector2(315, 5), Color.White);
 
-            
-
             _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(120, 5, 42, 29), new Rectangle(0, 0, 42, 29), Color.White);
             _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(280, 5, 27, 29), new Rectangle(42, 0, 27, 29), Color.White);
 
-            //_spriteBatch.DrawString(font, map.Wood.ToString(), new Vector2(170, 5), Color.White);
-            //_spriteBatch.DrawString(font, map.Gold.ToString(), new Vector2(315, 5), Color.White);
 
             _spriteBatch.Draw(components[(int)TextureSPlay.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
 
