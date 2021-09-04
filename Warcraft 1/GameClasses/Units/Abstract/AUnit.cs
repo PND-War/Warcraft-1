@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using Newtonsoft.Json;
 
 namespace Warcraft_1.GameClasses.Units
 {
@@ -11,6 +12,7 @@ namespace Warcraft_1.GameClasses.Units
         public bool IsLoaded;
         public bool IsMoving;
         public Point positionInMoving;
+        [JsonIgnore]
         public SoundEffect action;
 
 

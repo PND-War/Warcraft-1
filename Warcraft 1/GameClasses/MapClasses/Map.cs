@@ -44,39 +44,39 @@ namespace Warcraft_1.GameClasses.MapClasses
                 }
             }
             group = new Logic_Classes.Group();
-            units = new System.Collections.Generic.List<Units.HumWorker>();
+            units = new System.Collections.Generic.List<HumWorker>();
             unitsCords = new System.Collections.Generic.List<Point>();
         }
-        public void CreateUnit(int x, int y, Units.Race race, Units.Role role)
+        public void CreateUnit(int x, int y, Race race, Role role)
         {
             bool human = true;
-            if (race == Units.Race.ORC)
+            if (race == Race.ORC)
             {
                 human = false;
             }
             switch (role)
             {
-                case Units.Role.WORKER:
+                case Role.WORKER:
                     if (human)
                     {
-                        map[x, y].unit = new Units.HumWorker();
+                        map[x, y].unit = new HumWorker();
                     }
                     else
                     {
-                        map[x, y].unit = new Units.OrcWorker();
+                        map[x, y].unit = new OrcWorker();
                     }
                     break;
-                case Units.Role.WARRIOR:
+                case Role.WARRIOR:
                     if (human)
                     {
-                        map[x, y].unit = new Units.HumWarrior();
+                        map[x, y].unit = new HumWarrior();
                     }
                     else
                     {
-                        map[x, y].unit = new Units.OrcWarrior();
+                        map[x, y].unit = new OrcWarrior();
                     }
                     break;
-                case Units.Role.NONE:
+                case Role.NONE:
                     break;
             }
             if (map[x, y].unit != null)
@@ -126,7 +126,7 @@ namespace Warcraft_1.GameClasses.MapClasses
                     }
                 }
                 if (path == "map.wc")
-                    CreateUnit(9, 90, Units.Race.HUMAN, Units.Role.WORKER);
+                    CreateUnit(9, 90, Race.HUMAN, Role.WORKER);
 
 
             }
@@ -136,7 +136,7 @@ namespace Warcraft_1.GameClasses.MapClasses
                 this.map = tmp.map;
                 this.Gold = tmp.Gold;
                 this.Wood = tmp.Wood;
-                CreateUnit(9, 90, Units.Race.HUMAN, Units.Role.WORKER);
+                CreateUnit(9, 90, Race.HUMAN, Role.WORKER);
             }
 
         }
@@ -149,7 +149,9 @@ namespace Warcraft_1.GameClasses.MapClasses
                     if (map[i, j].unit != null)
                     {
                         map[i, j].unit.IsLoaded = false;
-                        units.Add(map[i, j].unit as Units.HumWorker);
+                        map[i, j].unit.IsMoving = false;
+                        map[i, j].unit.positionToMove = new Point(i, j);
+                        units.Add(map[i, j].unit as HumWorker);
                         unitsCords.Add(new Point(i, j));
                     }
                 }

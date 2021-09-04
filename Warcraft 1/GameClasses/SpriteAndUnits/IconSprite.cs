@@ -20,13 +20,16 @@ namespace Warcraft_1.SpriteAndUnits
                     switch (role)
                     {
                         case Role.WORKER:
-                            pt = new Rectangle(XScale*4-1, 0, XScale, YScale);
+                            pt = new Rectangle(XScale * 4 - 1, 0, XScale, YScale);
                             break;
                         case Role.WARRIOR:
                             pt = new Rectangle(0, 0, XScale, YScale);
                             break;
+                        case Role.RIDER:
+                            pt = new Rectangle(XScale * 8-2, 0, XScale, YScale - 5);
+                            break;
                         case Role.NONE:
-                            pt = new Rectangle(XScale*7, YScale*2, XScale, YScale-5);
+                            pt = new Rectangle(XScale * 7, YScale * 2, XScale, YScale - 5);
                             break;
                     }
                     break;
@@ -34,13 +37,16 @@ namespace Warcraft_1.SpriteAndUnits
                     switch (role)
                     {
                         case Role.WORKER:
-                            pt = new Rectangle(XScale*5-1, 0, XScale, YScale);
+                            pt = new Rectangle(XScale * 5 - 1, 0, XScale, YScale);
                             break;
                         case Role.WARRIOR:
-                            pt = new Rectangle(XScale-1, 0, XScale, YScale);
+                            pt = new Rectangle(XScale, 0, XScale, YScale);
+                            break;
+                        case Role.RIDER:
+                            pt = new Rectangle(XScale * 9-2, 0, XScale, YScale - 5);
                             break;
                         case Role.NONE:
-                            pt = new Rectangle(XScale*7, YScale * 2, XScale, YScale-5);
+                            pt = new Rectangle(XScale * 7, YScale * 2, XScale, YScale - 5);
                             break;
                     }
                     break;

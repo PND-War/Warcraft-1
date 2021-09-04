@@ -4,6 +4,7 @@
     {
         WORKER,
         WARRIOR,
+        RIDER,
         NONE
     }
 }

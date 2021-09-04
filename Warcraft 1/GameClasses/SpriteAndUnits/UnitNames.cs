@@ -7,7 +7,8 @@ namespace Warcraft_1.SpriteAndUnits
         public static Dictionary<int, string> UnitName = new Dictionary<int, string>()
         {
             { 0, "WORKER" },
-            { 1, "WARRIOR" }
+            { 1, "WARRIOR" },
+            { 2, "RIDER" }
         };
     }
 }
