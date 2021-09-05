@@ -228,39 +228,62 @@ namespace Warcraft_1.GameClasses.MapClasses
                 {
                     for (int j = 0; j < (int)fieldPixelSize; j++)
                     {
-                            if (i == fieldPixelSize - 1 || j == fieldPixelSize - 1 || i == 0 || j == 0)
-                            {
-                                spriteBatch.Draw(pixel, new Rectangle(494 + (i) + (group.FocusedUnit.X - Camera.X) * fieldPixelSize, 44 + (j) + (group.FocusedUnit.Y - Camera.Y) * fieldPixelSize, 2, 2), Color.Lime);
-                            }
-                            
+                        if (i == fieldPixelSize - 1 || j == fieldPixelSize - 1 || i == 0 || j == 0)
+                        {
+                            spriteBatch.Draw(pixel, new Rectangle(494 + (i) + (group.FocusedUnit.X - Camera.X) * fieldPixelSize, 44 + (j) + (group.FocusedUnit.Y - Camera.Y) * fieldPixelSize, 2, 2), Color.Lime);
+                        }
+
 
                     }
                 }
             }
 
-            if(buildMode && buildingType != BuildingType.None)
+            if (buildMode && buildingType != BuildingType.None)
             {
                 Point MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
                 if ((MouseCoords.X > 0 && MouseCoords.X < 97) && (MouseCoords.Y > 0 && MouseCoords.Y < 97))
                 {
-                    for (int i = MouseCoords.X; i < MouseCoords.X+3; i++)
+                    for (int i = MouseCoords.X; i < MouseCoords.X + 3; i++)
                     {
-                        for (int j = MouseCoords.Y; j < MouseCoords.Y+3; j++)
+                        for (int j = MouseCoords.Y; j < MouseCoords.Y + 3; j++)
                         {
-                            if(map[i,j].cheked)
-                            spriteBatch.Draw(pixel, new Rectangle(494 + ((i-Camera.X) * fieldPixelSize), 44 + ((j-Camera.Y) * fieldPixelSize), 32, 32), map[i,j].terrain == TypeOfTerrain.Earth ? Color.Green * 0.5f : Color.Red * 0.5f);
+                            if (map[i, j].cheked)
+                                spriteBatch.Draw(pixel, new Rectangle(494 + ((i - Camera.X) * fieldPixelSize), 44 + ((j - Camera.Y) * fieldPixelSize), 32, 32), map[i, j].terrain == TypeOfTerrain.Earth ? Color.Green * 0.5f : Color.Red * 0.5f);
                         }
                     }
                 }
             }
-            
+
 
         }
         private void Build()
         {
-
+            int requireGold = 0;
+            int requireWood = 0;
+            //add check for fields
+            switch (buildingType)
+            {
+                case BuildingType.MainBuild:
+                    requireGold = 450;
+                    requireWood = 500;
+                    break;
+                case BuildingType.Barracks:
+                    requireGold = 350;
+                    requireWood = 325;
+                    break;
+                case BuildingType.Farm:
+                    requireGold = 150;
+                    requireWood = 175;
+                    break;
+                case BuildingType.None:
+                    break;
+            }
+            if (Gold >= requireGold && Wood >= requireWood)
+            {
+                Gold -= requireGold;
+                Wood -= requireWood;
+            }
         }
-
         public void Update(GameTime gameTime)
         {
             Point MouseCoords = new Point(-1, -1);
@@ -279,7 +302,7 @@ namespace Warcraft_1.GameClasses.MapClasses
             }
             else if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Right))
             {
-                if(buildMode && buildingType != BuildingType.None)
+                if (buildMode && buildingType != BuildingType.None)
                 {
                     Build();
                 }
@@ -300,7 +323,7 @@ namespace Warcraft_1.GameClasses.MapClasses
                         }
                         catch (Exception) { }
                     }
-                    else if((map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree || map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Mine) && (Keyboard.GetState().IsKeyDown(Keys.D) || obtainMode))
+                    else if ((map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree || map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Mine) && (Keyboard.GetState().IsKeyDown(Keys.D) || obtainMode))
                     {
                         obtainMode = false;
                         try
@@ -312,7 +335,7 @@ namespace Warcraft_1.GameClasses.MapClasses
                                 soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
                                 soundInstance.Play();
                             }
-                            group.OntainChange(true, map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree? TypeOfTerrain.Tree : TypeOfTerrain.Mine);
+                            group.OntainChange(true, map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree ? TypeOfTerrain.Tree : TypeOfTerrain.Mine);
                         }
                         catch (Exception) { }
                     }
