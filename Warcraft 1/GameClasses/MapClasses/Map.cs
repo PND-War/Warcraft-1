@@ -14,6 +14,9 @@ namespace Warcraft_1.GameClasses.MapClasses
     [DataContract]
     class Map
     {
+        public bool buildMode = false;
+        public BuildingType buildingType = BuildingType.None;
+
         public Texture2D maptiles;
         public Texture2D buildingtiles;
         public Logic_Classes.Group group;
@@ -234,7 +237,30 @@ namespace Warcraft_1.GameClasses.MapClasses
                     }
                 }
             }
+
+            if(buildMode && buildingType != BuildingType.None)
+            {
+                Point MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
+                if ((MouseCoords.X > 0 && MouseCoords.X < 97) && (MouseCoords.Y > 0 && MouseCoords.Y < 97))
+                {
+                    for (int i = MouseCoords.X; i < MouseCoords.X+3; i++)
+                    {
+                        for (int j = MouseCoords.Y; j < MouseCoords.Y+3; j++)
+                        {
+                            if(map[i,j].cheked)
+                            spriteBatch.Draw(pixel, new Rectangle(494 + ((i-Camera.X) * fieldPixelSize), 44 + ((j-Camera.Y) * fieldPixelSize), 32, 32), map[i,j].terrain == TypeOfTerrain.Earth ? Color.Green * 0.5f : Color.Red * 0.5f);
+                        }
+                    }
+                }
+            }
+            
+
         }
+        private void Build()
+        {
+
+        }
+
         public void Update(GameTime gameTime)
         {
             Point MouseCoords = new Point(-1, -1);
@@ -243,13 +269,21 @@ namespace Warcraft_1.GameClasses.MapClasses
             {
                 Logic_Classes.MouseInterpretator.ResetInter();
                 MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
-                if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map[MouseCoords.X, MouseCoords.Y].unit != null && !map[MouseCoords.X, MouseCoords.Y].unit.IsMoving) group.ChangePoint(MouseCoords);
+                if (buildMode && buildingType != BuildingType.None)
+                {
+                    Build();
+                }
+                else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map[MouseCoords.X, MouseCoords.Y].unit != null && !map[MouseCoords.X, MouseCoords.Y].unit.IsMoving) group.ChangePoint(MouseCoords);
                 else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100)) group.ChangePoint(-1, -1);
 
             }
             else if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Right))
             {
-                if (group.FocusedUnit.X != -1 && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit != null && !map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if(buildMode && buildingType != BuildingType.None)
+                {
+                    Build();
+                }
+                else if (group.FocusedUnit.X != -1 && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit != null && !map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
                     MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
                     if (map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)

@@ -19,7 +19,7 @@ namespace Warcraft_1.Scenes
 
         Texture2D profile;
 
-        bool buildMode = false;
+        
         Texture2D moveButton;
         Texture2D buildButton;
         Texture2D attackButton;
@@ -127,28 +127,32 @@ namespace Warcraft_1.Scenes
                 }
                 if (new Rectangle((int)attackCoords.X, (int)attackCoords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1)
                 {
-                    if (!buildMode)
+                    if (!map.buildMode)
                     {
 
                     }
-                        //BUILD1
+                    else
+                        map.buildingType = BuildingType.MainBuild;
                 }
                 else if (new Rectangle((int)moveCords.X, (int)moveCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1)
                 {
-                    if (!buildMode)
+                    if (!map.buildMode)
                     {
                     }
-                        //BUILD2
+                    else
+                        map.buildingType = BuildingType.Barracks;
                 }
                 else if (new Rectangle((int)obtainCords.X, (int)obtainCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit is HumWorker)
                 {
-                    if(!buildMode)
+                    if(!map.buildMode)
                         map.obtainMode = !map.obtainMode;
-                    //BUILD3
+                    else
+                        map.buildingType = BuildingType.Farm;
                 }
                 else if (new Rectangle((int)buildCords.X, (int)buildCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit is HumWorker)
                 {
-                    buildMode = !buildMode;
+                    map.buildMode = !map.buildMode;
+                    map.buildingType = BuildingType.None;
                 }
             }
 
@@ -362,6 +366,9 @@ namespace Warcraft_1.Scenes
             }
             aUnit.IsMoving = false;
         }
+
+        
+
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
         {
             //map.Read("map.wc");
@@ -376,7 +383,7 @@ namespace Warcraft_1.Scenes
 
             _spriteBatch.Draw(profile, new Vector2(40, 471), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
-            if(!buildMode)
+            if(!map.buildMode)
             {
                 
                 _spriteBatch.Draw(buildButton, buildCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
@@ -411,14 +418,15 @@ namespace Warcraft_1.Scenes
                 _spriteBatch.Draw(obtainButton, attackCoords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 _spriteBatch.Draw(obtainButton, obtainCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
-                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)attackCoords.X + 27, (int)attackCoords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), BuildingType.MainBuild), Color.White);
-                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)moveCords.X + 27, (int)moveCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), BuildingType.Barracks), Color.White);
-                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), BuildingType.Farm), Color.White);
+                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)attackCoords.X + 27, (int)attackCoords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), BuildingType.MainBuild), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
+                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)moveCords.X + 27, (int)moveCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), BuildingType.Barracks), map.buildingType != BuildingType.Barracks ? Color.White : Color.Gray);
+                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), BuildingType.Farm), map.buildingType != BuildingType.Farm ? Color.White : Color.Gray);
                 _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), Role.NONE), Color.White);
             }
             else
             {
-                buildMode = false;
+                map.buildMode = false;
+                map.buildingType = BuildingType.None;
                 _spriteBatch.Draw(moveButton, moveCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 _spriteBatch.Draw(buildButton, buildCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 _spriteBatch.Draw(attackButton, attackCoords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
@@ -453,6 +461,9 @@ namespace Warcraft_1.Scenes
 
             _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(120, 5, 42, 29), new Rectangle(0, 0, 42, 29), Color.White);
             _spriteBatch.Draw(components[(int)TextureSPlay.Resourses], new Rectangle(280, 5, 27, 29), new Rectangle(42, 0, 27, 29), Color.White);
+
+
+
 
             _spriteBatch.Draw(components[(int)TextureSPlay.cur], new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
 
