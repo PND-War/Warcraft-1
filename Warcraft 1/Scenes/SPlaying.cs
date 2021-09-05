@@ -19,7 +19,6 @@ namespace Warcraft_1.Scenes
 
         Texture2D profile;
 
-
         public SoundEffectInstance unitInstance;
         Texture2D moveButton;
         Texture2D buildButton;
@@ -126,13 +125,14 @@ namespace Warcraft_1.Scenes
                 MouseCoords = new Point((Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y);
                 if (map.buildMode && map.buildingType != BuildingType.None)
                 {
-                    map.Build();
+                    Task build = new Task(() => Build());
+                    build.Start();
                 }
                 else if (map.movingMode && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
                     map.movingMode = false;
                     MouseCoords = new Point((Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y);
-                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
+                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Building)
                     {
                         try
                         {
@@ -213,7 +213,7 @@ namespace Warcraft_1.Scenes
                 else if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
                     MouseCoords = new Point((Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y);
-                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
+                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Building)
                     {
                         try
                         {
@@ -247,7 +247,7 @@ namespace Warcraft_1.Scenes
                 else if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving && new Rectangle(45, 45, 400, 400).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
                     MouseCoords = new Point((Mouse.GetState().Position.X - 45) / 4, (Mouse.GetState().Position.Y - 45) / 4);
-                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
+                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Building)
                     {
                         try
                         {
@@ -269,11 +269,61 @@ namespace Warcraft_1.Scenes
                 {
                     map.Camera = new Point(Mouse.GetState().X < 400 - (((int)CameraMaxVal.X - 10) * 4) ? (Mouse.GetState().X - 45) / 4 : Map.mapSize - (int)CameraMaxVal.X, Mouse.GetState().Y < 400 - (((int)CameraMaxVal.Y - 8) * 4) ? (Mouse.GetState().Y - 45) / 4 : Map.mapSize - (int)CameraMaxVal.Y);
                 }
-                
             }
                 return Scenes.nullscene;
         }
 
+        private void Build()
+        {
+            Point Pos = map.group.FocusedUnit;
+            int requireGold = 0;
+            int requireWood = 0;
+            switch (map.buildingType)
+            {
+                case BuildingType.MainBuild:
+                    requireGold = 450;
+                    requireWood = 500;
+                    break;
+                case BuildingType.Barracks:
+                    requireGold = 350;
+                    requireWood = 325;
+                    break;
+                case BuildingType.Farm:
+                    requireGold = 150;
+                    requireWood = 175;
+                    break;
+                case BuildingType.None:
+                    break;
+            }
+            int x = (Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X;
+            int y = (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y;
+            if (map.Gold >= requireGold && map.Wood >= requireWood && map.CheckTerrainToBuild(x, y))
+            {
+                map.Gold -= requireGold;
+                map.Wood -= requireWood;
+                if (!Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                {
+                    map.buildMode = false;
+                    map.buildingType = BuildingType.None;
+                }
+                    map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove = new Point((int)Math.Ceiling((x+map.group.FocusedUnit.X) /(double)2), (int)Math.Ceiling((y + map.group.FocusedUnit.Y) / (double)2));//WORK IN PROGRESS
+                MoveFocusUnit();
+                for (int i = x; i < x + 3; i++)
+                {
+                    for (int j = y; j < y + 3; j++)
+                    {
+                        map.map[i, j].terrain = TypeOfTerrain.Building;
+                        map.map[i, j].buildOf = Race.HUMAN;
+                        map.map[i, j].buildingType = map.buildingType;
+                    }
+                }
+            }
+            else
+            {
+                map.buildMode = false;
+                map.buildingType = BuildingType.None;
+            }
+        }
         private void CheckFocusMove()
         {
             if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && map.group.FocusedUnit != map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving && (map.group.WoodObtain || map.group.GoldOntain))
@@ -306,20 +356,20 @@ namespace Warcraft_1.Scenes
                 bool left = false;
                 bool down = false;
                 bool right = false;
-                if (Pos.X < aUnit.positionToMove.X && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Mine)
+                if (Pos.X < aUnit.positionToMove.X && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Mine && map.map[Pos.X+1, Pos.Y].terrain != TypeOfTerrain.Building)
                 {
                     newPos.X++; right = true;
                 }
-                else if (Pos.X > aUnit.positionToMove.X && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Mine)
+                else if (Pos.X > aUnit.positionToMove.X && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Mine && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Building)
                 {
                     newPos.X--; left = true;
                 }
                 int n = right ? 1 : 0 + (left ? -1 : 0);
-                if (Pos.Y < aUnit.positionToMove.Y && map.map[Pos.X+n, Pos.Y + 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Mine)
+                if (Pos.Y < aUnit.positionToMove.Y && map.map[Pos.X+n, Pos.Y + 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Mine && map.map[Pos.X+n, Pos.Y+1].terrain != TypeOfTerrain.Building)
                 {
                     newPos.Y++; down = true;
                 }
-                else if (Pos.Y > aUnit.positionToMove.Y && map.map[Pos.X+n, Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Mine)
+                else if (Pos.Y > aUnit.positionToMove.Y && map.map[Pos.X+n, Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Mine && map.map[Pos.X+n, Pos.Y-1].terrain != TypeOfTerrain.Building)
                 {
                     newPos.Y--; up = true;
                 }
@@ -476,7 +526,6 @@ namespace Warcraft_1.Scenes
 
         public override void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
         {
-            //map.Read("map.wc");
             SpriteBatch _spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             _spriteBatch.Begin();

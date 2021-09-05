@@ -278,44 +278,7 @@ namespace Warcraft_1.GameClasses.MapClasses
             }
             return res;
         }
-        public void Build()
-        {
-            int requireGold = 0;
-            int requireWood = 0;
-            //add check for fields
-            switch (buildingType)
-            {
-                case BuildingType.MainBuild:
-                    requireGold = 450;
-                    requireWood = 500;
-                    break;
-                case BuildingType.Barracks:
-                    requireGold = 350;
-                    requireWood = 325;
-                    break;
-                case BuildingType.Farm:
-                    requireGold = 150;
-                    requireWood = 175;
-                    break;
-                case BuildingType.None:
-                    break;
-            }
-            if (Gold >= requireGold && Wood >= requireWood && CheckTerrainToBuild((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y))
-            {
-                Gold -= requireGold;
-                Wood -= requireWood;
-                if(!Keyboard.GetState().IsKeyDown(Keys.LeftShift))
-                {
-                    buildMode = false;
-                    buildingType = BuildingType.None;
-                }
-            }
-            else
-            {
-                buildMode = false;
-                buildingType = BuildingType.None;
-            }
-        }
+       
         public void Update(GameTime gameTime)
         {
             for (int i = 0 + Camera.X; i < (int)CameraMaxVal.X + Camera.X; i++)
