@@ -7,8 +7,10 @@ namespace Warcraft_1.Logic_Classes
     public static class MouseInterpretator
     {
         static MouseState lastState;
-        public static bool timeElapsed = true;
+        static bool timeElapsed = true;
         static Timer timer;
+
+        public static MouseButton bt = MouseButton.None;
         public static void Start()
         {
             timer = new Timer(50);
@@ -51,8 +53,6 @@ namespace Warcraft_1.Logic_Classes
             if (lastState != mouseState || timeElapsed)
             {
                 yes = true;
-                
-
             }
             
             switch (mButton)
@@ -69,6 +69,33 @@ namespace Warcraft_1.Logic_Classes
             }
             lastState = mouseState;
             return yes;
+        }
+        public static void GetPressed()
+        {
+            bool yes = false;
+            MouseState mouseState = Mouse.GetState();
+            if (lastState != mouseState || timeElapsed)
+            {
+                yes = true;
+            }
+            bt = MouseButton.None;
+            if (mouseState.LeftButton == ButtonState.Pressed && lastState.LeftButton == ButtonState.Released)
+            {
+                bt = MouseButton.Left;
+            }
+            if ( mouseState.RightButton == ButtonState.Pressed && lastState.RightButton == ButtonState.Released)
+            {
+                bt = MouseButton.Right;
+            }
+            if ( mouseState.MiddleButton == ButtonState.Pressed && lastState.MiddleButton == ButtonState.Released)
+            {
+                bt = MouseButton.Middle;
+            }
+            lastState = mouseState;
+            if (!yes)
+            {
+                bt = MouseButton.None;
+            }
         }
     }
 }

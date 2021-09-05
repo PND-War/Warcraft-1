@@ -19,7 +19,8 @@ namespace Warcraft_1.Scenes
 
         Texture2D profile;
 
-        
+
+        public SoundEffectInstance unitInstance;
         Texture2D moveButton;
         Texture2D buildButton;
         Texture2D attackButton;
@@ -118,18 +119,47 @@ namespace Warcraft_1.Scenes
         }
         private Scenes CheckPress()
         {
-            if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
+            Point MouseCoords = new Point(-1, -1);
+            Logic_Classes.MouseInterpretator.GetPressed();
+            if (Logic_Classes.MouseInterpretator.bt == Logic_Classes.MouseButton.Left)
             {
-                if (new Rectangle(40, 952, 410, 88).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                MouseCoords = new Point((Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y);
+                if (map.buildMode && map.buildingType != BuildingType.None)
+                {
+                    map.Build();
+                }
+                else if (map.movingMode && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    map.movingMode = false;
+                    MouseCoords = new Point((Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y);
+                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
+                    {
+                        try
+                        {
+                            map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
+                            if (map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.action != null && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove != map.group.FocusedUnit)
+                            {
+                                unitInstance = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.action.CreateInstance();
+                                unitInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+                                unitInstance.Play();
+                            }
+                        }
+                        catch (Exception) { }
+                    }
+                }
+                else if (new Rectangle(40, 952, 410, 88).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
                     map.Save("save.wc");
+                    soundInstance.Play();
                     return Scenes.mainmenu;
                 }
-                if (new Rectangle((int)attackCoords.X, (int)attackCoords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1)
+                else if (new Rectangle((int)attackCoords.X, (int)attackCoords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1)
                 {
                     if (!map.buildMode)
                     {
-
+                        map.attackMode = !map.attackMode;
+                        map.movingMode = false;
+                        map.obtainMode = false;
                     }
                     else
                         map.buildingType = BuildingType.MainBuild;
@@ -138,6 +168,9 @@ namespace Warcraft_1.Scenes
                 {
                     if (!map.buildMode)
                     {
+                        map.movingMode = !map.movingMode;
+                        map.obtainMode = false;
+                        map.attackMode = false;
                     }
                     else
                         map.buildingType = BuildingType.Barracks;
@@ -145,19 +178,92 @@ namespace Warcraft_1.Scenes
                 else if (new Rectangle((int)obtainCords.X, (int)obtainCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit is HumWorker)
                 {
                     if(!map.buildMode)
+                    {
                         map.obtainMode = !map.obtainMode;
+                        map.movingMode = false;
+                        map.attackMode = false;
+                    }
                     else
                         map.buildingType = BuildingType.Farm;
                 }
                 else if (new Rectangle((int)buildCords.X, (int)buildCords.Y, btnSize.X, btnSize.Y).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit is HumWorker)
                 {
                     map.buildMode = !map.buildMode;
+                    map.movingMode = false;
+                    map.attackMode = false;
+                    map.obtainMode = false;
                     map.buildingType = BuildingType.None;
                 }
+                else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map.map[MouseCoords.X, MouseCoords.Y].unit != null && !map.map[MouseCoords.X, MouseCoords.Y].unit.IsMoving) map.group.ChangePoint(MouseCoords);
+                else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100))
+                {
+                    map.group.ChangePoint(-1, -1);
+                    map.movingMode = false;
+                    map.attackMode = false;
+                    map.obtainMode = false;
+                }
             }
-
-            //minimap interaction
-            if (Logic_Classes.MouseInterpretator.GetPressedAllTime(Logic_Classes.MouseButton.Left))
+            else if (Logic_Classes.MouseInterpretator.bt == Logic_Classes.MouseButton.Right)
+            {
+                if (map.buildMode && map.buildingType != BuildingType.None)
+                {
+                    map.buildMode = false;
+                    map.buildingType = BuildingType.None;
+                }
+                else if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    MouseCoords = new Point((Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y);
+                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
+                    {
+                        try
+                        {
+                            map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
+                            if (map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.action != null && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove != map.group.FocusedUnit)
+                            {
+                                unitInstance = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.action.CreateInstance();
+                                unitInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+                                unitInstance.Play();
+                            }
+                        }
+                        catch (Exception) { }
+                    }
+                    else if ((map.map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree || map.map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Mine) && (Keyboard.GetState().IsKeyDown(Keys.D) || map.obtainMode))
+                    {
+                        map.obtainMode = false;
+                        try
+                        {
+                            map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
+                            if (map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.action != null && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove != map.group.FocusedUnit)
+                            {
+                                unitInstance = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.action.CreateInstance();
+                                unitInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+                                unitInstance.Play();
+                            }
+                            map.group.OntainChange(true, map.map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree ? TypeOfTerrain.Tree : TypeOfTerrain.Mine);
+                        }
+                        catch (Exception) { }
+                    }
+                }
+                else if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving && new Rectangle(45, 45, 400, 400).Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    MouseCoords = new Point((Mouse.GetState().Position.X - 45) / 4, (Mouse.GetState().Position.Y - 45) / 4);
+                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
+                    {
+                        try
+                        {
+                            map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
+                            if (map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.action != null && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove != map.group.FocusedUnit)
+                            {
+                                unitInstance = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.action.CreateInstance();
+                                unitInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+                                unitInstance.Play();
+                            }
+                        }
+                        catch (Exception) { }
+                    }
+                }
+            }
+            else if (Logic_Classes.MouseInterpretator.GetPressedAllTime(Logic_Classes.MouseButton.Left))//minimap interaction
             {
                 if (new Rectangle(45, 45, 400, 400).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
@@ -340,15 +446,14 @@ namespace Warcraft_1.Scenes
         }
         private void MoveFocusUnitToObtain(bool wood)
         {
-            Point pos = new Point(map.group.FocusedUnit.X, map.group.FocusedUnit.Y);
             HumWorker aUnit = map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit as HumWorker;
             MoveFocusUnit();
             aUnit.IsMoving = true;
             TypeOfTerrain type = wood ? TypeOfTerrain.Tree : TypeOfTerrain.Mine;
             bool can = false;
-            for(int i = pos.X-1; i <= pos.X+1; i++)
+            for(int i = aUnit.positionToMove.X-1; i <= aUnit.positionToMove.X+1; i++)
             {
-                for (int j = pos.Y - 1; j <= pos.Y + 1; j++)
+                for (int j = aUnit.positionToMove.Y - 1; j <= aUnit.positionToMove.Y + 1; j++)
                 {
                     if(map.map[i,j].terrain == type)
                     {
@@ -390,9 +495,9 @@ namespace Warcraft_1.Scenes
                 _spriteBatch.Draw(obtainButton, obtainCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 if(map.group.FocusedUnit.X != -1)
                 {
-                    _spriteBatch.Draw(moveButton, moveCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                    _spriteBatch.Draw(attackButton, attackCoords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                    if (map.obtainMode)
+                    _spriteBatch.Draw(moveButton, moveCords, null, !map.movingMode ? Color.White : Color.Gray, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                    _spriteBatch.Draw(attackButton, attackCoords, null, !map.attackMode ? Color.White : Color.Gray, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                    if (map.obtainMode || Keyboard.GetState().IsKeyDown(Keys.D))
                     {
                         _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 9, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(Race.HUMAN, Role.NONE), Color.White);
                     }
@@ -427,9 +532,9 @@ namespace Warcraft_1.Scenes
             {
                 map.buildMode = false;
                 map.buildingType = BuildingType.None;
-                _spriteBatch.Draw(moveButton, moveCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(moveButton, moveCords, null, !map.movingMode ? Color.White : Color.Gray, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 _spriteBatch.Draw(buildButton, buildCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                _spriteBatch.Draw(attackButton, attackCoords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(attackButton, attackCoords, null, !map.attackMode ? Color.White : Color.Gray, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 _spriteBatch.Draw(obtainButton, obtainCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
             }
 
@@ -440,18 +545,22 @@ namespace Warcraft_1.Scenes
 
             if (UnitsTextures.IsLoaded && map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null)
             {
-                string UnitName;
-                UnitNames.UnitName.TryGetValue((int)map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole(), out UnitName);
-
-                _spriteBatch.Draw(components[(int)TextureSPlay.Frame], new Rectangle(83, 500, 156, 113), Color.White);
-                _spriteBatch.Draw(components[(int)TextureSPlay.Health], new Rectangle(253, 555, 156, 58), Color.White);
-                _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(88, 505, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole()), Color.White);
-                _spriteBatch.DrawString(font, UnitName, new Vector2(251, 515), new Color(54, 26, 32, 255));
-
-                for (int i = 0; i < map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetCurHP() / map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetMaxHP() * 145; i++)
+                try
                 {
-                    _spriteBatch.Draw(components[(int)TextureSPlay.Pixel], new Rectangle(259 + i, 588, 1, 20), Color.Green);
+                    string UnitName;
+                    UnitNames.UnitName.TryGetValue((int)map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole(), out UnitName);
+
+                    _spriteBatch.Draw(components[(int)TextureSPlay.Frame], new Rectangle(83, 500, 156, 113), Color.White);
+                    _spriteBatch.Draw(components[(int)TextureSPlay.Health], new Rectangle(253, 555, 156, 58), Color.White);
+                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(88, 505, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRace(), map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole()), Color.White);
+                    _spriteBatch.DrawString(font, UnitName, new Vector2(251, 515), new Color(54, 26, 32, 255));
+
+                    for (int i = 0; i < map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetCurHP() / map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetMaxHP() * 145; i++)
+                    {
+                        _spriteBatch.Draw(components[(int)TextureSPlay.Pixel], new Rectangle(259 + i, 588, 1, 20), Color.Green);
+                    }
                 }
+                catch (Exception) { }
             }
             _spriteBatch.DrawString(font, map.Wood.ToString(), new Vector2(173, 7), Color.Black);
             _spriteBatch.DrawString(font, map.Gold.ToString(), new Vector2(318, 7), Color.Black);

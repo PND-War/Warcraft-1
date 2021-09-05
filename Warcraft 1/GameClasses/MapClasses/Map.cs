@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using Microsoft.Xna.Framework.Input;
 using System;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Audio;
 using System.Runtime.Serialization;
 using Warcraft_1.GameClasses.Units;
 
@@ -14,14 +13,15 @@ namespace Warcraft_1.GameClasses.MapClasses
     [DataContract]
     class Map
     {
+        public bool movingMode = false;
         public bool buildMode = false;
+        public bool attackMode = false;
         public BuildingType buildingType = BuildingType.None;
 
         public Texture2D maptiles;
         public Texture2D buildingtiles;
         public Logic_Classes.Group group;
         public ContentManager Content;
-        public SoundEffectInstance soundInstance;
         public Point Camera = new Point(0, mapSize - (int)CameraMaxVal.Y);
         public bool obtainMode = false;
         public const int fieldPixelSize = 32;
@@ -256,7 +256,29 @@ namespace Warcraft_1.GameClasses.MapClasses
 
 
         }
-        private void Build()
+        public bool CheckTerrainToBuild(int x, int y)
+        {
+            bool res = true;
+            if(x > 0 && x < 97 && y > 0 && y < 97)
+            {
+                for(int i = x; i < x+3; i++)
+                {
+                    for (int j = y; j < y + 3; j++)
+                    {
+                        if(map[i,j].terrain != TypeOfTerrain.Earth)
+                        {
+                            res = false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                res = false;
+            }
+            return res;
+        }
+        public void Build()
         {
             int requireGold = 0;
             int requireWood = 0;
@@ -278,87 +300,24 @@ namespace Warcraft_1.GameClasses.MapClasses
                 case BuildingType.None:
                     break;
             }
-            if (Gold >= requireGold && Wood >= requireWood)
+            if (Gold >= requireGold && Wood >= requireWood && CheckTerrainToBuild((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y))
             {
                 Gold -= requireGold;
                 Wood -= requireWood;
+                if(!Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                {
+                    buildMode = false;
+                    buildingType = BuildingType.None;
+                }
+            }
+            else
+            {
+                buildMode = false;
+                buildingType = BuildingType.None;
             }
         }
         public void Update(GameTime gameTime)
         {
-            Point MouseCoords = new Point(-1, -1);
-
-            if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Left))
-            {
-                Logic_Classes.MouseInterpretator.ResetInter();
-                MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
-                if (buildMode && buildingType != BuildingType.None)
-                {
-                    Build();
-                }
-                else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100) && map[MouseCoords.X, MouseCoords.Y].unit != null && !map[MouseCoords.X, MouseCoords.Y].unit.IsMoving) group.ChangePoint(MouseCoords);
-                else if ((MouseCoords.X > 0 && MouseCoords.X < 100) && (MouseCoords.Y > 0 && MouseCoords.Y < 100)) group.ChangePoint(-1, -1);
-
-            }
-            else if (Logic_Classes.MouseInterpretator.GetPressed(Logic_Classes.MouseButton.Right))
-            {
-                if (buildMode && buildingType != BuildingType.None)
-                {
-                    Build();
-                }
-                else if (group.FocusedUnit.X != -1 && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit != null && !map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-                {
-                    MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
-                    if (map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
-                    {
-                        try
-                        {
-                            map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
-                            if (map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove != group.FocusedUnit)
-                            {
-                                soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
-                                soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
-                                soundInstance.Play();
-                            }
-                        }
-                        catch (Exception) { }
-                    }
-                    else if ((map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree || map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Mine) && (Keyboard.GetState().IsKeyDown(Keys.D) || obtainMode))
-                    {
-                        obtainMode = false;
-                        try
-                        {
-                            map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
-                            if (map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove != group.FocusedUnit)
-                            {
-                                soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
-                                soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
-                                soundInstance.Play();
-                            }
-                            group.OntainChange(true, map[MouseCoords.X, MouseCoords.Y].terrain == TypeOfTerrain.Tree ? TypeOfTerrain.Tree : TypeOfTerrain.Mine);
-                        }
-                        catch (Exception) { }
-                    }
-                }
-                else if (group.FocusedUnit.X != -1 && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit != null && !map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.IsMoving && new Rectangle(45, 45, 400, 400).Contains(Mouse.GetState().X, Mouse.GetState().Y))
-                {
-                    MouseCoords = new Point((Mouse.GetState().Position.X - 45) / 4, (Mouse.GetState().Position.Y - 45) / 4);
-                    if (map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine)
-                    {
-                        try
-                        {
-                            map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
-                            if (map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action != null && map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.positionToMove != group.FocusedUnit)
-                            {
-                                soundInstance = map[group.FocusedUnit.X, group.FocusedUnit.Y].unit.action.CreateInstance();
-                                soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
-                                soundInstance.Play();
-                            }
-                        }
-                        catch (Exception) { }
-                    }
-                }
-            }
             for (int i = 0 + Camera.X; i < (int)CameraMaxVal.X + Camera.X; i++)
             {
                 for (int j = 0 + Camera.Y; j < (int)CameraMaxVal.Y + Camera.Y; j++)
