@@ -32,19 +32,19 @@ namespace Warcraft_1.GameClasses.MapClasses
             switch (terrain)
             {
                 case TypeOfTerrain.Earth:
-                    returnableColor = Color.ForestGreen;
+                    returnableColor = new Color(164, 198, 57, 255);
                     break;
                 case TypeOfTerrain.Water:
-                    returnableColor = Color.Blue;
+                    returnableColor = new Color(0,108,165,255);
                     break;
                 case TypeOfTerrain.Road:
-                    returnableColor = Color.SandyBrown;
+                    returnableColor = new Color(220, 135, 52, 255);
                     break;
                 case TypeOfTerrain.Tree:
-                    returnableColor = Color.Green;
+                    returnableColor = new Color(17, 134, 47, 255);
                     break;
                 case TypeOfTerrain.Mine:
-                    returnableColor = Color.Yellow;
+                    returnableColor = new Color(247, 148, 0, 255);
                     break;
                 case TypeOfTerrain.Bridge:
                     returnableColor = Color.DarkOrange;
