@@ -1,6 +1,6 @@
 ﻿namespace Warcraft_1.GameClasses.Units
 {
-    enum Role
+    public enum Role
     {
         WORKER,
         WARRIOR,

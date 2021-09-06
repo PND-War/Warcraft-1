@@ -4,21 +4,24 @@ namespace Warcraft_1.Logic_Classes
 {
     public class Group
     {
-        public Point FocusedUnit { get; private set; }
+        public Point FocusedObj { get; private set; }
         public bool WoodObtain { get; private set; } = false;
         public bool GoldOntain { get; private set; } = false;
+        public GameClasses.MapClasses.BuildingType buildingType = GameClasses.MapClasses.BuildingType.None;
         public Group()
         {
-            FocusedUnit = new Point(-1, -1);
+            FocusedObj = new Point(-1, -1);
         }
         public void ChangePoint(int x, int y)
         {
-            FocusedUnit = new Point(x, y);
+            FocusedObj = new Point(x, y);
+            buildingType = GameClasses.MapClasses.BuildingType.None;
             OntainChange(false);
         }
         public void ChangePoint(Point pt)
         {
-            FocusedUnit = new Point(pt.X, pt.Y);
+            FocusedObj = new Point(pt.X, pt.Y);
+            buildingType = GameClasses.MapClasses.BuildingType.None;
             OntainChange(false);
         }
         public void OntainChange(bool can, GameClasses.MapClasses.TypeOfTerrain typeOfTerrain)

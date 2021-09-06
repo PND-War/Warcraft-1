@@ -50,8 +50,66 @@ namespace Warcraft_1.GameClasses.MapClasses
             units = new System.Collections.Generic.List<HumWorker>();
             unitsCords = new System.Collections.Generic.List<Point>();
         }
+        public void StartTimer(int x, int y)
+        {
+            if (map[x, y].buildingType == BuildingType.Farm)
+            {
+                map[x, y].timer = new System.Timers.Timer(1000);
+                map[x, y].timer.Elapsed += (s, e) => { this.Gold++; this.Wood++; };
+                map[x, y].timer.Start();
+            }
+        }
+        public Point CheckPosAround(Point pos)
+        {
+            int step = 1;
+            int x = 0;
+            int y = 0;
+            while(map[pos.X + x, pos.Y + y].terrain == TypeOfTerrain.Water || map[pos.X+x, pos.Y + y].terrain == TypeOfTerrain.Tree || map[pos.X + x, pos.Y + y].terrain == TypeOfTerrain.Mine || map[pos.X + x, pos.Y + y].terrain == TypeOfTerrain.Building || map[pos.X + x, pos.Y + y].unit != null)
+            {
+                if(step != 7)
+                {
+                    switch(step)
+                    {
+                        case 1:
+                            if(pos.X + x+1 < 100)
+                                x++;
+                            break;
+                        case 2:
+                            if (pos.X - x > 0)
+                                x *= -1;
+                            break;
+                        case 3:
+                            if (pos.Y + y + 1 < 100)
+                                y++;
+                            break;
+                        case 4:
+                            if (pos.Y - y > 0)
+                                y *=-1;
+                            break;
+                        case 5:
+                            if (pos.Y + y + 1 < 100)
+                                y--;
+                            if (pos.X - x > 0)
+                                x *= -1;
+                            break;
+                        case 6:
+                            if (pos.Y - y > 0)
+                                y *= -1;
+                            break;
+                    }
+                    step++;
+                }
+                else
+                {
+                    y *= -1;
+                    step = 1;
+                }
+            }
+            return new Point(pos.X + x, pos.Y + y);
+        }
         public void CreateUnit(int x, int y, Race race, Role role)
         {
+            Point point = CheckPosAround(new Point(x, y));
             bool human = true;
             if (race == Race.ORC)
             {
@@ -62,32 +120,32 @@ namespace Warcraft_1.GameClasses.MapClasses
                 case Role.WORKER:
                     if (human)
                     {
-                        map[x, y].unit = new HumWorker();
+                        map[point.X, point.Y].unit = new HumWorker();
                     }
                     else
                     {
-                        map[x, y].unit = new OrcWorker();
+                        map[point.X, point.Y].unit = new OrcWorker();
                     }
                     break;
                 case Role.WARRIOR:
                     if (human)
                     {
-                        map[x, y].unit = new HumWarrior();
+                        map[point.X, point.Y].unit = new HumWarrior();
                     }
                     else
                     {
-                        map[x, y].unit = new OrcWarrior();
+                        map[point.X, point.Y].unit = new OrcWarrior();
                     }
                     break;
                 case Role.NONE:
                     break;
             }
-            if (map[x, y].unit != null)
+            if (map[point.X, point.Y].unit != null)
             {
-                map[x, y].unit.positionToMove = new Point(x, y);
+                map[point.X, point.Y].unit.positionToMove = new Point(point.X, point.Y);
                 if (human)
                 {
-                    CheckAround(x, y);
+                    CheckAround(point.X, point.Y);
                 }
             }
         }
@@ -222,22 +280,39 @@ namespace Warcraft_1.GameClasses.MapClasses
 
                 }
             }
-            if (group.FocusedUnit != new Point(-1, -1))
+            if (group.FocusedObj != new Point(-1, -1))
             {
-                for (int i = 0; i < (int)fieldPixelSize; i++)
+                if(group.buildingType == BuildingType.None)
                 {
-                    for (int j = 0; j < (int)fieldPixelSize; j++)
+                    for (int i = 0; i < (int)fieldPixelSize; i++)
                     {
-                        if (i == fieldPixelSize - 1 || j == fieldPixelSize - 1 || i == 0 || j == 0)
+                        for (int j = 0; j < (int)fieldPixelSize; j++)
                         {
-                            spriteBatch.Draw(pixel, new Rectangle(494 + (i) + (group.FocusedUnit.X - Camera.X) * fieldPixelSize, 44 + (j) + (group.FocusedUnit.Y - Camera.Y) * fieldPixelSize, 2, 2), Color.Lime);
+                            if (i == fieldPixelSize - 1 || j == fieldPixelSize - 1 || i == 0 || j == 0)
+                            {
+                                spriteBatch.Draw(pixel, new Rectangle(494 + (i) + (group.FocusedObj.X - Camera.X) * fieldPixelSize, 44 + (j) + (group.FocusedObj.Y - Camera.Y) * fieldPixelSize, 2, 2), Color.Lime);
+                            }
+
+
                         }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < (int)fieldPixelSize*3; i++)
+                    {
+                        for (int j = 0; j < (int)fieldPixelSize*3; j++)
+                        {
+                            if (i == fieldPixelSize*3 - 1 || j == fieldPixelSize*3 - 1 || i == 0 || j == 0)
+                            {
+                                spriteBatch.Draw(pixel, new Rectangle(494 + (i) + (group.FocusedObj.X - Camera.X) * fieldPixelSize, 44 + (j) + (group.FocusedObj.Y - Camera.Y) * fieldPixelSize, 2, 2), Color.Lime);
+                            }
 
 
+                        }
                     }
                 }
             }
-
             if (buildMode && buildingType != BuildingType.None)
             {
                 Point MouseCoords = new Point((Mouse.GetState().Position.X - 494) / fieldPixelSize + Camera.X, (Mouse.GetState().Position.Y - 44) / fieldPixelSize + Camera.Y);
@@ -248,7 +323,7 @@ namespace Warcraft_1.GameClasses.MapClasses
                         for (int j = MouseCoords.Y; j < MouseCoords.Y + 3; j++)
                         {
                             if (map[i, j].cheked)
-                                spriteBatch.Draw(pixel, new Rectangle(494 + ((i - Camera.X) * fieldPixelSize), 44 + ((j - Camera.Y) * fieldPixelSize), 32, 32), map[i, j].terrain == TypeOfTerrain.Earth ? Color.Green * 0.5f : Color.Red * 0.5f);
+                                spriteBatch.Draw(pixel, new Rectangle(494 + ((i - Camera.X) * fieldPixelSize), 44 + ((j - Camera.Y) * fieldPixelSize), 32, 32), map[i, j].terrain == TypeOfTerrain.Earth && map[i,j].unit == null ? Color.Green * 0.5f : Color.Red * 0.5f);
                         }
                     }
                 }
@@ -265,7 +340,7 @@ namespace Warcraft_1.GameClasses.MapClasses
                 {
                     for (int j = y; j < y + 3; j++)
                     {
-                        if(map[i,j].terrain != TypeOfTerrain.Earth)
+                        if(map[i,j].terrain != TypeOfTerrain.Earth || map[i, j].unit != null)
                         {
                             res = false;
                         }

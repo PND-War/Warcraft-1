@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
+using System.Timers;
 using Warcraft_1.SpriteAndUnits;
 
 namespace Warcraft_1.GameClasses.MapClasses
@@ -12,6 +13,8 @@ namespace Warcraft_1.GameClasses.MapClasses
         public bool cheked { get; set; } = true;
         [JsonIgnore]
         public Units.AUnit unit { get; set; }
+        [JsonIgnore]
+        public Timer timer;
         public int spriteId { get; set; }
 
         public Units.Race buildOf = Units.Race.NONE;
@@ -26,6 +29,10 @@ namespace Warcraft_1.GameClasses.MapClasses
             }
             return res;
         }
+        
+
+        
+
         public Color GetFieldColor()
         {
             Color returnableColor = new Color();
