@@ -1015,7 +1015,7 @@ namespace Warcraft_1.Scenes
                     _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale - 10, (int)obtainCords.Y + 20), Color.SandyBrown);
                     _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale - 10, (int)obtainCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
 
-                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(250, 791, 200, 120), new Rectangle(600, 616, 200, 120), Color.White);
+                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(250, 791, 200, 120), new Rectangle(600, 616, 200, 120), Color.White);  
 
                 }
                 else if (map.group.buildingType != BuildingType.None)

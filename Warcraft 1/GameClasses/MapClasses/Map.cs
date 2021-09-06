@@ -186,10 +186,6 @@ namespace Warcraft_1.GameClasses.MapClasses
                         map[tmp.unitsCords[i].X, tmp.unitsCords[i].Y].unit = tmp.units[i];
                     }
                 }
-                if (path == "map.wc")
-                    CreateUnit(9, 90, Race.HUMAN, Role.WORKER);
-
-
             }
             catch (Exception)
             {
@@ -197,9 +193,7 @@ namespace Warcraft_1.GameClasses.MapClasses
                 this.map = tmp.map;
                 this.Gold = tmp.Gold;
                 this.Wood = tmp.Wood;
-                CreateUnit(9, 90, Race.HUMAN, Role.WORKER);
             }
-
         }
         public void Save(string path)
         {

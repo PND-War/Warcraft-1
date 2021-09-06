@@ -51,7 +51,8 @@ namespace Warcraft_1.GameClasses.MapClasses
                     returnableColor = new Color(17, 134, 47, 255);
                     break;
                 case TypeOfTerrain.Mine:
-                    returnableColor = new Color(247, 148, 0, 255);
+                   // returnableColor = new Color(247, 148, 0, 255);
+                   returnableColor = Color.Gold;
                     break;
                 case TypeOfTerrain.Bridge:
                     returnableColor = Color.DarkOrange;
