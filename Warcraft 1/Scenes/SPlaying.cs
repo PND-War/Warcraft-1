@@ -475,7 +475,7 @@ namespace Warcraft_1.Scenes
                 };
 
             }
-            else if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit == null)
+            else if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit == null && map.group.buildingType == BuildingType.None)
             {
                 map.group.ChangePoint(-1, -1);
             }
@@ -654,20 +654,20 @@ namespace Warcraft_1.Scenes
                 bool left = false;
                 bool down = false;
                 bool right = false;
-                if (Pos.X < aUnit.positionToMove.X && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Mine && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Building)
+                if (Pos.X < aUnit.positionToMove.X && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Mine && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Building && map.map[Pos.X + 1, Pos.Y].unit == null)
                 {
                     newPos.X++; right = true;
                 }
-                else if (Pos.X > aUnit.positionToMove.X && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Mine && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Building)
+                else if (Pos.X > aUnit.positionToMove.X && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Mine && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Building && map.map[Pos.X - 1, Pos.Y].unit == null)
                 {
                     newPos.X--; left = true;
                 }
                 int n = right ? 1 : 0 + (left ? -1 : 0);
-                if (Pos.Y < aUnit.positionToMove.Y && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Mine && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Building)
+                if (Pos.Y < aUnit.positionToMove.Y && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Mine && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Building && map.map[Pos.X + n, Pos.Y + 1].unit == null)
                 {
                     newPos.Y++; down = true;
                 }
-                else if (Pos.Y > aUnit.positionToMove.Y && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Mine && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Building)
+                else if (Pos.Y > aUnit.positionToMove.Y && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Mine && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Building && map.map[Pos.X + n, Pos.Y - 1].unit == null)
                 {
                     newPos.Y--; up = true;
                 }
@@ -963,8 +963,8 @@ namespace Warcraft_1.Scenes
                         {
                             case BuildingType.MainBuild:
                                 _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)attackCoords.X, (int)attackCoords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(Race.HUMAN, Role.WORKER), Color.White);
-                                _spriteBatch.DrawString(font, UnitAssistance.GetCurrency(true, Role.WORKER).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale+5, (int)attackCoords.Y + 20), Color.SandyBrown);
-                                _spriteBatch.DrawString(font, UnitAssistance.GetCurrency(false, Role.WORKER).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale+5, (int)attackCoords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
+                                _spriteBatch.DrawString(font, UnitAssistance.GetCurrency(true, Role.WORKER).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale + 5, (int)attackCoords.Y + 20), Color.SandyBrown);
+                                _spriteBatch.DrawString(font, UnitAssistance.GetCurrency(false, Role.WORKER).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale + 5, (int)attackCoords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
                                 break;
                             case BuildingType.Barracks:
                                 _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)attackCoords.X + 27, (int)attackCoords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(Race.HUMAN, Role.WARRIOR), Color.White);
@@ -986,16 +986,16 @@ namespace Warcraft_1.Scenes
                 if (map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRole() == Role.WORKER)
                 {
                     _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)attackCoords.X, (int)attackCoords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.MainBuild), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.MainBuild).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale-20, (int)attackCoords.Y + 20), Color.SandyBrown);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.MainBuild).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale-20, (int)attackCoords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.MainBuild).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale - 20, (int)attackCoords.Y + 20), Color.SandyBrown);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.MainBuild).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale - 20, (int)attackCoords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
 
                     _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)moveCords.X, (int)moveCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.Barracks), map.buildingType != BuildingType.Barracks ? Color.White : Color.Gray);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Barracks).ToString(), new Vector2((int)moveCords.X + IconSprite.XScale-20, (int)moveCords.Y + 20), Color.SandyBrown);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Barracks).ToString(), new Vector2((int)moveCords.X + IconSprite.XScale-20, (int)moveCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Barracks).ToString(), new Vector2((int)moveCords.X + IconSprite.XScale - 20, (int)moveCords.Y + 20), Color.SandyBrown);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Barracks).ToString(), new Vector2((int)moveCords.X + IconSprite.XScale - 20, (int)moveCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
 
                     _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X, (int)obtainCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.Farm), map.buildingType != BuildingType.Farm ? Color.White : Color.Gray);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale-20, (int)obtainCords.Y + 20), Color.SandyBrown);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale-20, (int)obtainCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale - 20, (int)obtainCords.Y + 20), Color.SandyBrown);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale - 20, (int)obtainCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
 
                     _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), Role.NONE), Color.White);
 
@@ -1032,9 +1032,6 @@ namespace Warcraft_1.Scenes
             }
 
             _spriteBatch.Draw(components[(int)TextureSPlay.Menu], new Vector2(40, 952), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-
-
-
 
             if (UnitsTextures.IsLoaded && map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null)
             {
