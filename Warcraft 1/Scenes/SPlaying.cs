@@ -942,15 +942,18 @@ namespace Warcraft_1.Scenes
                     _spriteBatch.Draw(attackButton, attackCoords, null, map.attackMode || Keyboard.GetState().IsKeyDown(Keys.A) ? Color.Gray : Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                     if (map.obtainMode || Keyboard.GetState().IsKeyDown(Keys.D))
                     {
-                        _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 9, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(Race.HUMAN, Role.NONE), Color.White);
+                        //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 9, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(Race.HUMAN, Role.NONE), Color.White);
+                        _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(40, 791, 200, 120), new Rectangle(600, 616, 200, 120), Color.White);
                     }
                     else
                     {
-                        _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 9, IconSprite.XScale, IconSprite.YScale), IconSprite.obtainIcon, Color.White);
+                        //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 9, IconSprite.XScale, IconSprite.YScale), IconSprite.obtainIcon, Color.White);
+                        _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(40, 791, 200, 120), new Rectangle(800, 616, 200, 120), Color.White);
                     }
                     if (map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRole() == Role.WORKER)
                     {
-                        _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.buildIcon, Color.White);
+                        //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.buildIcon, Color.White);
+                        _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(250, 791, 200, 120), new Rectangle(1000, 616, 200, 120), Color.White);
                     }
                 }
                 else
@@ -985,19 +988,23 @@ namespace Warcraft_1.Scenes
                 _spriteBatch.Draw(obtainButton, obtainCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 if (map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRole() == Role.WORKER)
                 {
-                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)attackCoords.X, (int)attackCoords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.MainBuild), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
+                    //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)attackCoords.X, (int)attackCoords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.MainBuild), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
+                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(40, 661, 200, 120), new Rectangle(0, 616, 200, 120), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
                     _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.MainBuild).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale - 20, (int)attackCoords.Y + 20), Color.SandyBrown);
                     _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.MainBuild).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale - 20, (int)attackCoords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
 
-                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)moveCords.X, (int)moveCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.Barracks), map.buildingType != BuildingType.Barracks ? Color.White : Color.Gray);
+                    //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)moveCords.X, (int)moveCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.Barracks), map.buildingType != BuildingType.Barracks ? Color.White : Color.Gray);
+                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(250, 661, 200, 120), new Rectangle(200, 616, 200, 120), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
                     _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Barracks).ToString(), new Vector2((int)moveCords.X + IconSprite.XScale - 20, (int)moveCords.Y + 20), Color.SandyBrown);
                     _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Barracks).ToString(), new Vector2((int)moveCords.X + IconSprite.XScale - 20, (int)moveCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
 
-                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X, (int)obtainCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.Farm), map.buildingType != BuildingType.Farm ? Color.White : Color.Gray);
+                    //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X, (int)obtainCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.Farm), map.buildingType != BuildingType.Farm ? Color.White : Color.Gray);
+                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(40, 791, 200, 120), new Rectangle(400, 616, 200, 120), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
                     _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale - 20, (int)obtainCords.Y + 20), Color.SandyBrown);
                     _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale - 20, (int)obtainCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
 
-                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), Role.NONE), Color.White);
+                    //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), Role.NONE), Color.White);
+                    _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(250, 791, 200, 120), new Rectangle(600, 616, 200, 120), Color.White);
 
                 }
                 else if (map.group.buildingType != BuildingType.None)
@@ -1005,7 +1012,7 @@ namespace Warcraft_1.Scenes
                     switch (map.group.buildingType)
                     {
                         case BuildingType.MainBuild:
-                            _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)attackCoords.X, (int)attackCoords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(Race.HUMAN, Role.WORKER), Color.White);
+                            _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)attackCoords.X, (int)attackCoords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(Race.HUMAN, Role.WORKER), Color.Red);
                             _spriteBatch.DrawString(font, UnitAssistance.GetCurrency(true, Role.WORKER).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale + 5, (int)attackCoords.Y + 20), Color.SandyBrown);
                             _spriteBatch.DrawString(font, UnitAssistance.GetCurrency(false, Role.WORKER).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale + 5, (int)attackCoords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
                             break;
