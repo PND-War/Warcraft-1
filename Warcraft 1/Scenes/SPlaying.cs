@@ -205,14 +205,20 @@ namespace Warcraft_1.Scenes
             }
             else if (Logic_Classes.MouseInterpretator.bt == Logic_Classes.MouseButton.Right)
             {
+
+                MouseCoords = new Point((Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y);
                 if (map.buildMode && map.buildingType != BuildingType.None)
                 {
                     map.buildMode = false;
                     map.buildingType = BuildingType.None;
                 }
+                else if(map.attackMode && map.map[MouseCoords.X, MouseCoords.Y].unit != null && map.map[MouseCoords.X, MouseCoords.Y].unit.GetRace() != Race.ORC)
+                {
+                    Task attack = new Task(() => Attack()) ;
+                    attack.Start();
+                }
                 else if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y) && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.GetRole() == Role.WORKER && (((HumWorker)map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit).IsCarryingGold || ((HumWorker)map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit).IsCarryingWood)&& map.map[(Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y].terrain == TypeOfTerrain.Building)
                 {
-                    MouseCoords = new Point((Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y);
                     if (map.map[MouseCoords.X, MouseCoords.Y].buildOf == Race.HUMAN && map.map[MouseCoords.X, MouseCoords.Y].buildingType == BuildingType.MainBuild)
                     {
                         map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.positionToMove = MouseCoords;
@@ -220,7 +226,7 @@ namespace Warcraft_1.Scenes
                 }
                 else if (map.group.FocusedUnit.X != -1 && map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit != null && !map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
-                    MouseCoords = new Point((Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y);
+                    
                     if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Building)
                     {
                         try
@@ -347,6 +353,10 @@ namespace Warcraft_1.Scenes
                 map.buildMode = false;
                 map.buildingType = BuildingType.None;
             }
+        }
+        private void Attack()
+        {
+
         }
         private void CheckFocusMove()
         {
