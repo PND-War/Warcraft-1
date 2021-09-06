@@ -6,6 +6,7 @@ namespace Warcraft_1.SpriteAndUnits
 {
     public static class GroundSprite
     {
+        private static int fieldSize = 33;
         public static Dictionary<int, Point> groundId = new Dictionary<int, Point>()
         {
              //Water
@@ -95,6 +96,7 @@ namespace Warcraft_1.SpriteAndUnits
              {79, new Point(297, 165)}, //watergroundslevaverhniz
              {80, new Point(330, 165)}, //watergroundslevaverhnizchtototam
              //Buildings
+             //mine
              {81, new Point(0, 0)},
              {82, new Point(33, 0)},
              {83, new Point(66, 0)},
@@ -104,6 +106,36 @@ namespace Warcraft_1.SpriteAndUnits
              {87, new Point(0, 66)},
              {88, new Point(33, 66)},
              {89, new Point(66, 66)},
+             //mainBuild
+             {90, new Point(fieldSize * 9, 0)},
+             {91, new Point(fieldSize*10, 0)},
+             {92, new Point(fieldSize*11, 0)},
+             {93, new Point(fieldSize * 9, fieldSize)},
+             {94, new Point(fieldSize * 10, fieldSize)},
+             {95, new Point(fieldSize * 11, fieldSize)},
+             {96, new Point(fieldSize * 9, fieldSize*2)},
+             {97, new Point(fieldSize * 10, fieldSize*2)},
+             {98, new Point(fieldSize * 11, fieldSize*2)},
+             //barracks
+             {99, new Point(fieldSize * 12, 0)},
+             {100, new Point(fieldSize*13, 0)},
+             {101, new Point(fieldSize*14, 0)},
+             {102, new Point(fieldSize * 12, fieldSize)},
+             {103, new Point(fieldSize * 13, fieldSize)},
+             {104, new Point(fieldSize * 14, fieldSize)},
+             {105, new Point(fieldSize * 12, fieldSize*2)},
+             {106, new Point(fieldSize * 13, fieldSize*2)},
+             {107, new Point(fieldSize * 14, fieldSize*2)},
+             //farm
+             {108, new Point(fieldSize * 6, 0)},
+             {109, new Point(fieldSize*7, 0)},
+             {110, new Point(fieldSize*8, 0)},
+             {111, new Point(fieldSize * 6, fieldSize)},
+             {112, new Point(fieldSize * 7, fieldSize)},
+             {113, new Point(fieldSize * 8, fieldSize)},
+             {114, new Point(fieldSize * 6, fieldSize*2)},
+             {115, new Point(fieldSize * 7, fieldSize*2)},
+             {116, new Point(fieldSize * 8, fieldSize*2)},
         };
 
         public static Rectangle GetRecquiredSprite(TypeOfTerrain terrain, int id)

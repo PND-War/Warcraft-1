@@ -320,11 +320,26 @@ namespace Warcraft_1.Scenes
                         map.map[i, j].terrain = TypeOfTerrain.Building;
                         map.map[i, j].buildOf = Race.HUMAN;
                         map.map[i, j].buildingType = building;
+                        switch (building)
+                        {
+                            case BuildingType.MainBuild:
+                                map.map[i, j].spriteId = 90 + ((i - x) + ((j - y) * 3));
+                                break;
+                            case BuildingType.Barracks:
+                                map.map[i, j].spriteId = 99 + ((i - x) + ((j - y) * 3));
+                                break;
+                            case BuildingType.Farm:
+                                map.map[i, j].spriteId = 108 + ((i - x) + ((j - y) * 3));
+                                break;
+                            case BuildingType.None:
+                                break;
+                        }
+                            
                     }
                 }
 
-                
-                    map.buildMode = false;
+
+                map.buildMode = false;
                     map.buildingType = BuildingType.None;
             }
             else

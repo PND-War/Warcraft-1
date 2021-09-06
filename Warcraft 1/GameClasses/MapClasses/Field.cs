@@ -79,6 +79,8 @@ namespace Warcraft_1.GameClasses.MapClasses
                     return GroundSprite.GetRecquiredSprite(TypeOfTerrain.Mine, spriteId);
                 case TypeOfTerrain.Bridge:
                     return GroundSprite.GetRecquiredSprite(TypeOfTerrain.Bridge, spriteId);
+                case TypeOfTerrain.Building:
+                    return GroundSprite.GetRecquiredSprite(TypeOfTerrain.Water, spriteId);
             }
             return new Rectangle(264, 66, 32, 32);
         }
