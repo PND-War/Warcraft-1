@@ -1,9 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FindWay;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Warcraft_1.GameClasses.MapClasses;
@@ -401,23 +404,240 @@ namespace Warcraft_1.Scenes
         {
             if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && map.group.FocusedObj != map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove && !map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.IsMoving && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRole() == Role.WORKER && (((HumWorker)map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit).IsCarryingGold || ((HumWorker)map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit).IsCarryingWood))
             {
-                Task task = new Task(() => MoveFocusUnitToGive(((HumWorker)map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit).IsCarryingWood));
-                task.Start();
+                CalculateWay CalcWay = new CalculateWay(new FField(map.group.FocusedObj.X, map.group.FocusedObj.Y), new FField(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove.X, map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove.Y));
+
+                try
+                {
+                    for (int i = 0; i < 100; i++)
+                    {
+                        for (int j = 0; j < 100; j++)
+                        {
+                            CalcWay.map.map[j, i].Init((int)map.map[i, j].terrain);
+                        }
+                    }
+                    List<System.Drawing.Point> Way = CalcWay.StartAlhorythm();
+
+                    Task task = new Task(() => MoveFocusUnitToGive(Way, ((HumWorker)map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit).IsCarryingWood));
+                    task.Start();
+                }
+                catch
+                {
+                    Task task = new Task(() => MoveFocusUnitToGive(((HumWorker)map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit).IsCarryingWood));
+                    task.Start();
+                };
             }
             else if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && map.group.FocusedObj != map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove && !map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.IsMoving && (map.group.WoodObtain || map.group.GoldOntain))
             {
-                Task task = new Task(() => MoveFocusUnitToObtain(map.group.WoodObtain));
-                task.Start();
+                CalculateWay CalcWay = new CalculateWay(new FField(map.group.FocusedObj.X, map.group.FocusedObj.Y), new FField(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove.X, map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove.Y));
+
+                try
+                {
+                    for (int i = 0; i < 100; i++)
+                    {
+                        for (int j = 0; j < 100; j++)
+                        {
+                            CalcWay.map.map[j, i].Init((int)map.map[i, j].terrain);
+                        }
+                    }
+                    List<System.Drawing.Point> Way = CalcWay.StartAlhorythm();
+
+                    Task task = new Task(() => MoveFocusUnitToObtain(Way, map.group.WoodObtain));
+                    task.Start();
+                }
+                catch
+                {
+                    Task task = new Task(() => MoveFocusUnitToObtain(map.group.WoodObtain));
+                    task.Start();
+                };
             }
             else if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && map.group.FocusedObj != map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove && !map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.IsMoving)
             {
-                Task task = new Task(() => MoveFocusUnit());
-                task.Start();
+                CalculateWay CalcWay = new CalculateWay(new FField(map.group.FocusedObj.X, map.group.FocusedObj.Y), new FField(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove.X, map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove.Y));
+
+                try
+                {
+                    for (int i = 0; i < 100; i++)
+                    {
+                        for (int j = 0; j < 100; j++)
+                        {
+                            CalcWay.map.map[j, i].Init((int)map.map[i, j].terrain);
+                        }
+                    }
+                    List<System.Drawing.Point> Way = CalcWay.StartAlhorythm();
+
+                    Task task = new Task(() => MoveFocusUnit(Way));
+                    task.Start();
+                }
+                catch
+                {
+                    Task task = new Task(() => MoveFocusUnit());
+                    task.Start();
+                };
+
             }
-            else if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit == null && map.group.buildingType == BuildingType.None)
+            else if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit == null)
             {
                 map.group.ChangePoint(-1, -1);
             }
+        }
+        private void MoveFocusUnit(List<System.Drawing.Point> Way)
+        {
+            //AUnit aUnit = AUnit.DeepCopy(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit);
+            List<Point> NewWay = new List<Point>();
+            for (int i = 0; i < Way.Count; i++)
+            {
+                NewWay.Add(new Point(Way[i].X, Way[i].Y));
+            }
+            int CurrentStep = 0;
+
+            AUnit aUnit = map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit;
+            //Point Pos = map.group.FocusedUnit;
+            map.group.ChangePoint(-1, -1);
+            DIRS direction = DIRS.NONE;
+
+            do
+            {
+                //Point newPos = new Point(Pos.X, Pos.Y);
+
+                bool up = false;
+                bool left = false;
+                bool down = false;
+                bool right = false;
+                if (NewWay[CurrentStep].X < NewWay[CurrentStep + 1].X)
+                {
+                    right = true;
+                }
+                else if (NewWay[CurrentStep].X > NewWay[CurrentStep + 1].X)
+                {
+                    left = true;
+                }
+                if (NewWay[CurrentStep].Y < NewWay[CurrentStep + 1].Y)
+                {
+                    down = true;
+                }
+                else if (NewWay[CurrentStep].Y > NewWay[CurrentStep + 1].Y)
+                {
+                    up = true;
+                }
+
+                if (!up && !left && !down && !right)
+                {
+                    aUnit.IsMoving = false;
+                    aUnit.UpdateAnim(false, direction != DIRS.NONE ? direction : DIRS.DOWN);
+                    aUnit.Frame = 0;
+                    map.map[NewWay[CurrentStep].X, NewWay[CurrentStep].Y].ClearUnitPlace();
+                    map.map[NewWay[CurrentStep].X, NewWay[CurrentStep].Y].PlaceAUnit(aUnit);
+                    return;
+                }
+                else
+                {
+                    map.map[NewWay[CurrentStep + 1].X, NewWay[CurrentStep + 1].Y].PlaceAUnit(aUnit);
+                    map.map[NewWay[CurrentStep].X, NewWay[CurrentStep].Y].ClearUnitPlace();
+                    aUnit.positionInMoving = new Point(494 + (NewWay[CurrentStep].X - map.Camera.X) * Map.fieldPixelSize, 44 + (NewWay[CurrentStep].Y - map.Camera.Y) * Map.fieldPixelSize);
+                    aUnit.IsMoving = true;
+
+                    direction = DIRS.NONE;
+                    if (up && right)
+                    {
+                        direction = DIRS.UPRIGHT;
+                    }
+                    else if (up && left)
+                    {
+                        direction = DIRS.UPLEFT;
+                    }
+                    else if (up && left)
+                    {
+                        direction = DIRS.UPLEFT;
+                    }
+                    else if (down && right)
+                    {
+                        direction = DIRS.DOWNRIGHT;
+                    }
+                    else if (down && left)
+                    {
+                        direction = DIRS.DOWNLEFT;
+                    }
+                    else if (up)
+                    {
+                        direction = DIRS.UP;
+                    }
+                    else if (down)
+                    {
+                        direction = DIRS.DOWN;
+                    }
+                    else if (left)
+                    {
+                        direction = DIRS.LEFT;
+                    }
+                    else if (right)
+                    {
+                        direction = DIRS.RIGHT;
+                    }
+
+                    Point moveAdd = new Point();
+                    switch (direction)
+                    {
+                        case DIRS.UP:
+                            moveAdd = new Point(0, -1);
+                            break;
+                        case DIRS.RIGHT:
+                            moveAdd = new Point(1, 0);
+                            break;
+                        case DIRS.DOWN:
+                            moveAdd = new Point(0, 1);
+                            break;
+                        case DIRS.LEFT:
+                            moveAdd = new Point(-1, 0);
+                            break;
+                        case DIRS.UPLEFT:
+                            moveAdd = new Point(-1, -1);
+                            break;
+                        case DIRS.UPRIGHT:
+                            moveAdd = new Point(1, -1);
+                            break;
+                        case DIRS.DOWNLEFT:
+                            moveAdd = new Point(-1, 1);
+                            break;
+                        case DIRS.DOWNRIGHT:
+                            moveAdd = new Point(1, 1);
+                            break;
+                    }
+                    if (CurrentStep + 1 < NewWay.Count) map.CheckAround(NewWay[CurrentStep + 1].X, NewWay[CurrentStep + 1].Y);
+                    for (int i = 0; i < 160; i++)
+                    {
+                        if (i % 5 == 0)
+                        {
+                            aUnit.positionInMoving = new Point(494 + (NewWay[CurrentStep].X - map.Camera.X) * Map.fieldPixelSize + (moveAdd.X * (i / 5 + 1)), 44 + (NewWay[CurrentStep].Y - map.Camera.Y) * Map.fieldPixelSize + (moveAdd.Y * (i / 5 + 1)));
+
+                            if (aUnit is HumWorker hum)
+                            {
+                                aUnit.UpdateAnim(true, direction, hum.IsCarryingWood, hum.IsCarryingGold);
+                            }
+                            else if (aUnit is OrcWorker orc)
+                            {
+                                aUnit.UpdateAnim(true, direction, orc.IsCarryingWood, orc.IsCarryingGold);
+                            }
+                            else
+                            {
+                                aUnit.UpdateAnim(true, direction);
+                            }
+                        }
+                        Thread.Sleep(1);
+                    }
+
+                    CurrentStep++;
+                }
+            } while (CurrentStep + 1 != NewWay.Count);
+
+            aUnit.positionToMove = NewWay.Last();
+
+            aUnit.IsMoving = false;
+            aUnit.UpdateAnim(false, direction != DIRS.NONE ? direction : DIRS.DOWN);
+            aUnit.Frame = 0;
+            //map.map[NewWay[CurrentStep].X, Pos.Y].ClearUnitPlace();
+            //map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
+            GC.Collect();
+
         }
         private void MoveFocusUnit()
         {
@@ -434,20 +654,20 @@ namespace Warcraft_1.Scenes
                 bool left = false;
                 bool down = false;
                 bool right = false;
-                if (Pos.X < aUnit.positionToMove.X && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Mine && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Building && map.map[Pos.X + 1, Pos.Y].unit == null)
+                if (Pos.X < aUnit.positionToMove.X && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Mine && map.map[Pos.X + 1, Pos.Y].terrain != TypeOfTerrain.Building)
                 {
                     newPos.X++; right = true;
                 }
-                else if (Pos.X > aUnit.positionToMove.X && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Mine && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Building && map.map[Pos.X - 1, Pos.Y].unit == null)
+                else if (Pos.X > aUnit.positionToMove.X && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Tree && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Water && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Mine && map.map[Pos.X - 1, Pos.Y].terrain != TypeOfTerrain.Building)
                 {
                     newPos.X--; left = true;
                 }
                 int n = right ? 1 : 0 + (left ? -1 : 0);
-                if (Pos.Y < aUnit.positionToMove.Y && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Mine && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Building && map.map[Pos.X + n, Pos.Y+1].unit == null)
+                if (Pos.Y < aUnit.positionToMove.Y && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Mine && map.map[Pos.X + n, Pos.Y + 1].terrain != TypeOfTerrain.Building)
                 {
                     newPos.Y++; down = true;
                 }
-                else if (Pos.Y > aUnit.positionToMove.Y && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Mine && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Building && map.map[Pos.X + n, Pos.Y-1].unit == null)
+                else if (Pos.Y > aUnit.positionToMove.Y && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Tree && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Water && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Mine && map.map[Pos.X + n, Pos.Y - 1].terrain != TypeOfTerrain.Building)
                 {
                     newPos.Y--; up = true;
                 }
@@ -458,8 +678,8 @@ namespace Warcraft_1.Scenes
                     aUnit.IsMoving = false;
                     aUnit.UpdateAnim(false, direction != DIRS.NONE ? direction : DIRS.DOWN);
                     aUnit.Frame = 0;
-                    //map.map[Pos.X, Pos.Y].ClearUnitPlace();
-                    //map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
+                    map.map[Pos.X, Pos.Y].ClearUnitPlace();
+                    map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
                     return;
                 }
                 else
@@ -572,6 +792,33 @@ namespace Warcraft_1.Scenes
             GC.Collect();
 
         }
+        private void MoveFocusUnitToObtain(List<System.Drawing.Point> Way, bool wood)
+        {
+            HumWorker aUnit = map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit as HumWorker;
+            MoveFocusUnit(Way);
+            aUnit.IsMoving = true;
+            TypeOfTerrain type = wood ? TypeOfTerrain.Tree : TypeOfTerrain.Mine;
+            bool can = false;
+            for (int i = aUnit.positionToMove.X - 1; i <= aUnit.positionToMove.X + 1; i++)
+            {
+                for (int j = aUnit.positionToMove.Y - 1; j <= aUnit.positionToMove.Y + 1; j++)
+                {
+                    if (map.map[i, j].terrain == type)
+                    {
+                        can = true;
+                    }
+                }
+            }
+            if (can)
+            {
+                aUnit.UpdateAnim(false, DIRS.NONE);
+                Thread.Sleep(5000);
+                aUnit.IsCarryingWood = wood;
+                aUnit.IsCarryingGold = !wood;
+                aUnit.UpdateAnim(false, DIRS.DOWN);
+            }
+            aUnit.IsMoving = false;
+        }
         private void MoveFocusUnitToObtain(bool wood)
         {
             HumWorker aUnit = map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit as HumWorker;
@@ -595,6 +842,41 @@ namespace Warcraft_1.Scenes
                 Thread.Sleep(5000);
                 aUnit.IsCarryingWood = wood;
                 aUnit.IsCarryingGold = !wood;
+                aUnit.UpdateAnim(false, DIRS.DOWN);
+            }
+            aUnit.IsMoving = false;
+        }
+        private void MoveFocusUnitToGive(List<System.Drawing.Point> Way, bool wood)
+        {
+            HumWorker aUnit = map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit as HumWorker;
+            MoveFocusUnit(Way);
+            aUnit.IsMoving = true;
+            TypeOfTerrain type = wood ? TypeOfTerrain.Tree : TypeOfTerrain.Mine;
+            bool can = false;
+            for (int i = aUnit.positionToMove.X - 1; i <= aUnit.positionToMove.X + 1; i++)
+            {
+                for (int j = aUnit.positionToMove.Y - 1; j <= aUnit.positionToMove.Y + 1; j++)
+                {
+                    if (map.map[i, j].buildingType == BuildingType.MainBuild)
+                    {
+                        can = true;
+                    }
+                }
+            }
+            if (can)
+            {
+                aUnit.UpdateAnim(false, DIRS.NONE);
+                Thread.Sleep(500);
+                if (wood)
+                {
+                    map.Wood += 50;
+                }
+                else
+                {
+                    map.Gold += 50;
+                }
+                aUnit.IsCarryingWood = false;
+                aUnit.IsCarryingGold = false;
                 aUnit.UpdateAnim(false, DIRS.DOWN);
             }
             aUnit.IsMoving = false;
