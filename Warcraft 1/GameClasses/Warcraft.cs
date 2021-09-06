@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
-
 using Warcraft_1.Scenes;
 using System;
 using System.Threading;
+using System.IO;
 
 namespace Warcraft_1
 {
@@ -47,13 +46,13 @@ namespace Warcraft_1
         {
             _graphics.PreferredBackBufferWidth = _graphics.GraphicsDevice.DisplayMode.Width;
             _graphics.PreferredBackBufferHeight = _graphics.GraphicsDevice.DisplayMode.Height;
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
         }
         private void SoundsAdjust()
         {
             Logic_Classes.Configuration.SettingsAdjust();
-            bgsong = Content.Load<Song>("backgroundmusic");
+            bgsong = Content.Load<Song>("Sounds/backgroundmusic");
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = Logic_Classes.Settings.MusicVol ? 0.05f : 0.0f;
@@ -62,14 +61,12 @@ namespace Warcraft_1
         }
 
         protected override void LoadContent()
-        {
-           
-        }
+        {}
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Exit();
 
             // TODO: Add your update logic here
             Scenes.Scenes outgoingScene = scene.Update(gameTime);
@@ -79,6 +76,13 @@ namespace Warcraft_1
                 currentState = outgoingScene;
                 switch (outgoingScene)
                 {
+                    case Scenes.Scenes.startgame:
+                        scene = new SPlaying();
+                        if (File.Exists("map.wc"))
+                        {
+                            (scene as SPlaying).map.Read("map.wc");
+                        }
+                        break;
                     case Scenes.Scenes.mainmenu:
                         scene = new SMenu();
                         break;
@@ -87,6 +91,20 @@ namespace Warcraft_1
                         break;
                     case Scenes.Scenes.quitwindow:
                         scene = new SQuit();
+                        break;
+                    case Scenes.Scenes.loadgame:
+                        scene = new SPlaying();
+                        if (File.Exists("save.wc"))
+                        {
+                            (scene as SPlaying).map.Read("save.wc");
+                        }
+                        else
+                        {
+                            if (File.Exists("map.wc"))
+                            {
+                                (scene as SPlaying).map.Read("map.wc");
+                            }
+                        }
                         break;
                 }
                 Thread.Sleep(40);

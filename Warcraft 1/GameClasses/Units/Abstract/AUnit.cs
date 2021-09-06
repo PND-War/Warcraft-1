@@ -1,28 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Newtonsoft.Json;
 
-namespace Warcraft_1.Units
+namespace Warcraft_1.GameClasses.Units
 {
-    enum Race
-    {
-        HUMAN,
-        ORC,
-        NONE
-    }
+    
 
-    enum Role
+    abstract class AUnit : Sprite
     {
-        WORKER,
-        WARRIOR,
-        NONE
-    }
+        public bool IsLoaded;
+        public bool IsMoving;
+        public Point positionInMoving;
+        [JsonIgnore]
+        public SoundEffect action;
 
-    abstract class AUnit
-    {
+
         protected int speed;
         protected int armor;
         protected int damage;
@@ -38,15 +31,12 @@ namespace Warcraft_1.Units
         protected Race race;
         protected Role role;
 
-        protected Point position;
         protected Point spriteSize;
-        public Texture2D texture;
-
-        protected bool isChoosed;
-        protected Point positionToMove;
+        
+        public Point positionToMove;
 
         // Базовый конструктор, все параметры инициализирует нулем
-        protected AUnit()
+        public AUnit() : base()
         {
             this.speed = 0;
             this.armor = 0;
@@ -62,33 +52,28 @@ namespace Warcraft_1.Units
             this.race = Race.NONE;
             this.role = Role.NONE;
 
-            this.position = new Point(0, 0);
             this.spriteSize = new Point(0, 0);
-            this.texture = null;
 
-            this.isChoosed = false;
             this.positionToMove = new Point(0, 0);
         }
 
         // Конструктор только с самыми базовыми параметрами (скорость, здоровье, позиция и т.д)
         protected AUnit(int speed, int damage, int maxHealth,
-            Point position, Point spriteSize, Texture2D texture) : this()
+            Point position, Point spriteSize) : this()
         {
             this.speed = speed;
             this.damage = damage;
             this.maxHealth = maxHealth;
             this.currentHealth = maxHealth;
 
-            this.position = position;
+            this.positionToMove = position;
             this.spriteSize = spriteSize;
-            this.texture = texture;
         }
 
         // Конструктор с переопределением всех параметров для потомков
         protected AUnit(int speed, int armor, int damage, int maxHealth,
             int regeneration, int gold, int food, int reward, string bio,
-            Race race, Role role, Point position, Point spriteSize,
-            Texture2D texture)
+            Race race, Role role, Point position, Point spriteSize)
         {
             this.speed = speed;
             this.armor = armor;
@@ -105,15 +90,37 @@ namespace Warcraft_1.Units
             this.race = race;
             this.role = role;
 
-            this.position = position;
             this.spriteSize = spriteSize;
-            this.texture = texture;
 
-            this.isChoosed = false;
-            this.positionToMove = new Point(0, 0);
+            this.positionToMove = position;
         }
 
-        public abstract void Load(GraphicsDeviceManager graphics, ContentManager Content);
+        static public AUnit DeepCopy(AUnit unit)
+        {
+            AUnit aUnit = new HumWarrior();
+
+            aUnit.speed = unit.speed;
+            aUnit.armor = unit.armor;
+            aUnit.damage = unit.damage;
+            aUnit.maxHealth = unit.maxHealth;
+            aUnit.currentHealth = unit.currentHealth;
+            aUnit.regeneration = unit.regeneration;
+            aUnit.Texture = unit.Texture;
+            aUnit.positionToMove = unit.positionToMove;
+            aUnit.positionInMoving = unit.positionInMoving;
+            aUnit.gold = unit.gold;
+            aUnit.food = unit.food;
+            aUnit.reward = unit.reward;
+
+            aUnit.bio = unit.bio;
+            aUnit.race = unit.race;
+            aUnit.role = unit.role;
+
+            aUnit.spriteSize = unit.spriteSize;
+            return aUnit;
+        }
+
+        public abstract void Load(ContentManager Content);
         public abstract void Update(GameTime gameTime);
 
         protected void Regeneration()
@@ -124,13 +131,22 @@ namespace Warcraft_1.Units
             if (this.currentHealth > this.maxHealth)
                 this.currentHealth = this.maxHealth;
         }
-        protected void UpdatePosition()
-        {
-            if (this.position.X < this.positionToMove.X) this.position.X += speed;
-            else this.position.X -= speed;
 
-            if (this.position.Y < this.positionToMove.Y) this.position.Y += speed;
-            else this.position.Y -= speed;
+        public Race GetRace()
+        {
+            return this.race;
+        }
+        public Role GetRole()
+        {
+            return this.role;
+        }
+        public int GetCurHP()
+        {
+            return currentHealth;
+        }
+        public int GetMaxHP()
+        {
+            return maxHealth;
         }
     }
 }

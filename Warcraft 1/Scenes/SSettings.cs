@@ -15,6 +15,7 @@ namespace Warcraft_1.Scenes
     enum TextureSSettings
     {
         backgr,
+        black,
         cur,
         setticon,
         ok,
@@ -32,27 +33,30 @@ namespace Warcraft_1.Scenes
         public bool okAimed = false;
         public bool backAimed = false;
 
+        float currentOpacity = 0.0f;
+
         Texture2D no;
         Texture2D yes;
 
         public override void Load(GraphicsDeviceManager graphics, ContentManager Content)
         {
-            click = Content.Load<SoundEffect>("button");
+            click = Content.Load<SoundEffect>("Sounds/button");
 
-            no = Content.Load<Texture2D>("noicon");
-            yes = Content.Load<Texture2D>("yesicon");
+            no = Content.Load<Texture2D>("Textures/Images/noicon");
+            yes = Content.Load<Texture2D>("Textures/Images/yesicon");
 
-            Texture2D cursor = Content.Load<Texture2D>("cursor");
-            Texture2D background = Content.Load<Texture2D>("background");
+            Texture2D cursor = Content.Load<Texture2D>("Textures/UI/cursor");
+            Texture2D background = Content.Load<Texture2D>("Textures/Images/background");
+            Texture2D blackout = Content.Load<Texture2D>("Textures/Images/blackout");
 
-            Texture2D settingsicon = Content.Load<Texture2D>("settings");
-            Texture2D ok = Content.Load<Texture2D>("ok");
-            Texture2D back = Content.Load<Texture2D>("back");
+            Texture2D settingsicon = Content.Load<Texture2D>("Textures/UI/settings");
+            Texture2D ok = Content.Load<Texture2D>("Textures/UI/ok");
+            Texture2D back = Content.Load<Texture2D>("Textures/UI/back");
 
             Texture2D soundturn = Logic_Classes.Settings.MusicVol ? yes : no;
             Texture2D musicturn = Logic_Classes.Settings.SFXVol ? yes : no;
 
-            components.AddRange(new Texture2D[] { background, cursor, settingsicon, ok, back, soundturn, musicturn });
+            components.AddRange(new Texture2D[] { background, blackout, cursor, settingsicon, ok, back, soundturn, musicturn });
             SoundAdjust();
         }
         private void SoundAdjust()
@@ -129,6 +133,7 @@ namespace Warcraft_1.Scenes
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(components[(int)TextureSSettings.backgr], new Rectangle(0, 0, 1920, 1080), Color.White);
+            _spriteBatch.Draw(components[(int)TextureSSettings.black], new Rectangle(0, 0, 1920, 1080), Color.White * SmoothTransparent());
             _spriteBatch.Draw(components[(int)TextureSSettings.setticon], new Vector2(831, 434), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSSettings.ok], new Vector2(863, 581), null, Color.White, 0f, Vector2.Zero, okAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(components[(int)TextureSSettings.back], new Vector2(962, 581), null, Color.White, 0f, Vector2.Zero, backAimed ? 1.007f : 1.0f, SpriteEffects.None, 0f);
@@ -139,5 +144,10 @@ namespace Warcraft_1.Scenes
             _spriteBatch.End();
         }
 
+        private float SmoothTransparent()
+        {
+            if (currentOpacity < 0.80f) currentOpacity += 0.02f;
+            return currentOpacity;
+        }
     }
 }
