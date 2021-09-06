@@ -357,8 +357,34 @@ namespace Warcraft_1.Scenes
                 map.Gold -= requireGold;
                 map.Wood -= requireWood;
 
-                map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove = new Point((int)Math.Ceiling((x + map.group.FocusedObj.X) / (double)2), (int)Math.Ceiling((y + map.group.FocusedObj.Y) / (double)2));//WORK IN PROGRESS
-                MoveFocusUnit();
+                map.map[Pos.X, Pos.Y].unit.positionToMove = new Point(x, y);
+                if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && map.group.FocusedObj != map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove && !map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.IsMoving)
+                {
+                    CalculateWay CalcWay = new CalculateWay(new FField(map.group.FocusedObj.X, map.group.FocusedObj.Y), new FField(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove.X, map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.positionToMove.Y));
+
+                    try
+                    {
+                        for (int i = 0; i < 100; i++)
+                        {
+                            for (int j = 0; j < 100; j++)
+                            {
+                                CalcWay.map.map[j, i].Init((int)map.map[i, j].terrain);
+                            }
+                        }
+                        List<System.Drawing.Point> Way = CalcWay.StartAlhorythm();
+
+                        Task task = new Task(() => MoveFocusUnit(Way));
+                        task.Start();
+                        task.Wait();
+                    }
+                    catch
+                    {
+                        Task task = new Task(() => MoveFocusUnit());
+                        task.Start();
+                        task.Wait();
+                    };
+
+                }
                 for (int i = x; i < x + 3; i++)
                 {
                     for (int j = y; j < y + 3; j++)
@@ -398,7 +424,7 @@ namespace Warcraft_1.Scenes
         }
         private void Attack()
         {
-
+            //WIP
         }
         private void CheckFocusMove()
         {
@@ -482,7 +508,6 @@ namespace Warcraft_1.Scenes
         }
         private void MoveFocusUnit(List<System.Drawing.Point> Way)
         {
-            //AUnit aUnit = AUnit.DeepCopy(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit);
             List<Point> NewWay = new List<Point>();
             for (int i = 0; i < Way.Count; i++)
             {
@@ -491,13 +516,11 @@ namespace Warcraft_1.Scenes
             int CurrentStep = 0;
 
             AUnit aUnit = map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit;
-            //Point Pos = map.group.FocusedUnit;
             map.group.ChangePoint(-1, -1);
             DIRS direction = DIRS.NONE;
 
             do
             {
-                //Point newPos = new Point(Pos.X, Pos.Y);
 
                 bool up = false;
                 bool left = false;
@@ -634,14 +657,11 @@ namespace Warcraft_1.Scenes
             aUnit.IsMoving = false;
             aUnit.UpdateAnim(false, direction != DIRS.NONE ? direction : DIRS.DOWN);
             aUnit.Frame = 0;
-            //map.map[NewWay[CurrentStep].X, Pos.Y].ClearUnitPlace();
-            //map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
             GC.Collect();
 
         }
         private void MoveFocusUnit()
         {
-            //AUnit aUnit = AUnit.DeepCopy(map.map[map.group.FocusedUnit.X, map.group.FocusedUnit.Y].unit);
             AUnit aUnit = map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit;
             Point Pos = map.group.FocusedObj;
             map.group.ChangePoint(-1, -1);
@@ -787,8 +807,6 @@ namespace Warcraft_1.Scenes
             aUnit.IsMoving = false;
             aUnit.UpdateAnim(false, direction != DIRS.NONE ? direction : DIRS.DOWN);
             aUnit.Frame = 0;
-            //map.map[Pos.X, Pos.Y].ClearUnitPlace();
-            //map.map[Pos.X, Pos.Y].PlaceAUnit(aUnit);
             GC.Collect();
 
         }
@@ -942,17 +960,14 @@ namespace Warcraft_1.Scenes
                     _spriteBatch.Draw(attackButton, attackCoords, null, map.attackMode || Keyboard.GetState().IsKeyDown(Keys.A) ? Color.Gray : Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                     if (map.obtainMode || Keyboard.GetState().IsKeyDown(Keys.D))
                     {
-                        //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 9, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(Race.HUMAN, Role.NONE), Color.White);
                         _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(40, 791, 200, 120), new Rectangle(600, 616, 200, 120), Color.White);
                     }
                     else
                     {
-                        //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X + 27, (int)obtainCords.Y + 9, IconSprite.XScale, IconSprite.YScale), IconSprite.obtainIcon, Color.White);
                         _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(40, 791, 200, 120), new Rectangle(800, 616, 200, 120), Color.White);
                     }
                     if (map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRole() == Role.WORKER)
                     {
-                        //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.buildIcon, Color.White);
                         _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(250, 791, 200, 120), new Rectangle(1000, 616, 200, 120), Color.White);
                     }
                 }
@@ -988,22 +1003,18 @@ namespace Warcraft_1.Scenes
                 _spriteBatch.Draw(obtainButton, obtainCords, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 if (map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRole() == Role.WORKER)
                 {
-                    //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)attackCoords.X, (int)attackCoords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.MainBuild), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
                     _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(40, 661, 200, 120), new Rectangle(0, 616, 200, 120), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.MainBuild).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale - 20, (int)attackCoords.Y + 20), Color.SandyBrown);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.MainBuild).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale - 20, (int)attackCoords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.MainBuild).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale - 10, (int)attackCoords.Y + 20), Color.SandyBrown);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.MainBuild).ToString(), new Vector2((int)attackCoords.X + IconSprite.XScale - 10, (int)attackCoords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
 
-                    //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)moveCords.X, (int)moveCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.Barracks), map.buildingType != BuildingType.Barracks ? Color.White : Color.Gray);
                     _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(250, 661, 200, 120), new Rectangle(200, 616, 200, 120), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Barracks).ToString(), new Vector2((int)moveCords.X + IconSprite.XScale - 20, (int)moveCords.Y + 20), Color.SandyBrown);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Barracks).ToString(), new Vector2((int)moveCords.X + IconSprite.XScale - 20, (int)moveCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Barracks).ToString(), new Vector2((int)moveCords.X + IconSprite.XScale - 10, (int)moveCords.Y + 20), Color.SandyBrown);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Barracks).ToString(), new Vector2((int)moveCords.X + IconSprite.XScale - 10, (int)moveCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
 
-                    //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)obtainCords.X, (int)obtainCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), BuildingType.Farm), map.buildingType != BuildingType.Farm ? Color.White : Color.Gray);
                     _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(40, 791, 200, 120), new Rectangle(400, 616, 200, 120), map.buildingType != BuildingType.MainBuild ? Color.White : Color.Gray);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale - 20, (int)obtainCords.Y + 20), Color.SandyBrown);
-                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale - 20, (int)obtainCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(true, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale - 10, (int)obtainCords.Y + 20), Color.SandyBrown);
+                    _spriteBatch.DrawString(font, BuildAssistance.GetCurrency(false, BuildingType.Farm).ToString(), new Vector2((int)obtainCords.X + IconSprite.XScale - 10, (int)obtainCords.Y + 20 + IconSprite.YScale / 2), Color.Gold);
 
-                    //_spriteBatch.Draw(UnitsTextures.Icons, new Rectangle((int)buildCords.X + 27, (int)buildCords.Y + 8, IconSprite.XScale, IconSprite.YScale), IconSprite.GetTextureBounds(map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.GetRace(), Role.NONE), Color.White);
                     _spriteBatch.Draw(UnitsTextures.Icons, new Rectangle(250, 791, 200, 120), new Rectangle(600, 616, 200, 120), Color.White);
 
                 }
