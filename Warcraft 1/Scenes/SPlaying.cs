@@ -135,7 +135,7 @@ namespace Warcraft_1.Scenes
                 {
                     map.movingMode = false;
                     MouseCoords = new Point((Mouse.GetState().Position.X - 494) / Map.fieldPixelSize + map.Camera.X, (Mouse.GetState().Position.Y - 44) / Map.fieldPixelSize + map.Camera.Y);
-                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Building)
+                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Building && map.map[MouseCoords.X, MouseCoords.Y].unit == null)
                     {
                         try
                         {
@@ -284,7 +284,7 @@ namespace Warcraft_1.Scenes
                 else if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && !map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.IsMoving && new Rectangle(494, 44, 1382, 992).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
 
-                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Building)
+                    if (map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Tree && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Water && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Mine && map.map[MouseCoords.X, MouseCoords.Y].terrain != TypeOfTerrain.Building && map.map[MouseCoords.X, MouseCoords.Y].unit == null)
                     {
                         try
                         {
@@ -509,6 +509,7 @@ namespace Warcraft_1.Scenes
         private void MoveFocusUnit(List<System.Drawing.Point> Way)
         {
             List<Point> NewWay = new List<Point>();
+            Point pos = map.group.FocusedObj;
             for (int i = 0; i < Way.Count; i++)
             {
                 NewWay.Add(new Point(Way[i].X, Way[i].Y));
@@ -548,8 +549,7 @@ namespace Warcraft_1.Scenes
                     aUnit.IsMoving = false;
                     aUnit.UpdateAnim(false, direction != DIRS.NONE ? direction : DIRS.DOWN);
                     aUnit.Frame = 0;
-                    map.map[NewWay[CurrentStep].X, NewWay[CurrentStep].Y].ClearUnitPlace();
-                    map.map[NewWay[CurrentStep].X, NewWay[CurrentStep].Y].PlaceAUnit(aUnit);
+                    
                     return;
                 }
                 else
@@ -653,7 +653,8 @@ namespace Warcraft_1.Scenes
             } while (CurrentStep + 1 != NewWay.Count);
 
             aUnit.positionToMove = NewWay.Last();
-
+            map.map[pos.X, pos.Y].ClearUnitPlace();
+            map.map[NewWay[CurrentStep].X, NewWay[CurrentStep].Y].PlaceAUnit(aUnit);
             aUnit.IsMoving = false;
             aUnit.UpdateAnim(false, direction != DIRS.NONE ? direction : DIRS.DOWN);
             aUnit.Frame = 0;
