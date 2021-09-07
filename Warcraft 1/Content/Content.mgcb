@@ -32,6 +32,12 @@
 /processorParam:Quality=Best
 /build:Sounds/button.wav
 
+#begin Sounds/Game/Error.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Game/Error.wav
+
 #begin Sounds/Game/HumWorker.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -194,18 +200,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/UI/ButtonAttack.png
 
-#begin Textures/UI/ButtonAttack.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/UI/ButtonAttack.png
-
 #begin Textures/UI/ButtonDefense.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -229,18 +223,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/ButtonEmpty.png
-
-#begin Textures/UI/ButtonMove.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/UI/ButtonMove.png
 
 #begin Textures/UI/ButtonMove.png
 /importer:TextureImporter
