@@ -23,6 +23,9 @@ namespace Warcraft_1.Scenes
         Texture2D profile;
 
         public SoundEffectInstance unitInstance;
+        SoundEffectInstance errorInstance;
+        SoundEffect error;
+
         Texture2D moveButton;
         Texture2D buildButton;
         Texture2D attackButton;
@@ -66,7 +69,8 @@ namespace Warcraft_1.Scenes
             map.buildingtiles = Content.Load<Texture2D>("Textures/Game/buildingtiles");
 
             click = Content.Load<SoundEffect>("Sounds/button");
-            //map.Save("map.wc");
+            error = Content.Load<SoundEffect>("Sounds/Game/Error");
+
             Texture2D Resourses = Content.Load<Texture2D>("Textures/Game/ResourceIcons");
 
             Texture2D cursor = Content.Load<Texture2D>("Textures/UI/cursor");
@@ -92,6 +96,8 @@ namespace Warcraft_1.Scenes
         {
             soundInstance = click.CreateInstance();
             soundInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
+            errorInstance = error.CreateInstance();
+            errorInstance.Volume = Logic_Classes.Settings.SFXVol ? 0.35f : 0.0f;
         }
         public override Scenes Update(GameTime gameTime)
         {
@@ -149,6 +155,10 @@ namespace Warcraft_1.Scenes
                         }
                         catch (Exception) { }
                     }
+                    else
+                    {
+                        errorInstance.Play();
+                    }
                 }
                 else if (new Rectangle(40, 952, 410, 88).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
@@ -190,6 +200,10 @@ namespace Warcraft_1.Scenes
                             map.Gold -= UnitAssistance.GetCurrency(false, role);
                             map.Wood -= UnitAssistance.GetCurrency(true, role);
                             map.CreateUnit(map.group.FocusedObj.X - 1, map.group.FocusedObj.Y, Race.HUMAN, role);
+                        }
+                        else
+                        {
+                            errorInstance.Play();
                         }
                     }
                 }
@@ -268,6 +282,7 @@ namespace Warcraft_1.Scenes
                 {
                     map.buildMode = false;
                     map.buildingType = BuildingType.None;
+                    errorInstance.Play();
                 }
                 else if (map.attackMode && map.map[MouseCoords.X, MouseCoords.Y].unit != null && map.map[MouseCoords.X, MouseCoords.Y].unit.GetRace() != Race.ORC)
                 {
@@ -314,6 +329,10 @@ namespace Warcraft_1.Scenes
                         }
                         catch (Exception) { }
                     }
+                    else
+                    {
+                        errorInstance.Play();
+                    }
                 }
                 else if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit != null && !map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit.IsMoving && new Rectangle(45, 45, 400, 400).Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
@@ -331,6 +350,10 @@ namespace Warcraft_1.Scenes
                             }
                         }
                         catch (Exception) { }
+                    }
+                    else
+                    {
+                        errorInstance.Play();
                     }
                 }
             }
@@ -420,6 +443,7 @@ namespace Warcraft_1.Scenes
             {
                 map.buildMode = false;
                 map.buildingType = BuildingType.None;
+                errorInstance.Play();
             }
         }
         private void Attack()
@@ -503,6 +527,7 @@ namespace Warcraft_1.Scenes
             }
             else if (map.group.FocusedObj.X != -1 && map.map[map.group.FocusedObj.X, map.group.FocusedObj.Y].unit == null && map.group.buildingType == BuildingType.None)
             {
+                errorInstance.Play();
                 map.group.ChangePoint(-1, -1);
             }
         }
